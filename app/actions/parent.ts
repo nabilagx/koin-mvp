@@ -32,13 +32,43 @@ async function assertOwnChild(child_id: string) {
   const context = await requireParentContext();
   const { data: child, error } = await context.admin
     .from("children")
-    .select("id,parent_id")
+    .select("id,parent_id,user_id")
     .eq("id", child_id)
     .eq("parent_id", context.parent.id)
     .single();
 
   if (error || !child) throw new Error("Child tidak ditemukan untuk parent ini.");
   return { ...context, child };
+}
+
+export async function updateChildProfileAction(formData: FormData) {
+  try {
+    const child_id = formString(formData, "child_id");
+    const name = formString(formData, "name");
+    const school_name = formString(formData, "school_name");
+    const grade = formString(formData, "grade");
+    if (!child_id || !name) throw new Error("Nama anak wajib diisi.");
+
+    const { profile, admin, child } = await assertOwnChild(child_id);
+    const { error } = await admin
+      .from("children")
+      .update({
+        name,
+        school_name: school_name || null,
+        grade: grade || null
+      })
+      .eq("id", child_id)
+      .eq("parent_id", child.parent_id);
+
+    if (error) throw new Error(error.message);
+    await admin.from("users").update({ name }).eq("id", child.user_id);
+    await writeAudit(admin, profile.id, "UPDATE_CHILD_PROFILE", "children", child_id, `Parent memperbarui profil anak ${name}.`);
+    revalidatePath(parentPath);
+    actionMessage(`${parentPath}?child_id=${child_id}&view=children`, "success", "Identitas anak berhasil diperbarui.");
+  } catch (error) {
+    rethrowRedirect(error);
+    actionMessage(parentPath, "error", friendlyError(error));
+  }
 }
 
 async function writeAudit(

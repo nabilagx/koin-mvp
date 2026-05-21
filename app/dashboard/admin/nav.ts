@@ -6,7 +6,9 @@ export const adminLinks = [
   { href: "/dashboard/admin/canteens", label: "Canteens" },
   { href: "/dashboard/admin/cards", label: "Cards" },
   { href: "/dashboard/admin/transactions", label: "Transactions" },
-  { href: "/dashboard/admin/topups", label: "Top-ups" },
+  { href: "/dashboard/admin/topups", label: "Top Ups" },
+  { href: "/dashboard/admin/audit-logs", label: "Audit Logs" },
   { href: "/dashboard/admin/support", label: "Support Reports" },
-  { href: "/dashboard/admin/audit-logs", label: "Audit Logs" }
+  { href: "/dashboard/admin?view=ai", label: "AI Insight Coming Soon" },
+  { href: "/dashboard/admin?view=settings", label: "Pengaturan" }
 ];

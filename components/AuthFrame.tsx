@@ -19,8 +19,9 @@ export function AuthFrame({
           <div className="absolute -left-8 bottom-24 h-32 w-32 rounded-full border-[18px] border-mint/60" />
           <div className="relative z-10">
             <KoinBrand href="/" />
-            <p className="mt-10 text-4xl font-black leading-tight">Uang saku aman untuk sekolah yang lebih cerdas.</p>
-            <p className="mt-4 max-w-sm text-sm leading-7 text-white/70">KOIN membantu orang tua memantau, anak belajar nabung, dan kantin menerima transaksi kartu NFC/RFID.</p>
+            <div className="mt-10 inline-flex rounded-full bg-gold px-4 py-2 text-xs font-black text-ink">Pilot Project: SMPN 2 Ambulu</div>
+            <p className="mt-5 text-4xl font-black leading-tight">Ekosistem uang saku digital berbasis kartu NFC untuk sekolah.</p>
+            <p className="mt-4 max-w-sm text-sm leading-7 text-white/70">Orang tua memantau, anak belajar mengelola uang, kantin bertransaksi lebih aman.</p>
           </div>
           <div className="relative z-10 mt-12 rounded-[2rem] bg-white/12 p-6 shadow-soft">
             <div className="flex items-center justify-between">

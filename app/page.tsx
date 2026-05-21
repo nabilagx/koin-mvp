@@ -2,7 +2,12 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck, Ban, BookOpenCheck, Clock, CreditCard, History, Radio, School, ShieldCheck, Smartphone, Store, Users, WalletCards } from "lucide-react";
 import { KoinBrand } from "@/components/KoinBrand";
 
-const schools = ["SMP Nusantara", "SD Harapan Bangsa", "SMP 2 JAYA"];
+const schools = [
+  { name: "SMPN 2 Ambulu", status: "Pilot Aktif" },
+  { name: "Sekolah Mitra Berikutnya", status: "Coming Soon" },
+  { name: "Komunitas Belajar", status: "Coming Soon" },
+  { name: "Kantin Sekolah Mitra", status: "Coming Soon" }
+];
 
 export default function LandingPage() {
   return (
@@ -17,9 +22,10 @@ export default function LandingPage() {
 
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-10 pt-8 md:grid-cols-[1.02fr_0.98fr]">
         <div>
-          <p className="text-sm font-bold uppercase text-[#1c77d2]">Kenali • Olah • Ingat • Nabung</p>
+          <p className="text-sm font-bold uppercase text-[#1c77d2]">KOIN - Kenali - Olah - Ingat - Nabung</p>
           <h1 className="mt-4 max-w-3xl text-5xl font-black leading-tight sm:text-6xl">KOIN</h1>
-          <p className="mt-4 text-2xl font-bold text-[#17375f]">Kartu uang saku pintar untuk ekosistem sekolah.</p>
+          <div className="mt-4 inline-flex rounded-full bg-gold/30 px-4 py-2 text-sm font-black text-ink">Pilot Project: SMPN 2 Ambulu</div>
+          <p className="mt-4 text-2xl font-bold text-[#17375f]">Ekosistem uang saku digital berbasis kartu NFC untuk sekolah.</p>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[#304866]">
             Orang tua memantau, anak belajar mengelola uang, kantin bertransaksi lebih aman.
           </p>
@@ -50,7 +56,7 @@ export default function LandingPage() {
               <p className="mt-12 text-3xl font-black">KOIN</p>
               <p className="mt-2 text-sm text-white/70">Tap NFC/RFID di kantin sekolah</p>
               <div className="mt-8 flex items-center justify-between">
-                <span className="text-sm text-white/70">**** 2026</span>
+                <span className="text-sm text-white/70">Pilot 2026</span>
                 <span className="flex items-center gap-2 rounded-full bg-[#ffd84d] px-3 py-1 text-xs font-bold text-[#10233f]"><Radio size={14} /> NFC</span>
               </div>
             </div>
@@ -91,13 +97,8 @@ export default function LandingPage() {
 
       <section className="mx-auto max-w-6xl px-5 py-10">
         <div className="koin-card p-6">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-sm font-black uppercase text-mint">Ekosistem KOIN di sekolah</p>
-              <h2 className="mt-2 text-3xl font-black">Satu alur untuk semua role</h2>
-            </div>
-            <p className="max-w-xl text-sm leading-6 text-ink/60">Orang tua mengatur, anak memakai dan menabung, kantin memproses transaksi, admin menjaga operasional tetap rapi.</p>
-          </div>
+          <p className="text-sm font-black uppercase text-mint">Ekosistem KOIN di sekolah</p>
+          <h2 className="mt-2 text-3xl font-black">Satu alur untuk semua role</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-4">
             {[
               ["Orang Tua", "Top-up, limit, kartu, celengan", Users],
@@ -136,19 +137,22 @@ export default function LandingPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-16 pt-8">
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-4">
           {schools.map((school) => (
-            <div className="panel rounded-2xl p-5" key={school}>
+            <div className="panel rounded-2xl p-5" key={school.name}>
               <School className="text-[#1c77d2]" size={24} />
-              <p className="mt-4 text-sm font-semibold text-[#58708e]">Sekolah Pilot / Sekolah Kerja Sama</p>
-              <p className="mt-1 text-lg font-black">{school}</p>
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-[#58708e]">{school.status === "Pilot Aktif" ? "Sekolah Pilot" : "Rencana Ekosistem"}</p>
+                <span className={`rounded-full px-3 py-1 text-xs font-black ${school.status === "Pilot Aktif" ? "bg-gold/30 text-ink" : "bg-lilac text-mint"}`}>{school.status}</span>
+              </div>
+              <p className="mt-2 text-lg font-black">{school.name}</p>
             </div>
           ))}
         </div>
       </section>
       <footer className="border-t border-line bg-white/70 px-5 py-8 text-center text-sm font-semibold text-ink/55">
         <p className="font-black text-ink">KOIN</p>
-        <p className="mt-1">Kenali • Olah • Ingat • Nabung</p>
+        <p className="mt-1">Kenali - Olah - Ingat - Nabung</p>
       </footer>
     </main>
   );

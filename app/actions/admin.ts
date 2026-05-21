@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUserProfile } from "@/lib/auth";
-import { formString } from "@/lib/format";
+import { formNumber, formString } from "@/lib/format";
 import { hashPin } from "@/lib/pin";
 import { actionMessage, friendlyError, rethrowRedirect } from "@/lib/action-result";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -222,6 +222,40 @@ export async function resetChildPinAction(formData: FormData) {
     await audit("RESET_CHILD_PIN", "children", child_id, "Admin reset PIN transaksi anak.");
     revalidatePath(adminChildrenPath);
     actionMessage(adminChildrenPath, "success", "PIN anak berhasil direset.");
+  } catch (error) {
+    rethrowRedirect(error);
+    actionMessage(adminChildrenPath, "error", friendlyError(error));
+  }
+}
+
+export async function updateAdminChildProfileAction(formData: FormData) {
+  try {
+    const child_id = formString(formData, "child_id");
+    const name = formString(formData, "name");
+    const school_name = formString(formData, "school_name");
+    const grade = formString(formData, "grade");
+    const daily_limit = formNumber(formData, "daily_limit");
+    if (!child_id || !name) throw new Error("Nama anak wajib diisi.");
+
+    const { admin } = await requireAdminContext();
+    const { data: child } = await admin.from("children").select("id,user_id").eq("id", child_id).single();
+    if (!child) throw new Error("Anak tidak ditemukan.");
+
+    const { error } = await admin
+      .from("children")
+      .update({
+        name,
+        school_name: school_name || null,
+        grade: grade || null,
+        daily_limit: Math.max(daily_limit, 0)
+      })
+      .eq("id", child_id);
+
+    if (error) throw new Error(error.message);
+    await admin.from("users").update({ name }).eq("id", child.user_id);
+    await audit("ADMIN_UPDATE_CHILD_PROFILE", "children", child_id, `Admin memperbarui profil anak ${name}.`);
+    revalidatePath(adminChildrenPath);
+    actionMessage(adminChildrenPath, "success", "Identitas anak berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(adminChildrenPath, "error", friendlyError(error));

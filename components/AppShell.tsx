@@ -1,46 +1,40 @@
 import Link from "next/link";
-import { Bell, LogOut, Sparkles } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 import { logoutAction } from "@/app/actions/auth";
 import type { AppUser } from "@/lib/types";
 import { KoinBrand } from "./KoinBrand";
-import { StatusBadge } from "./StatusBadge";
+import { DesktopSidebar, MobileDrawer, type DashboardNavLink } from "./DashboardSidebar";
 
 export function AppShell({
   user,
   title,
+  navLinks,
+  navTitle,
   children
 }: {
   user: AppUser;
   title: string;
+  navLinks?: DashboardNavLink[];
+  navTitle?: string;
   children: React.ReactNode;
 }) {
+  const links = navLinks ?? getDefaultLinks(user.role);
+  const menuTitle = navTitle ?? `Menu ${user.role}`;
+
   return (
     <main className="min-h-screen bg-paper">
       <div className="mx-auto flex min-h-screen max-w-[1500px] gap-6 px-4 py-4">
-        <aside className="sticky top-4 hidden h-[calc(100vh-2rem)] w-72 shrink-0 rounded-[2rem] border border-white/80 bg-white/90 p-5 shadow-soft backdrop-blur lg:flex lg:flex-col">
-          <KoinBrand href="/dashboard" />
-          <div className="mt-8 rounded-3xl bg-lilac/70 p-4">
-            <p className="text-sm font-black">{user.name}</p>
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <StatusBadge status={user.role} />
-              <span className="text-xs font-bold text-ink/50">{user.status}</span>
-            </div>
-          </div>
-          <div className="mt-auto rounded-3xl bg-ink p-4 text-white">
-            <div className="flex items-center gap-2 text-gold">
-              <Sparkles size={18} />
-              <span className="text-sm font-black">Demo KOIN</span>
-            </div>
-            <p className="mt-2 text-xs leading-5 text-white/70">Smart school wallet untuk uang saku, kantin, kartu, dan celengan.</p>
-          </div>
-        </aside>
+        <DesktopSidebar user={user} links={links} navTitle={menuTitle} logoutAction={logoutAction} />
 
         <section className="min-w-0 flex-1">
           <header className="koin-card sticky top-4 z-20 mb-6 flex items-center justify-between gap-4 px-5 py-4">
-            <div className="min-w-0">
-              <div className="lg:hidden"><KoinBrand href="/dashboard" /></div>
-              <p className="hidden text-xs font-bold uppercase text-mint lg:block">Dashboard KOIN</p>
-              <h1 className="mt-1 truncate text-2xl font-black sm:text-3xl">{title}</h1>
+            <div className="flex min-w-0 items-center gap-3">
+              <MobileDrawer user={user} links={links} navTitle={menuTitle} logoutAction={logoutAction} />
+              <div className="min-w-0">
+                <div className="lg:hidden"><KoinBrand href="/dashboard" /></div>
+                <p className="hidden text-xs font-bold uppercase text-mint lg:block">Dashboard KOIN</p>
+                <h1 className="mt-1 truncate text-2xl font-black sm:text-3xl">{title}</h1>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <button className="hidden h-11 w-11 place-items-center rounded-2xl border border-line bg-white text-ink/70 sm:grid" type="button" aria-label="Notifikasi">
@@ -60,10 +54,66 @@ export function AppShell({
           </header>
           <div>{children}</div>
           <footer className="mt-10 pb-6 text-center text-xs font-semibold text-ink/45">
-            <Link href="/">KOIN</Link> · Kenali • Olah • Ingat • Nabung
+            <Link href="/">KOIN</Link> - Kenali - Olah - Ingat - Nabung
           </footer>
         </section>
       </div>
     </main>
   );
+}
+
+function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
+  if (role === "ADMIN") {
+    return [
+      { href: "/dashboard/admin", label: "Ringkasan" },
+      { href: "/dashboard/admin/users", label: "Users" },
+      { href: "/dashboard/admin/parents", label: "Parents" },
+      { href: "/dashboard/admin/children", label: "Children" },
+      { href: "/dashboard/admin/canteens", label: "Canteens" },
+      { href: "/dashboard/admin/cards", label: "Cards" },
+      { href: "/dashboard/admin/transactions", label: "Transactions" },
+      { href: "/dashboard/admin/topups", label: "Top Ups" },
+      { href: "/dashboard/admin/audit-logs", label: "Audit Logs" },
+      { href: "/dashboard/admin/support", label: "Support Reports" },
+      { href: "/dashboard/admin?view=ai", label: "AI Insight Coming Soon" },
+      { href: "/dashboard/admin?view=settings", label: "Pengaturan" }
+    ];
+  }
+  if (role === "CHILD") {
+    return [
+      { href: "/dashboard/child", label: "Ringkasan" },
+      { href: "/dashboard/child?view=saldo", label: "Saldo & Limit" },
+      { href: "/dashboard/child?view=transactions", label: "Riwayat Transaksi" },
+      { href: "/dashboard/child?view=savings", label: "Celengan" },
+      { href: "/dashboard/child?view=requests", label: "Saving Requests" },
+      { href: "/dashboard/child?view=missions", label: "Misi" },
+      { href: "/dashboard/child?view=support", label: "Lapor Admin" },
+      { href: "/dashboard/child?view=ai", label: "AI Insight Coming Soon" }
+    ];
+  }
+  if (role === "CANTEEN") {
+    return [
+      { href: "/dashboard/canteen", label: "POS Kantin" },
+      { href: "/dashboard/canteen?view=products", label: "Produk/Menu" },
+      { href: "/dashboard/canteen?view=transactions", label: "Transaksi Hari Ini" },
+      { href: "/dashboard/canteen?view=recap", label: "Rekap Pendapatan" },
+      { href: "/dashboard/canteen?view=support", label: "Lapor Admin" },
+      { href: "/dashboard/canteen?view=ai", label: "AI Insight Coming Soon" },
+      { href: "/dashboard/canteen?view=settings", label: "Pengaturan" }
+    ];
+  }
+  return [
+    { href: "/dashboard/parent", label: "Ringkasan" },
+    { href: "/dashboard/parent?view=children", label: "Anak Saya" },
+    { href: "/dashboard/parent?view=saldo", label: "Saldo & Limit" },
+    { href: "/dashboard/parent?view=topup", label: "Top Up" },
+    { href: "/dashboard/parent?view=cards", label: "Kartu" },
+    { href: "/dashboard/parent?view=savings", label: "Celengan" },
+    { href: "/dashboard/parent?view=requests", label: "Saving Requests" },
+    { href: "/dashboard/parent?view=missions", label: "Misi" },
+    { href: "/dashboard/parent?view=transactions", label: "Riwayat Transaksi" },
+    { href: "/dashboard/parent?view=support", label: "Lapor Admin" },
+    { href: "/dashboard/parent?view=ai", label: "AI Insight Coming Soon" },
+    { href: "/dashboard/parent?view=settings", label: "Pengaturan" }
+  ];
 }
