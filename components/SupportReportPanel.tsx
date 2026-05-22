@@ -1,6 +1,7 @@
 import { createSupportReportAction } from "@/app/actions/support";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
+import { formatStatus } from "@/lib/labels";
 import { SubmitButton } from "./SubmitButton";
 
 type SupportTransaction = {
@@ -40,7 +41,7 @@ export function SupportReportPanel({
           <option value="">Tanpa transaksi terkait</option>
           {transactions.map((transaction) => (
             <option key={transaction.id} value={transaction.id}>
-              {formatDateTime(transaction.created_at)} - {first(transaction.canteens)?.canteen_name ?? "Transaksi"} - {formatRupiah(Number(transaction.amount))} - {transaction.status}
+              {formatDateTime(transaction.created_at)} - {first(transaction.canteens)?.canteen_name ?? "Transaksi"} - {formatRupiah(Number(transaction.amount))} - {formatStatus(transaction.status)}
             </option>
           ))}
         </select>
@@ -52,7 +53,7 @@ export function SupportReportPanel({
           <div className="py-3 text-sm" key={report.id}>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="font-black">{report.subject}</p>
-              <span className="rounded-full border border-line px-2 py-1 text-xs font-semibold">{report.status}</span>
+              <span className="rounded-full border border-line px-2 py-1 text-xs font-semibold">{formatStatus(report.status)}</span>
             </div>
             <p className="mt-1 text-ink/70">{report.message}</p>
             {report.admin_reply ? <p className="mt-2 rounded-md bg-mint/20 p-2 text-ink/75">Balasan admin: {report.admin_reply}</p> : null}

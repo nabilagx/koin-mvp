@@ -159,7 +159,7 @@ export async function createCanteenTransactionAction(formData: FormData) {
     amount = cart_items.reduce((total, item) => total + item.subtotal, 0);
   }
 
-  if (!card_uid || !pin) throw new Error("Card UID dan PIN wajib diisi.");
+  if (!card_uid || !pin) throw new Error("UID kartu dan PIN wajib diisi.");
 
   const { data: card, error: cardError } = await admin
     .from("cards")
@@ -221,7 +221,7 @@ export async function createCanteenTransactionAction(formData: FormData) {
     .single();
 
   if (walletError || !wallet) {
-    await createFailedTransaction(admin, canteen.id, amount, "Wallet anak belum tersedia.", child.id, card.id);
+    await createFailedTransaction(admin, canteen.id, amount, "Saldo anak belum tersedia.", child.id, card.id);
     revalidatePath(canteenPath);
     actionMessage(canteenPath, "error", "Transaksi gagal: Wallet anak belum tersedia");
   }

@@ -10,10 +10,10 @@ export default async function AdminParentsPage() {
     .order("created_at", { ascending: false });
 
   return (
-    <AppShell user={user} title="Admin Parents">
+    <AppShell user={user} title="Data Orang Tua">
       <div className="grid gap-3">{(data ?? []).map((item) => {
         const profile = Array.isArray(item.users) ? item.users[0] : item.users;
-        return <div className="panel rounded-lg p-4 text-sm" key={item.id}><p className="font-black">{profile?.name ?? item.user_id}</p><p>{profile?.email} · {item.phone ?? "-"} · {item.address_optional ?? "-"}</p></div>;
+        return <div className="panel rounded-lg p-4 text-sm" key={item.id}><p className="font-black">{profile?.name ?? item.user_id}</p><p>{profile?.email} - {item.phone ?? "-"} - {item.address_optional ?? "-"}</p></div>;
       })}</div>
     </AppShell>
   );

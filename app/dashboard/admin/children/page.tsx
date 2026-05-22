@@ -19,13 +19,13 @@ export default async function AdminChildrenPage({
     .order("created_at", { ascending: false });
 
   return (
-    <AppShell user={user} title="Admin Children" navLinks={adminLinks} navTitle="Menu Admin">
+    <AppShell user={user} title="Data Anak" navLinks={adminLinks} navTitle="Menu Admin">
       <PageNotice error={params.error} success={params.success} />
       <div className="grid gap-3">
         {(data ?? []).map((item) => (
           <div className="panel rounded-lg p-4 text-sm" key={item.id}>
             <p className="font-black">{item.name}</p>
-            <p>{item.school_name ?? "-"} - {item.grade ?? "-"} - daily_limit {formatRupiah(Number(item.daily_limit))} - saldo {formatRupiah(Number(item.wallets?.[0]?.balance ?? 0))}</p>
+            <p>{item.school_name ?? "-"} - {item.grade ?? "-"} - Limit Harian {formatRupiah(Number(item.daily_limit))} - Saldo {formatRupiah(Number(item.wallets?.[0]?.balance ?? 0))}</p>
             <form action={updateAdminChildProfileAction} className="mt-4 grid gap-2 rounded-3xl border border-line bg-white p-4 md:grid-cols-5">
               <input type="hidden" name="child_id" value={item.id} />
               <input className="field" name="name" defaultValue={item.name} required />

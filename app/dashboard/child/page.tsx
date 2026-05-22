@@ -9,6 +9,7 @@ import { SupportReportPanel } from "@/components/SupportReportPanel";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
+import { formatStatus } from "@/lib/labels";
 import { getDailyLimitUsage } from "@/lib/limits";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -73,14 +74,14 @@ export default async function ChildDashboardPage({
     { href: "/dashboard/child?view=saldo", label: "Saldo & Limit" },
     { href: "/dashboard/child?view=transactions", label: "Riwayat Transaksi" },
     { href: "/dashboard/child?view=savings", label: "Celengan" },
-    { href: "/dashboard/child?view=requests", label: "Saving Requests" },
+    { href: "/dashboard/child?view=requests", label: "Pengajuan Pencairan" },
     { href: "/dashboard/child?view=missions", label: "Misi" },
     { href: "/dashboard/child?view=support", label: "Lapor Admin" },
-    { href: "/dashboard/child?view=ai", label: "AI Insight Coming Soon" }
+    { href: "/dashboard/child?view=ai", label: "AI Insight Segera Hadir" }
   ];
 
   return (
-    <AppShell user={user} title="Child Dashboard" navLinks={links} navTitle="Menu Anak">
+    <AppShell user={user} title="Dashboard Anak" navLinks={links} navTitle="Menu Anak">
       <PageNotice error={params.error} success={params.success} />
       {!data ? (
         <div className="panel rounded-lg p-6 text-sm text-ink/65">Profil child belum tersedia.</div>
@@ -132,7 +133,7 @@ function ChildOverview({ data }: { data: ChildData }) {
       <p className="mt-5 text-sm font-semibold text-ink/60">Saldo jajan</p>
       <p className="text-4xl font-black">{formatRupiah(Number(data.child.wallets?.[0]?.balance ?? 0))}</p>
       <div className="mt-5 grid grid-cols-2 gap-3 text-sm lg:grid-cols-3">
-        <div className="rounded-md border border-line p-3"><p className="text-ink/55">Daily limit</p><p className="font-black">{formatRupiah(data.usage.daily_limit)}</p></div>
+        <div className="rounded-md border border-line p-3"><p className="text-ink/55">Limit Harian</p><p className="font-black">{formatRupiah(data.usage.daily_limit)}</p></div>
         <div className="rounded-md border border-line p-3"><p className="text-ink/55">Jajan hari ini</p><p className="font-black">{formatRupiah(data.usage.spent_today)}</p></div>
         <div className="rounded-md border border-line p-3"><p className="text-ink/55">Tabungan hari ini</p><p className="font-black">{formatRupiah(data.usage.saved_today)}</p></div>
         <div className="rounded-md border border-line p-3"><p className="text-ink/55">Sisa limit hari ini</p><p className="font-black">{formatRupiah(data.usage.remaining_today)}</p></div>
@@ -149,7 +150,7 @@ function TransactionsSection({ transactions }: { transactions: ChildData["transa
       <div className="mt-3 divide-y divide-line">
         {transactions.map((transaction) => (
           <div className="flex justify-between gap-3 py-3 text-sm" key={transaction.id}>
-            <span>{transaction.status} - {transaction.failure_reason ?? "success"} - {formatDateTime(transaction.created_at)}</span>
+            <span>{formatStatus(transaction.status)} - {transaction.failure_reason ?? "Berhasil"} - {formatDateTime(transaction.created_at)}</span>
             <strong>{formatRupiah(Number(transaction.amount))}</strong>
           </div>
         ))}
@@ -173,7 +174,7 @@ function SavingsSection({ pockets }: { pockets: ChildData["pockets"] }) {
         {pockets.map((pocket) => (
           <div className="rounded-md border border-line p-3" key={pocket.id}>
             <p className="font-semibold">{pocket.name}</p>
-            <p className="text-sm text-ink/60">{formatRupiah(Number(pocket.current_amount))}/{formatRupiah(Number(pocket.target_amount))} - {pocket.status}</p>
+            <p className="text-sm text-ink/60">{formatRupiah(Number(pocket.current_amount))}/{formatRupiah(Number(pocket.target_amount))} - {formatStatus(pocket.status)}</p>
             <form action={moveWalletToSavingsAction} className="mt-3 flex gap-2">
               <input type="hidden" name="saving_pocket_id" value={pocket.id} />
               <input className="field" name="amount" type="number" min={1} placeholder="Pindah saldo" />
@@ -201,10 +202,10 @@ function SavingsSection({ pockets }: { pockets: ChildData["pockets"] }) {
 function RequestsSection({ requests }: { requests: ChildData["requests"] }) {
   return (
     <section className="panel rounded-lg p-5">
-      <h2 className="text-lg font-black">Saving Requests</h2>
+      <h2 className="text-lg font-black">Pengajuan Pencairan</h2>
       <div className="mt-3 divide-y divide-line">
         {requests.map((item) => <div className="flex items-center justify-between gap-3 py-3 text-sm" key={item.id}><span>{formatRupiah(Number(item.amount))} - {item.reason} - {item.payout_destination_type}</span><StatusBadge status={item.status} /></div>)}
-        {requests.length === 0 ? <EmptyState title="Belum ada request" description="Pengajuan pencairan celengan akan tampil di sini." /> : null}
+        {requests.length === 0 ? <EmptyState title="Belum ada pengajuan" description="Pengajuan pencairan celengan akan tampil di sini." /> : null}
       </div>
     </section>
   );
@@ -223,7 +224,7 @@ function MissionsSection({ missions }: { missions: ChildData["missions"] }) {
                 <input type="hidden" name="mission_id" value={item.id} />
                 <input className="field" name="evidence_text" placeholder="Keterangan bukti" />
                 <input className="field" name="evidence_url" placeholder="URL bukti opsional" />
-                <SubmitButton className="btn-secondary" pendingText="Submit...">Submit Misi</SubmitButton>
+                <SubmitButton className="btn-secondary" pendingText="Mengirim...">Kirim Misi</SubmitButton>
               </form>
             ) : null}
           </div>

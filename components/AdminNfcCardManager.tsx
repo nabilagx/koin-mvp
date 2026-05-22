@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { PenLine, Radio, RefreshCw, Wand2 } from "lucide-react";
 import { rewriteCardAction } from "@/app/actions/admin";
+import { formatStatus } from "@/lib/labels";
 
 type ChildOption = {
   id: string;
@@ -60,7 +61,7 @@ async function readNfcUid() {
         }
       }
       controller.abort();
-      reject(new Error("Kartu terbaca, tetapi tidak ada card_uid KOIN."));
+      reject(new Error("Kartu terbaca, tetapi tidak ada UID Kartu KOIN."));
     };
     reader.onreadingerror = () => reject(new Error("Gagal membaca kartu. Coba tempelkan kartu lagi."));
     reader.scan({ signal: controller.signal }).catch(reject);
@@ -131,7 +132,7 @@ export function AdminNfcCardManager({ childOptions }: { childOptions: ChildOptio
 
   function writeRewriteAndSync() {
     if (!childId || !newCardUid) {
-      setMessage("Pilih anak dan isi/generate new card_uid terlebih dahulu.");
+      setMessage("Pilih anak dan isi/generate UID Kartu baru terlebih dahulu.");
       return;
     }
     setMessage("Memvalidasi kartu sebelum rewrite...");
@@ -189,21 +190,21 @@ export function AdminNfcCardManager({ childOptions }: { childOptions: ChildOptio
     <section className="panel mb-5 grid gap-4 rounded-lg p-5">
       <div>
         <h2 className="text-lg font-black">Scan / Tulis / Rewrite Kartu NFC</h2>
-        <p className="mt-1 text-sm text-ink/60">Rewrite NFC akan menulis NDEF dan menyinkronkan `cards.card_uid` di Supabase. Jika database gagal, gunakan Scan & Sync.</p>
+        <p className="mt-1 text-sm text-ink/60">Rewrite NFC akan menulis NDEF dan menyinkronkan UID Kartu di Supabase. Jika database gagal, gunakan Scan & Sync.</p>
       </div>
       <div className="grid gap-3 md:grid-cols-4">
         <select className="field" value={childId} onChange={(event) => setChildId(event.target.value)} required>
           <option value="">Pilih anak</option>
           {childOptions.map((child) => <option value={child.id} key={child.id}>{child.name}</option>)}
         </select>
-        <input className="field" value={oldCardUid} onChange={(event) => setOldCardUid(event.target.value)} placeholder="old_card_uid opsional" />
-        <input className="field" value={newCardUid} onChange={(event) => setNewCardUid(event.target.value)} placeholder="new_card_uid" />
-        <input className="field" value={cardLabel} onChange={(event) => setCardLabel(event.target.value)} placeholder="card_label" />
+        <input className="field" value={oldCardUid} onChange={(event) => setOldCardUid(event.target.value)} placeholder="UID Kartu lama opsional" />
+        <input className="field" value={newCardUid} onChange={(event) => setNewCardUid(event.target.value)} placeholder="UID Kartu baru" />
+        <input className="field" value={cardLabel} onChange={(event) => setCardLabel(event.target.value)} placeholder="Label Kartu" />
         <select className="field" value={status} onChange={(event) => setStatus(event.target.value)}>
-          <option value="active">active</option>
-          <option value="frozen">frozen</option>
-          <option value="blocked">blocked</option>
-          <option value="replaced">replaced</option>
+          <option value="active">{formatStatus("active")}</option>
+          <option value="frozen">{formatStatus("frozen")}</option>
+          <option value="blocked">{formatStatus("blocked")}</option>
+          <option value="replaced">{formatStatus("replaced")}</option>
         </select>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -213,7 +214,7 @@ export function AdminNfcCardManager({ childOptions }: { childOptions: ChildOptio
         <button className="btn-secondary" type="button" onClick={scanAndSync} disabled={isPending}><RefreshCw size={16} /> Scan & Sync NFC Card</button>
       </div>
       <div className={`rounded-3xl border px-4 py-3 text-sm font-semibold ${message.includes("gagal") || message.includes("dibatalkan") || message.includes("tidak") ? "border-red-200 bg-red-50 text-red-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>
-        {message || "Tempelkan kartu NTAG213 ke belakang HP saat diminta. Admin tetap boleh melihat full card_uid."}
+        {message || "Tempelkan kartu NTAG213 ke belakang HP saat diminta. Admin tetap boleh melihat UID Kartu lengkap."}
       </div>
     </section>
   );

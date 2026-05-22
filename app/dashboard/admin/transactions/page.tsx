@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
+import { formatStatus } from "@/lib/labels";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type AdminTransaction = {
@@ -84,15 +85,15 @@ export default async function AdminTransactionsPage({
   });
 
   return (
-    <AppShell user={user} title="Admin Transactions">
+    <AppShell user={user} title="Data Transaksi">
       <PageNotice error={params.error} success={params.success} />
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_auto_auto]">
-        <input className="field" name="search" placeholder="Cari anak, parent, kantin, card_uid" defaultValue={params.search ?? ""} />
+        <input className="field" name="search" placeholder="Cari anak, orang tua, kantin, UID Kartu" defaultValue={params.search ?? ""} />
         <select className="field" name="status" defaultValue={params.status ?? ""}>
-          <option value="">Semua status</option>
-          <option value="success">success</option>
-          <option value="failed">failed</option>
-          <option value="refunded">refunded</option>
+          <option value="">Semua Status</option>
+          <option value="success">{formatStatus("success")}</option>
+          <option value="failed">{formatStatus("failed")}</option>
+          <option value="refunded">{formatStatus("refunded")}</option>
         </select>
         <input className="field" name="from" type="date" defaultValue={params.from ?? ""} />
         <input className="field" name="to" type="date" defaultValue={params.to ?? ""} />
@@ -106,16 +107,16 @@ export default async function AdminTransactionsPage({
             const parent = child?.parent_id ? parentById.get(child.parent_id) : null;
             const items = itemsByTransactionId.get(item.id) ?? [];
             return {
-              created_at: formatDateTime(item.created_at),
-              child_name: child?.name,
-              parent_name: parent?.name,
-              parent_email: parent?.email,
-              canteen_name: canteen?.canteen_name,
-              card_uid: card?.card_uid,
+              waktu: formatDateTime(item.created_at),
+              anak: child?.name,
+              orang_tua: parent?.name,
+              email_orang_tua: parent?.email,
+              kantin: canteen?.canteen_name,
+              uid_kartu: card?.card_uid,
               items: items.length ? items.map((detail) => `${first(detail.products)?.name ?? "Produk"} x${detail.qty}`).join("; ") : "Transaksi nominal manual",
-              amount: item.amount,
-              status: item.status,
-              failure_reason: item.failure_reason
+              nominal: item.amount,
+              status: formatStatus(item.status),
+              alasan_gagal: item.failure_reason
             };
           })}
         />
@@ -135,20 +136,20 @@ export default async function AdminTransactionsPage({
               </div>
               <div className="mt-2 grid gap-1 text-ink/75 md:grid-cols-2">
                 <p>Anak: <strong>{child?.name ?? "-"}</strong></p>
-                <p>Parent: <strong>{parent?.name ?? "-"}</strong> ({parent?.email ?? "-"})</p>
+                <p>Orang Tua: <strong>{parent?.name ?? "-"}</strong> ({parent?.email ?? "-"})</p>
                 <p>Kantin: <strong>{canteen?.canteen_name ?? "-"}</strong></p>
-                <p>Kartu: <strong>{card?.card_uid ?? "-"}</strong> {card?.card_label ? `(${card.card_label})` : ""}</p>
+                <p>UID Kartu: <strong>{card?.card_uid ?? "-"}</strong> {card?.card_label ? `(${card.card_label})` : ""}</p>
                 <p>Status: <StatusBadge status={item.status} /></p>
-                <p>Alasan gagal: <strong>{item.failure_reason ?? "-"}</strong></p>
+                <p>Alasan Gagal: <strong>{item.failure_reason ?? "-"}</strong></p>
               </div>
               <div className="mt-3 rounded-md border border-line p-3">
-                <p className="font-semibold">Detail item</p>
+                <p className="font-semibold">Detail Produk</p>
                 {items.length ? (
                   <div className="mt-2 divide-y divide-line">
                     {items.map((detail) => (
                       <div className="grid gap-2 py-2 sm:grid-cols-4" key={detail.id}>
                         <span>{first(detail.products)?.name ?? "Produk"}</span>
-                        <span>Qty {detail.qty}</span>
+                        <span>Jumlah {detail.qty}</span>
                         <span>{formatRupiah(Number(detail.price))}</span>
                         <strong>{formatRupiah(Number(detail.subtotal))}</strong>
                       </div>
@@ -156,7 +157,7 @@ export default async function AdminTransactionsPage({
                   </div>
                 ) : <p className="mt-2 text-ink/60">Transaksi nominal manual.</p>}
               </div>
-              <p className="mt-2 text-xs text-ink/55">{formatDateTime(item.created_at)} - ID transaksi: {item.id}</p>
+              <p className="mt-2 text-xs text-ink/55">{formatDateTime(item.created_at)} - ID Transaksi: {item.id}</p>
               <p className="mt-2 text-xs text-ink/55">Jika transaksi bermasalah, arahkan user membuat laporan di Pusat Bantuan. Riwayat transaksi tidak dihapus.</p>
             </div>
           );

@@ -20,7 +20,7 @@ export default async function RegisterParentPage({
         <label className="block text-sm font-bold">No. HP<input className="field mt-1" name="phone" /></label>
         <label className="block text-sm font-bold">Alamat opsional<input className="field mt-1" name="address_optional" /></label>
         <label className="block text-sm font-bold">Password<input className="field mt-1" name="password" type="password" minLength={6} required /></label>
-        <SubmitButton className="btn-primary w-full" pendingText="Membuat akun...">Buat akun parent</SubmitButton>
+        <SubmitButton className="btn-primary w-full" pendingText="Membuat akun...">Buat akun orang tua</SubmitButton>
       </form>
       <p className="mt-5 text-center text-sm text-ink/60">Sudah punya akun? <Link className="font-black text-mint" href="/login">Login</Link></p>
     </AuthFrame>

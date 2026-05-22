@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bell, LogOut } from "lucide-react";
 import { logoutAction } from "@/app/actions/auth";
 import type { AppUser } from "@/lib/types";
+import { formatRole } from "@/lib/labels";
 import { KoinBrand } from "./KoinBrand";
 import { DesktopSidebar, MobileDrawer, type DashboardNavLink } from "./DashboardSidebar";
 
@@ -42,7 +43,7 @@ export function AppShell({
               </button>
               <div className="hidden text-right text-sm md:block">
                 <p className="font-black">{user.name}</p>
-                <p className="text-ink/55">{user.role}</p>
+                <p className="text-ink/55">{formatRole(user.role)}</p>
               </div>
               <form action={logoutAction}>
                 <button className="btn-secondary" type="submit">
@@ -67,15 +68,15 @@ function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
     return [
       { href: "/dashboard/admin", label: "Ringkasan" },
       { href: "/dashboard/admin/users", label: "Users" },
-      { href: "/dashboard/admin/parents", label: "Parents" },
-      { href: "/dashboard/admin/children", label: "Children" },
-      { href: "/dashboard/admin/canteens", label: "Canteens" },
-      { href: "/dashboard/admin/cards", label: "Cards" },
-      { href: "/dashboard/admin/transactions", label: "Transactions" },
-      { href: "/dashboard/admin/topups", label: "Top Ups" },
-      { href: "/dashboard/admin/audit-logs", label: "Audit Logs" },
-      { href: "/dashboard/admin/support", label: "Support Reports" },
-      { href: "/dashboard/admin?view=ai", label: "AI Insight Coming Soon" },
+      { href: "/dashboard/admin/parents", label: "Orang Tua" },
+      { href: "/dashboard/admin/children", label: "Anak" },
+      { href: "/dashboard/admin/canteens", label: "Kantin" },
+      { href: "/dashboard/admin/cards", label: "Kartu" },
+      { href: "/dashboard/admin/transactions", label: "Transaksi" },
+      { href: "/dashboard/admin/topups", label: "Top Up" },
+      { href: "/dashboard/admin/audit-logs", label: "Log Aktivitas" },
+      { href: "/dashboard/admin/support", label: "Laporan Kendala" },
+      { href: "/dashboard/admin?view=ai", label: "AI Insight Segera Hadir" },
       { href: "/dashboard/admin?view=settings", label: "Pengaturan" }
     ];
   }
@@ -85,10 +86,10 @@ function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
       { href: "/dashboard/child?view=saldo", label: "Saldo & Limit" },
       { href: "/dashboard/child?view=transactions", label: "Riwayat Transaksi" },
       { href: "/dashboard/child?view=savings", label: "Celengan" },
-      { href: "/dashboard/child?view=requests", label: "Saving Requests" },
+      { href: "/dashboard/child?view=requests", label: "Pengajuan Pencairan" },
       { href: "/dashboard/child?view=missions", label: "Misi" },
       { href: "/dashboard/child?view=support", label: "Lapor Admin" },
-      { href: "/dashboard/child?view=ai", label: "AI Insight Coming Soon" }
+      { href: "/dashboard/child?view=ai", label: "AI Insight Segera Hadir" }
     ];
   }
   if (role === "CANTEEN") {
@@ -98,7 +99,7 @@ function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
       { href: "/dashboard/canteen?view=transactions", label: "Transaksi Hari Ini" },
       { href: "/dashboard/canteen?view=recap", label: "Rekap Pendapatan" },
       { href: "/dashboard/canteen?view=support", label: "Lapor Admin" },
-      { href: "/dashboard/canteen?view=ai", label: "AI Insight Coming Soon" },
+      { href: "/dashboard/canteen?view=ai", label: "AI Insight Segera Hadir" },
       { href: "/dashboard/canteen?view=settings", label: "Pengaturan" }
     ];
   }
@@ -109,11 +110,11 @@ function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
     { href: "/dashboard/parent?view=topup", label: "Top Up" },
     { href: "/dashboard/parent?view=cards", label: "Kartu" },
     { href: "/dashboard/parent?view=savings", label: "Celengan" },
-    { href: "/dashboard/parent?view=requests", label: "Saving Requests" },
+    { href: "/dashboard/parent?view=requests", label: "Pengajuan Pencairan" },
     { href: "/dashboard/parent?view=missions", label: "Misi" },
     { href: "/dashboard/parent?view=transactions", label: "Riwayat Transaksi" },
     { href: "/dashboard/parent?view=support", label: "Lapor Admin" },
-    { href: "/dashboard/parent?view=ai", label: "AI Insight Coming Soon" },
+    { href: "/dashboard/parent?view=ai", label: "AI Insight Segera Hadir" },
     { href: "/dashboard/parent?view=settings", label: "Pengaturan" }
   ];
 }

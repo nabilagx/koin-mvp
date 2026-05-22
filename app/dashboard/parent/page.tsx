@@ -23,6 +23,7 @@ import {
 } from "@/app/actions/parent";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
+import { formatStatus } from "@/lib/labels";
 import { requireUser } from "@/lib/auth";
 import { getDailyLimitUsage } from "@/lib/limits";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -145,16 +146,16 @@ export default async function ParentDashboardPage({
     { href: parentHref("topup"), label: "Top Up" },
     { href: parentHref("cards"), label: "Kartu" },
     { href: parentHref("savings"), label: "Celengan" },
-    { href: parentHref("requests"), label: "Saving Requests" },
+    { href: parentHref("requests"), label: "Pengajuan Pencairan" },
     { href: parentHref("missions"), label: "Misi" },
     { href: parentHref("transactions"), label: "Riwayat Transaksi" },
     { href: parentHref("support"), label: "Lapor Admin" },
-    { href: parentHref("ai"), label: "AI Insight Coming Soon" },
+    { href: parentHref("ai"), label: "AI Insight Segera Hadir" },
     { href: parentHref("settings"), label: "Pengaturan" }
   ];
 
   return (
-    <AppShell user={user} title="Parent Dashboard" navLinks={links} navTitle="Menu Parent">
+    <AppShell user={user} title="Dashboard Orang Tua" navLinks={links} navTitle="Menu Orang Tua">
       <PageNotice error={params.error} success={params.success} />
 
       <section className="panel rounded-lg p-5">
@@ -195,7 +196,7 @@ export default async function ParentDashboardPage({
               <p className="text-sm text-ink/60">{child.email} - {child.school_name ?? "Sekolah belum diisi"} - {child.grade ?? "Kelas belum diisi"}</p>
               <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
                 <div><p className="text-ink/55">Saldo</p><p className="font-black">{formatRupiah(child.balance)}</p></div>
-                <div><p className="text-ink/55">Daily limit</p><p className="font-black">{formatRupiah(usage.daily_limit)}</p></div>
+                <div><p className="text-ink/55">Limit Harian</p><p className="font-black">{formatRupiah(usage.daily_limit)}</p></div>
                 <div><p className="text-ink/55">Jajan hari ini</p><p className="font-black">{formatRupiah(usage.spent_today)}</p></div>
                 <div><p className="text-ink/55">Tabungan hari ini</p><p className="font-black">{formatRupiah(usage.saved_today)}</p></div>
                 <div><p className="text-ink/55">Sisa limit</p><p className="font-black">{formatRupiah(usage.remaining_today)}</p></div>
@@ -264,7 +265,7 @@ export default async function ParentDashboardPage({
           ) : (
             <section className="panel rounded-lg p-6">
               <h2 className="text-2xl font-black">Pengaturan</h2>
-              <p className="mt-3 text-sm text-ink/65">Pengaturan parent akan ditambahkan bertahap. Untuk saat ini, data anak dan PIN dikelola dari menu yang tersedia.</p>
+              <p className="mt-3 text-sm text-ink/65">Pengaturan orang tua akan ditambahkan bertahap. Untuk saat ini, data anak dan PIN dikelola dari menu yang tersedia.</p>
             </section>
           )}
         </div>
@@ -284,9 +285,9 @@ function AddChildSection() {
         <label className="block text-sm font-semibold">Nama sekolah<input className="field mt-1" name="school_name" /></label>
         <label className="block text-sm font-semibold">Kelas<input className="field mt-1" name="grade" /></label>
         <label className="block text-sm font-semibold">PIN transaksi<input className="field mt-1" name="pin" type="password" minLength={4} required /></label>
-        <label className="block text-sm font-semibold">Limit harian<input className="field mt-1" name="daily_limit" type="number" min={0} defaultValue={25000} /></label>
+        <label className="block text-sm font-semibold">Limit Harian<input className="field mt-1" name="daily_limit" type="number" min={0} defaultValue={25000} /></label>
         <label className="block text-sm font-semibold">Saldo awal<input className="field mt-1" name="initial_balance" type="number" min={0} defaultValue={0} /></label>
-        <SubmitButton className="btn-primary w-full" pendingText="Membuat anak...">Buat child</SubmitButton>
+        <SubmitButton className="btn-primary w-full" pendingText="Membuat anak...">Buat akun anak</SubmitButton>
       </form>
     </section>
   );
@@ -298,20 +299,20 @@ function SaldoLimitSection({ child, usage }: { child: ChildSummary; usage: { dai
       <h2 className="text-lg font-black">Saldo & Limit</h2>
       <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-3xl bg-lilac/60 p-4"><p className="text-ink/55">Saldo</p><p className="text-2xl font-black">{formatRupiah(child.balance)}</p></div>
-        <div className="rounded-3xl bg-white p-4"><p className="text-ink/55">Daily limit</p><p className="text-2xl font-black">{formatRupiah(usage.daily_limit)}</p></div>
+        <div className="rounded-3xl bg-white p-4"><p className="text-ink/55">Limit Harian</p><p className="text-2xl font-black">{formatRupiah(usage.daily_limit)}</p></div>
         <div className="rounded-3xl bg-white p-4"><p className="text-ink/55">Terpakai hari ini</p><p className="text-2xl font-black">{formatRupiah(usage.spent_today + usage.saved_today)}</p></div>
         <div className="rounded-3xl bg-gold/25 p-4"><p className="text-ink/55">Sisa limit</p><p className="text-2xl font-black">{formatRupiah(usage.remaining_today)}</p></div>
       </div>
       <div className="mt-5 grid gap-3 md:grid-cols-2">
         <form action={setDailyLimitAction} className="flex gap-2">
           <input type="hidden" name="child_id" value={child.id} />
-          <input className="field" name="daily_limit" type="number" min={0} placeholder="daily_limit" required />
-          <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Set limit</SubmitButton>
+          <input className="field" name="daily_limit" type="number" min={0} placeholder="Limit Harian" required />
+          <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Atur Limit</SubmitButton>
         </form>
         <form action={updateChildPinAction} className="flex gap-2">
           <input type="hidden" name="child_id" value={child.id} />
           <input className="field" name="pin" type="password" minLength={4} placeholder="PIN baru" required />
-          <SubmitButton className="btn-secondary" pendingText="Menyimpan PIN...">Update PIN</SubmitButton>
+          <SubmitButton className="btn-secondary" pendingText="Menyimpan PIN...">Perbarui PIN</SubmitButton>
         </form>
       </div>
     </section>
@@ -325,8 +326,8 @@ function TopupSection({ child, topups }: { child: ChildSummary; topups: ParentDa
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <form action={topUpChildAction} className="flex gap-2">
           <input type="hidden" name="child_id" value={child.id} />
-          <input className="field" name="amount" type="number" min={1} placeholder="Top up manual" required />
-          <SubmitButton className="btn-primary" pendingText="Top up...">Simulasi Manual</SubmitButton>
+          <input className="field" name="amount" type="number" min={1} placeholder="Top Up manual" required />
+          <SubmitButton className="btn-primary" pendingText="Memproses top up...">Simulasi Manual</SubmitButton>
         </form>
         <form action={createMidtransTopupAction} className="flex gap-2">
           <input type="hidden" name="child_id" value={child.id} />
@@ -338,14 +339,14 @@ function TopupSection({ child, topups }: { child: ChildSummary; topups: ParentDa
         {topups.map((item) => (
           <div className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm" key={item.id}>
             <div>
-              <p className="font-semibold">{String(item.order_id).startsWith("manual-") ? "Manual demo" : "Midtrans Sandbox"} - {formatRupiah(Number(item.amount))}</p>
-              <p className="text-ink/60">{item.status} - {formatDateTime(item.created_at)}</p>
+              <p className="font-semibold">{String(item.order_id).startsWith("manual-") ? "Demo Manual" : "Midtrans Sandbox"} - {formatRupiah(Number(item.amount))}</p>
+              <p className="text-ink/60">{formatStatus(item.status)} - {formatDateTime(item.created_at)}</p>
               {item.midtrans_redirect_url && item.status === "pending" ? <a className="text-mint underline" href={item.midtrans_redirect_url}>Buka pembayaran Midtrans</a> : null}
             </div>
             {item.status === "pending" ? (
               <form action={simulateTopupSettlementAction}>
                 <input type="hidden" name="topup_id" value={item.id} />
-                <SubmitButton className="btn-secondary" pendingText="Memproses...">Simulasikan pembayaran sukses</SubmitButton>
+                <SubmitButton className="btn-secondary" pendingText="Memproses...">Simulasikan Pembayaran Berhasil</SubmitButton>
               </form>
             ) : null}
           </div>
@@ -360,7 +361,7 @@ function CardSection({ child }: { child: ChildSummary }) {
   return (
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">Kartu</h2>
-      <p className="mt-2 text-sm text-ink/65">Label: {child.card_label ?? "Belum ada kartu"} - UID: {child.card_uid ?? "-"} - Status: {child.card_status ?? "-"}</p>
+      <p className="mt-2 text-sm text-ink/65">Label Kartu: {child.card_label ?? "Belum ada kartu"} - UID Kartu: {child.card_uid ? `•••${child.card_uid.slice(-3)}` : "-"} - Status: {formatStatus(child.card_status)}</p>
       <div className="mt-4 flex flex-wrap gap-3">
         <form action={requestCardAction}>
           <input type="hidden" name="child_id" value={child.id} />
@@ -370,7 +371,7 @@ function CardSection({ child }: { child: ChildSummary }) {
           <form action={updateCardStatusAction} className="flex gap-2">
             <input type="hidden" name="child_id" value={child.id} />
             <input type="hidden" name="card_id" value={child.card_id} />
-            <select className="field" name="status" defaultValue="frozen"><option value="frozen">frozen</option><option value="blocked">blocked</option></select>
+            <select className="field" name="status" defaultValue="frozen"><option value="frozen">{formatStatus("frozen")}</option><option value="blocked">{formatStatus("blocked")}</option></select>
             <ConfirmSubmitButton className="btn-danger" message="Yakin ingin membekukan atau memblokir kartu ini?">Freeze/Block</ConfirmSubmitButton>
           </form>
         ) : null}
@@ -384,7 +385,7 @@ function TransactionsSection({ transactions }: { transactions: ParentData["trans
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">Riwayat Transaksi</h2>
       <div className="mt-3 divide-y divide-line">
-        {transactions.map((item) => <div className="py-3 text-sm" key={item.id}>{item.status} - {formatRupiah(Number(item.amount))} - {item.failure_reason ?? "success"} - {formatDateTime(item.created_at)}</div>)}
+        {transactions.map((item) => <div className="py-3 text-sm" key={item.id}>{formatStatus(item.status)} - {formatRupiah(Number(item.amount))} - {item.failure_reason ?? "Berhasil"} - {formatDateTime(item.created_at)}</div>)}
         {transactions.length === 0 ? <EmptyState title="Belum ada transaksi" description="Transaksi anak terpilih akan muncul di sini." /> : null}
       </div>
     </section>
@@ -402,7 +403,7 @@ function SavingsSection({ childId, pockets }: { childId: string; pockets: Parent
         <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Buat</SubmitButton>
       </form>
       <div className="mt-4 grid gap-3">
-        {pockets.map((item) => <div className="rounded-3xl border border-line bg-white p-4 text-sm" key={item.id}>{item.name} - {formatRupiah(Number(item.current_amount))}/{formatRupiah(Number(item.target_amount))} - {item.status}</div>)}
+        {pockets.map((item) => <div className="rounded-3xl border border-line bg-white p-4 text-sm" key={item.id}>{item.name} - {formatRupiah(Number(item.current_amount))}/{formatRupiah(Number(item.target_amount))} - {formatStatus(item.status)}</div>)}
         {pockets.length === 0 ? <EmptyState title="Belum ada celengan" description="Buat celengan untuk anak terpilih." /> : null}
       </div>
     </section>
@@ -412,7 +413,7 @@ function SavingsSection({ childId, pockets }: { childId: string; pockets: Parent
 function RequestsSection({ requests }: { requests: ParentData["requests"] }) {
   return (
     <section className="panel rounded-lg p-5">
-      <h2 className="text-lg font-black">Saving Requests</h2>
+      <h2 className="text-lg font-black">Pengajuan Pencairan</h2>
       <div className="mt-3 divide-y divide-line">
         {requests.map((item) => (
           <div className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm" key={item.id}>
@@ -422,20 +423,20 @@ function RequestsSection({ requests }: { requests: ParentData["requests"] }) {
                 <form action={updateSavingRequestStatusAction}>
                   <input type="hidden" name="request_id" value={item.id} />
                   <input type="hidden" name="child_id" value={item.child_id} />
-                  <input type="hidden" name="status" value="approved" />
+                <input type="hidden" name="status" value="approved" />
                   <SubmitButton className="btn-secondary" pendingText="Menyetujui...">Setujui</SubmitButton>
                 </form>
                 <form action={updateSavingRequestStatusAction}>
                   <input type="hidden" name="request_id" value={item.id} />
                   <input type="hidden" name="child_id" value={item.child_id} />
-                  <input type="hidden" name="status" value="rejected" />
-                  <ConfirmSubmitButton message="Yakin ingin menolak request ini?">Tolak</ConfirmSubmitButton>
+                <input type="hidden" name="status" value="rejected" />
+                  <ConfirmSubmitButton message="Yakin ingin menolak pengajuan ini?">Tolak</ConfirmSubmitButton>
                 </form>
               </div>
             ) : null}
           </div>
         ))}
-        {requests.length === 0 ? <EmptyState title="Belum ada saving request" description="Pengajuan pencairan anak terpilih akan tampil di sini." /> : null}
+        {requests.length === 0 ? <EmptyState title="Belum ada pengajuan pencairan" description="Pengajuan pencairan anak terpilih akan tampil di sini." /> : null}
       </div>
     </section>
   );
@@ -449,7 +450,7 @@ function MissionsSection({ childId, missions }: { childId: string; missions: Par
         <input type="hidden" name="child_id" value={childId} />
         <input className="field" name="title" placeholder="Judul misi" required />
         <input className="field" name="description" placeholder="Deskripsi" />
-        <input className="field" name="reward_amount" type="number" min={0} placeholder="Reward" />
+        <input className="field" name="reward_amount" type="number" min={0} placeholder="Hadiah" />
         <SubmitButton className="btn-secondary" pendingText="Membuat...">Buat misi</SubmitButton>
       </form>
       <div className="mt-3 divide-y divide-line">
@@ -461,7 +462,7 @@ function MissionsSection({ childId, missions }: { childId: string; missions: Par
                 <input type="hidden" name="mission_id" value={item.id} />
                 <input type="hidden" name="child_id" value={item.child_id} />
                 <input type="hidden" name="reward_amount" value={item.reward_amount} />
-                <SubmitButton className="btn-secondary" pendingText="Menyetujui...">Approve reward</SubmitButton>
+                <SubmitButton className="btn-secondary" pendingText="Menyetujui...">Setujui Hadiah</SubmitButton>
               </form>
             ) : null}
           </div>

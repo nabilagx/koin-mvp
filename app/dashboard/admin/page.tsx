@@ -35,7 +35,7 @@ export default async function AdminDashboardPage({
   const counts = await getCounts();
 
   return (
-    <AppShell user={user} title="Admin Dashboard" navLinks={adminLinks} navTitle="Menu Admin">
+    <AppShell user={user} title="Dashboard Admin" navLinks={adminLinks} navTitle="Menu Admin">
       {params.view === "ai" ? (
         <AiComingSoon
           title="AI Insight Sekolah"

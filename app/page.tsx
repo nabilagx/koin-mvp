@@ -4,9 +4,9 @@ import { KoinBrand } from "@/components/KoinBrand";
 
 const schools = [
   { name: "SMPN 2 Ambulu", status: "Pilot Aktif" },
-  { name: "Sekolah Mitra Berikutnya", status: "Coming Soon" },
-  { name: "Komunitas Belajar", status: "Coming Soon" },
-  { name: "Kantin Sekolah Mitra", status: "Coming Soon" }
+  { name: "Sekolah Mitra Berikutnya", status: "Segera Hadir" },
+  { name: "Komunitas Belajar", status: "Segera Hadir" },
+  { name: "Kantin Sekolah Mitra", status: "Segera Hadir" }
 ];
 
 export default function LandingPage() {
@@ -15,14 +15,14 @@ export default function LandingPage() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
         <KoinBrand />
         <div className="flex items-center gap-2">
-          <Link href="/login" className="btn-secondary">Login</Link>
+          <Link href="/login" className="btn-secondary">Masuk</Link>
           <Link href="/register/parent" className="btn-primary">Daftar</Link>
         </div>
       </nav>
 
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-10 pt-8 md:grid-cols-[1.02fr_0.98fr]">
         <div>
-          <p className="text-sm font-bold uppercase text-[#1c77d2]">KOIN - Kenali - Olah - Ingat - Nabung</p>
+          <p className="text-sm font-bold uppercase text-[#1c77d2]">KOIN • Kenali • Olah • Ingat • Nabung</p>
           <h1 className="mt-4 max-w-3xl text-5xl font-black leading-tight sm:text-6xl">KOIN</h1>
           <div className="mt-4 inline-flex rounded-full bg-gold/30 px-4 py-2 text-sm font-black text-ink">Pilot Project: SMPN 2 Ambulu</div>
           <p className="mt-4 text-2xl font-bold text-[#17375f]">Ekosistem uang saku digital berbasis kartu NFC untuk sekolah.</p>
@@ -31,7 +31,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link href="/register/parent" className="btn-primary">
-              Daftar sebagai Parent
+              Daftar sebagai Orang Tua
               <ArrowRight size={16} />
             </Link>
             <Link href="/register/canteen" className="btn-secondary">Daftar Kantin</Link>
@@ -98,13 +98,13 @@ export default function LandingPage() {
       <section className="mx-auto max-w-6xl px-5 py-10">
         <div className="koin-card p-6">
           <p className="text-sm font-black uppercase text-mint">Ekosistem KOIN di sekolah</p>
-          <h2 className="mt-2 text-3xl font-black">Satu alur untuk semua role</h2>
+          <h2 className="mt-2 text-3xl font-black">Satu alur untuk semua peran</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-4">
             {[
-              ["Orang Tua", "Top-up, limit, kartu, celengan", Users],
+              ["Orang Tua", "Top Up, limit, kartu, celengan", Users],
               ["Anak", "Jajan aman dan belajar nabung", BookOpenCheck],
               ["Kantin", "POS sederhana berbasis kartu", Store],
-              ["Admin", "Monitoring, laporan, audit", ShieldCheck]
+              ["Admin", "Pantau, laporan, audit", ShieldCheck]
             ].map(([title, desc, Icon]) => (
               <div className="rounded-3xl border border-line bg-white p-5" key={String(title)}>
                 <Icon className="text-mint" size={26} />
@@ -152,7 +152,7 @@ export default function LandingPage() {
       </section>
       <footer className="border-t border-line bg-white/70 px-5 py-8 text-center text-sm font-semibold text-ink/55">
         <p className="font-black text-ink">KOIN</p>
-        <p className="mt-1">Kenali - Olah - Ingat - Nabung</p>
+        <p className="mt-1">Kenali • Olah • Ingat • Nabung</p>
       </footer>
     </main>
   );

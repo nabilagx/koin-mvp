@@ -2,6 +2,7 @@ import { AppShell } from "@/components/AppShell";
 import { CsvExportButton } from "@/components/CsvExportButton";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
+import { formatEntityName, formatFieldLabel } from "@/lib/labels";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type AuditLogRow = {
@@ -46,30 +47,30 @@ export default async function AdminAuditLogsPage({
   });
 
   return (
-    <AppShell user={user} title="Admin Audit Logs">
+    <AppShell user={user} title="Log Aktivitas">
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto_auto]">
-        <input className="field" name="search" placeholder="Cari actor/action/deskripsi" defaultValue={params.search ?? ""} />
-        <input className="field" name="action" placeholder="Action" defaultValue={params.action ?? ""} />
-        <input className="field" name="entity_type" placeholder="entity_type" defaultValue={params.entity_type ?? ""} />
+        <input className="field" name="search" placeholder="Cari pelaku, aksi, atau deskripsi" defaultValue={params.search ?? ""} />
+        <input className="field" name="action" placeholder="Aksi" defaultValue={params.action ?? ""} />
+        <input className="field" name="entity_type" placeholder="Jenis data" defaultValue={params.entity_type ?? ""} />
         <input className="field" name="from" type="date" defaultValue={params.from ?? ""} />
         <input className="field" name="to" type="date" defaultValue={params.to ?? ""} />
         <button className="btn-secondary">Filter</button>
         <CsvExportButton filename="audit-logs.csv" rows={logs.map((item) => {
           const actor = first(item.users);
           return {
-            created_at: formatDateTime(item.created_at),
-            actor: actor?.name ?? actor?.email ?? item.actor_user_id,
-            action: item.action,
-            entity_type: item.entity_type,
-            entity_id: item.entity_id,
-            description: item.description
+            waktu: formatDateTime(item.created_at),
+            pelaku: actor?.name ?? actor?.email ?? item.actor_user_id,
+            aksi: formatFieldLabel(item.action),
+            jenis_data: formatEntityName(item.entity_type),
+            id_data: item.entity_id,
+            deskripsi: item.description
           };
         })} />
       </form>
       <div className="grid gap-3">
         {logs.map((item) => {
           const actor = first(item.users);
-          return <div className="panel rounded-lg p-4 text-sm" key={item.id}><p className="font-black">{item.action} - {item.entity_type}</p><p>{item.description}</p><p className="text-ink/55">{actor?.name ?? actor?.email ?? item.actor_user_id ?? "-"} - {formatDateTime(item.created_at)}</p></div>;
+          return <div className="panel rounded-lg p-4 text-sm" key={item.id}><p className="font-black">{formatFieldLabel(item.action)} - {formatEntityName(item.entity_type)}</p><p>{item.description}</p><p className="text-ink/55">{actor?.name ?? actor?.email ?? item.actor_user_id ?? "-"} - {formatDateTime(item.created_at)}</p></div>;
         })}
       </div>
     </AppShell>

@@ -98,7 +98,7 @@ export function WebNfcCardTools({
             return;
           }
         }
-        setStatus("Kartu terbaca, tetapi tidak ada card_uid KOIN di NDEF.");
+        setStatus("Kartu terbaca, tetapi tidak ada UID Kartu KOIN di NDEF.");
         controller.abort();
         setBusy(false);
       };
@@ -121,7 +121,7 @@ export function WebNfcCardTools({
     }
     const card_uid = readInput(inputId);
     if (!card_uid) {
-      setStatus("Isi atau generate card_uid dulu sebelum menulis kartu.");
+      setStatus("Isi atau generate UID Kartu dulu sebelum menulis kartu.");
       return;
     }
     setBusy(true);

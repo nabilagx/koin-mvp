@@ -1,3 +1,5 @@
+import { formatStatus } from "@/lib/labels";
+
 const toneByStatus: Record<string, string> = {
   active: "border-emerald-200 bg-emerald-50 text-emerald-700",
   success: "border-emerald-200 bg-emerald-50 text-emerald-700",
@@ -21,7 +23,7 @@ export function StatusBadge({ status }: { status?: string | null }) {
   const value = status || "-";
   return (
     <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-black ${toneByStatus[value] ?? "border-line bg-white text-ink/70"}`}>
-      {value}
+      {formatStatus(value)}
     </span>
   );
 }

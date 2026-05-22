@@ -8,6 +8,7 @@ import { SubmitButton } from "@/components/SubmitButton";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
+import { formatRole, formatStatus } from "@/lib/labels";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type SupportReportRow = {
@@ -89,16 +90,16 @@ export default async function AdminSupportPage({
   });
 
   return (
-    <AppShell user={user} title="Support Reports">
+    <AppShell user={user} title="Laporan Kendala">
       <PageNotice error={params.error} success={params.success} />
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_auto_auto]">
         <input className="field" name="search" placeholder="Cari subjek, pesan, reporter" defaultValue={params.search ?? ""} />
         <select className="field" name="status" defaultValue={params.status ?? ""}>
           <option value="">Semua status</option>
-          <option value="open">open</option>
-          <option value="in_review">in_review</option>
-          <option value="resolved">resolved</option>
-          <option value="rejected">rejected</option>
+          <option value="open">{formatStatus("open")}</option>
+          <option value="in_review">{formatStatus("in_review")}</option>
+          <option value="resolved">{formatStatus("resolved")}</option>
+          <option value="rejected">{formatStatus("rejected")}</option>
         </select>
         <input className="field" name="from" type="date" defaultValue={params.from ?? ""} />
         <input className="field" name="to" type="date" defaultValue={params.to ?? ""} />
@@ -108,12 +109,12 @@ export default async function AdminSupportPage({
           rows={reports.map((report) => {
             const reporter = first(report.users);
             return {
-              created_at: formatDateTime(report.created_at),
-              reporter: reporter?.name ?? reporter?.email ?? report.reporter_user_id,
-              subject: report.subject,
-              status: report.status,
-              related_transaction_id: report.related_transaction_id,
-              admin_reply: report.admin_reply
+              waktu: formatDateTime(report.created_at),
+              pelapor: reporter?.name ?? reporter?.email ?? report.reporter_user_id,
+              subjek: report.subject,
+              status: formatStatus(report.status),
+              transaksi_terkait: report.related_transaction_id,
+              balasan_admin: report.admin_reply
             };
           })}
         />
@@ -129,7 +130,7 @@ export default async function AdminSupportPage({
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <h2 className="text-lg font-black">{report.subject}</h2>
-                  <p className="text-sm text-ink/60">{reporter?.name ?? reporter?.email ?? report.reporter_user_id ?? "-"} - {reporter?.role ?? "-"} - {formatDateTime(report.created_at)}</p>
+                  <p className="text-sm text-ink/60">{reporter?.name ?? reporter?.email ?? report.reporter_user_id ?? "-"} - {formatRole(reporter?.role)} - {formatDateTime(report.created_at)}</p>
                 </div>
                 <StatusBadge status={report.status} />
               </div>
@@ -143,20 +144,20 @@ export default async function AdminSupportPage({
                     <p>Total: <strong>{formatRupiah(Number(transaction.amount))}</strong></p>
                     <p>Status: <StatusBadge status={transaction.status} /></p>
                     <p>Waktu: <strong>{formatDateTime(transaction.created_at)}</strong></p>
-                    <p>Alasan gagal: <strong>{transaction.failure_reason ?? "-"}</strong></p>
+                    <p>Alasan Gagal: <strong>{transaction.failure_reason ?? "-"}</strong></p>
                   </div>
                   <div className="mt-3 divide-y divide-line">
                     {transactionItems.map((item) => (
                       <div className="grid gap-2 py-2 sm:grid-cols-4" key={item.id}>
                         <span>{first(item.products)?.name ?? "Produk"}</span>
-                        <span>Qty {item.qty}</span>
+                        <span>Jumlah {item.qty}</span>
                         <span>{formatRupiah(Number(item.price))}</span>
                         <strong>{formatRupiah(Number(item.subtotal))}</strong>
                       </div>
                     ))}
                     {transactionItems.length === 0 ? <p className="py-2 text-ink/60">Transaksi nominal manual.</p> : null}
                   </div>
-                  <p className="mt-2 text-xs text-ink/50">ID transaksi: {transaction.id}</p>
+                  <p className="mt-2 text-xs text-ink/50">ID Transaksi: {transaction.id}</p>
                 </div>
               ) : report.related_transaction_id ? <p className="mt-2 text-xs text-ink/55">Transaksi terkait: {report.related_transaction_id}</p> : null}
               {report.admin_reply ? <p className="mt-3 rounded-md bg-mint/20 p-3 text-sm text-ink/75">Balasan admin: {report.admin_reply}</p> : null}
@@ -165,10 +166,10 @@ export default async function AdminSupportPage({
               <form action={reviewSupportReportAction} className="grid gap-2 md:grid-cols-[0.7fr_1fr_auto]">
                 <input type="hidden" name="report_id" value={report.id} />
                 <select className="field" name="status" defaultValue={report.status}>
-                  <option value="open">open</option>
-                  <option value="in_review">in_review</option>
-                  <option value="resolved">resolved</option>
-                  <option value="rejected">rejected</option>
+                  <option value="open">{formatStatus("open")}</option>
+                  <option value="in_review">{formatStatus("in_review")}</option>
+                  <option value="resolved">{formatStatus("resolved")}</option>
+                  <option value="rejected">{formatStatus("rejected")}</option>
                 </select>
                 <input className="field" name="admin_reply" defaultValue={report.admin_reply ?? ""} placeholder="Balasan admin" />
                 <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Simpan</SubmitButton>

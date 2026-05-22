@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { LogOut, Menu, Sparkles, X } from "lucide-react";
 import type { AppUser } from "@/lib/types";
+import { formatStatus } from "@/lib/labels";
 import { KoinBrand } from "./KoinBrand";
 import { StatusBadge } from "./StatusBadge";
 
@@ -74,7 +75,7 @@ function SidebarContent({
         <p className="text-sm font-black">{user.name}</p>
         <div className="mt-2 flex items-center justify-between gap-2">
           <StatusBadge status={user.role} />
-          <span className="text-xs font-bold text-ink/50">{user.status}</span>
+          <span className="text-xs font-bold text-ink/50">{formatStatus(user.status)}</span>
         </div>
       </div>
       <p className="mt-6 px-2 text-xs font-bold uppercase text-mint">{navTitle}</p>

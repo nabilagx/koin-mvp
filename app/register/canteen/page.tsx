@@ -23,7 +23,7 @@ export default async function RegisterCanteenPage({
         <label className="block text-sm font-bold">No. HP<input className="field mt-1" name="phone" /></label>
         <label className="flex items-center gap-3 rounded-2xl border border-line bg-white px-4 py-3 text-sm font-bold"><input name="has_nfc_device" type="checkbox" /> Punya perangkat NFC/RFID</label>
         <label className="block text-sm font-bold">Password<input className="field mt-1" name="password" type="password" minLength={6} required /></label>
-        <SubmitButton className="btn-primary w-full" pendingText="Membuat akun...">Buat akun canteen</SubmitButton>
+        <SubmitButton className="btn-primary w-full" pendingText="Membuat akun...">Buat akun kantin</SubmitButton>
       </form>
       <p className="mt-5 text-center text-sm text-ink/60">Sudah punya akun? <Link className="font-black text-mint" href="/login">Login</Link></p>
     </AuthFrame>

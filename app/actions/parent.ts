@@ -207,7 +207,7 @@ export async function createMidtransTopupAction(formData: FormData) {
   try {
     const child_id = formString(formData, "child_id");
     const amount = formNumber(formData, "amount");
-    if (!child_id || amount <= 0) throw new Error("Child dan nominal top-up wajib valid.");
+    if (!child_id || amount <= 0) throw new Error("Anak dan nominal top-up wajib valid.");
 
     const { profile, parent, admin } = await assertOwnChild(child_id);
     const order_id = `KOIN-TOPUP-${Date.now()}-${randomUUID().slice(0, 8)}`;
@@ -246,9 +246,9 @@ export async function createMidtransTopupAction(formData: FormData) {
         customer_details: { first_name: profile.name, email: profile.email },
         item_details: [{ id: child_id, price: amount, quantity: 1, name: "Top-up KOIN Sandbox" }],
         callbacks: {
-          finish: `${appUrl}/dashboard/parent?success=Pembayaran%20Midtrans%20diproses.%20Saldo%20masuk%20setelah%20settlement.`,
+          finish: `${appUrl}/dashboard/parent?success=Pembayaran%20Midtrans%20diproses.%20Saldo%20masuk%20setelah%20berhasil.`,
           error: `${appUrl}/dashboard/parent?error=Pembayaran%20Midtrans%20gagal.`,
-          pending: `${appUrl}/dashboard/parent?success=Pembayaran%20Midtrans%20masih%20pending.`
+          pending: `${appUrl}/dashboard/parent?success=Pembayaran%20Midtrans%20masih%20menunggu.`
         }
       })
     });
@@ -265,7 +265,7 @@ export async function createMidtransTopupAction(formData: FormData) {
     revalidatePath(parentPath);
 
     if (midtrans_redirect_url) redirect(midtrans_redirect_url);
-    actionMessage(parentPath, "success", "Top-up Midtrans Sandbox dibuat. Saldo bertambah setelah settlement atau simulasi sukses.");
+    actionMessage(parentPath, "success", "Top-up Midtrans Sandbox dibuat. Saldo bertambah setelah pembayaran berhasil atau simulasi sukses.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(parentPath, "error", friendlyError(error));
@@ -313,9 +313,9 @@ export async function setDailyLimitAction(formData: FormData) {
     .eq("id", child_id);
 
   if (error) throw new Error(error.message);
-  await writeAudit(admin, profile.id, "set_daily_limit", "children", child_id, `Set daily_limit menjadi ${daily_limit}.`);
+  await writeAudit(admin, profile.id, "set_daily_limit", "children", child_id, `Limit harian diubah menjadi ${daily_limit}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "daily_limit berhasil diperbarui.");
+  actionMessage(parentPath, "success", "Limit harian berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(parentPath, "error", friendlyError(error));
@@ -403,7 +403,7 @@ export async function updateSavingRequestStatusAction(formData: FormData) {
   const child_id = formString(formData, "child_id");
   const request_id = formString(formData, "request_id");
   const status = formString(formData, "status");
-  if (!["approved", "rejected"].includes(status)) throw new Error("Status request tidak valid.");
+  if (!["approved", "rejected"].includes(status)) throw new Error("Status pengajuan tidak valid.");
 
   const { profile, parent, admin } = await assertOwnChild(child_id);
   if (status === "approved") {
@@ -414,7 +414,7 @@ export async function updateSavingRequestStatusAction(formData: FormData) {
       .eq("child_id", child_id)
       .eq("parent_id", parent.id)
       .single();
-    if (!request) throw new Error("Saving request tidak ditemukan.");
+    if (!request) throw new Error("Pengajuan pencairan tidak ditemukan.");
     const { data: pocket } = await admin
       .from("savings_pockets")
       .select("id,current_amount")
@@ -436,9 +436,9 @@ export async function updateSavingRequestStatusAction(formData: FormData) {
     .eq("parent_id", parent.id);
 
   if (error) throw new Error(error.message);
-  await writeAudit(admin, profile.id, "review_saving_request", "saving_requests", request_id, `Saving request ${status}.`);
+  await writeAudit(admin, profile.id, "review_saving_request", "saving_requests", request_id, `Pengajuan pencairan ${status}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", status === "approved" ? "Saving request disetujui orang tua." : "Saving request ditolak.");
+  actionMessage(parentPath, "success", status === "approved" ? "Pengajuan pencairan disetujui orang tua." : "Pengajuan pencairan ditolak.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(parentPath, "error", friendlyError(error));
@@ -487,7 +487,7 @@ export async function approveMissionAction(formData: FormData) {
 
   await writeAudit(admin, profile.id, "approve_mission", "missions", mission_id, `Misi disetujui, reward ${reward_amount}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Misi disetujui dan reward masuk saldo anak.");
+  actionMessage(parentPath, "success", "Misi disetujui dan hadiah masuk saldo anak.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(parentPath, "error", friendlyError(error));

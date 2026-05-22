@@ -4,6 +4,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
+import { formatStatus } from "@/lib/labels";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type TopupRow = {
@@ -49,16 +50,16 @@ export default async function AdminTopupsPage({
   });
 
   return (
-    <AppShell user={user} title="Admin Top-ups">
+    <AppShell user={user} title="Data Top Up">
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_auto_auto]">
-        <input className="field" name="search" placeholder="Cari parent, anak, order_id" defaultValue={params.search ?? ""} />
+        <input className="field" name="search" placeholder="Cari orang tua, anak, ID pesanan" defaultValue={params.search ?? ""} />
         <select className="field" name="status" defaultValue={params.status ?? ""}>
-          <option value="">Semua status</option>
-          <option value="pending">pending</option>
-          <option value="settlement">settlement</option>
-          <option value="failed">failed</option>
-          <option value="expired">expired</option>
-          <option value="cancelled">cancelled</option>
+          <option value="">Semua Status</option>
+          <option value="pending">{formatStatus("pending")}</option>
+          <option value="settlement">{formatStatus("settlement")}</option>
+          <option value="failed">{formatStatus("failed")}</option>
+          <option value="expired">{formatStatus("expired")}</option>
+          <option value="cancelled">{formatStatus("cancelled")}</option>
         </select>
         <input className="field" name="from" type="date" defaultValue={params.from ?? ""} />
         <input className="field" name="to" type="date" defaultValue={params.to ?? ""} />
@@ -70,13 +71,13 @@ export default async function AdminTopupsPage({
             const parentUser = first(parent?.users);
             const child = first(item.children);
             return {
-              created_at: formatDateTime(item.created_at),
-              parent: parentUser?.name,
-              parent_email: parentUser?.email,
-              child: child?.name,
-              amount: item.amount,
-              status: item.status,
-              order_id: item.order_id
+              waktu: formatDateTime(item.created_at),
+              orang_tua: parentUser?.name,
+              email_orang_tua: parentUser?.email,
+              anak: child?.name,
+              nominal: item.amount,
+              status: formatStatus(item.status),
+              id_pesanan: item.order_id
             };
           })}
         />
@@ -89,7 +90,7 @@ export default async function AdminTopupsPage({
           return (
             <div className="panel rounded-lg p-4 text-sm" key={item.id}>
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="font-black">{String(item.order_id).startsWith("manual-") ? "Manual demo" : "Midtrans Sandbox"} - {formatRupiah(Number(item.amount))}</p>
+                <p className="font-black">{String(item.order_id).startsWith("manual-") ? "Demo Manual" : "Midtrans Sandbox"} - {formatRupiah(Number(item.amount))}</p>
                 <StatusBadge status={item.status} />
               </div>
               <p className="mt-2">{parentUser?.name ?? "-"} ({parentUser?.email ?? "-"}) - {child?.name ?? "-"}</p>

@@ -161,14 +161,14 @@ export function CanteenPos({ products }: { products: Product[] }) {
       <div className="grid gap-2 sm:grid-cols-4">
         {["Pilih Produk", "Tap Kartu", "Input PIN", "Hasil"].map((label, index) => {
           const active = (step === "products" && index === 0) || (step === "tap" && index === 1) || (step === "pin" && index === 2);
-          return <div className={`rounded-2xl border px-4 py-3 text-sm font-black ${active ? "border-mint bg-lilac text-mint" : "border-line bg-white text-ink/50"}`} key={label}>Step {index + 1}: {label}</div>;
+          return <div className={`rounded-2xl border px-4 py-3 text-sm font-black ${active ? "border-mint bg-lilac text-mint" : "border-line bg-white text-ink/50"}`} key={label}>Langkah {index + 1}: {label}</div>;
         })}
       </div>
 
       {notice ? <div className="rounded-3xl border border-line bg-white p-4 text-sm font-bold text-ink/70">{notice}</div> : null}
 
       <section className="rounded-3xl bg-lilac/60 p-4">
-        <p className="mb-3 flex items-center gap-2 text-sm font-black text-mint"><ShoppingCart size={18} /> Step 1: Pilih produk</p>
+        <p className="mb-3 flex items-center gap-2 text-sm font-black text-mint"><ShoppingCart size={18} /> Langkah 1: Pilih Produk</p>
         <div className="grid gap-2 md:grid-cols-[1fr_132px_auto]">
           <select className="field" value={productId} onChange={(event) => setProductId(event.target.value)}>
             <option value="">Pilih produk aktif</option>
@@ -209,16 +209,16 @@ export function CanteenPos({ products }: { products: Product[] }) {
 
       {step !== "products" ? (
         <section className="rounded-3xl bg-ink p-5 text-white">
-          <p className="flex items-center gap-2 text-sm font-black text-gold"><Radio size={18} /> Step 2: Tap Kartu Siswa</p>
+          <p className="flex items-center gap-2 text-sm font-black text-gold"><Radio size={18} /> Langkah 2: Tap Kartu Siswa</p>
           <p className="mt-2 text-sm text-white/65">Kantin tidak perlu melihat UID kartu. UID hanya dipakai internal untuk validasi server.</p>
           <div className="mt-4 flex flex-wrap gap-3">
             <button className="btn-primary" type="button" onClick={scanNfc} disabled={isPending}>{isPending ? "Membaca kartu..." : "Scan Kartu NFC"}</button>
-            <button className="btn-secondary" type="button" onClick={() => setManualMode((value) => !value)}><EyeOff size={16} /> Mode testing/manual UID</button>
+            <button className="btn-secondary" type="button" onClick={() => setManualMode((value) => !value)}><EyeOff size={16} /> Mode uji / UID manual</button>
           </div>
           {manualMode ? (
             <div className="mt-4 grid gap-2 rounded-3xl bg-white/10 p-4 sm:grid-cols-[1fr_auto]">
-              <input className="field text-ink" value={manualUid} onChange={(event) => setManualUid(event.target.value)} placeholder="Manual UID untuk demo/dev" />
-              <button className="btn-secondary" type="button" onClick={() => setPreviewFromUid(manualUid)}>Gunakan UID testing</button>
+              <input className="field text-ink" value={manualUid} onChange={(event) => setManualUid(event.target.value)} placeholder="UID manual untuk demo/dev" />
+              <button className="btn-secondary" type="button" onClick={() => setPreviewFromUid(manualUid)}>Gunakan UID Uji</button>
             </div>
           ) : null}
           {cardUid ? <p className="mt-3 text-xs font-semibold text-white/60">UID internal: {maskUid(cardUid)}</p> : null}
@@ -248,14 +248,14 @@ export function CanteenPos({ products }: { products: Product[] }) {
           <input type="hidden" name="cart_items" value={JSON.stringify(cart)} />
           <input type="hidden" name="card_uid" value={cardUid} />
           <input type="hidden" name="pin" value={pin} />
-          <p className="text-sm font-black text-mint">Step 3: Masukkan PIN Anak</p>
+          <p className="text-sm font-black text-mint">Langkah 3: Masukkan PIN Anak</p>
           <div className="rounded-3xl bg-lilac/60 p-4 text-center">
             <p className="text-3xl tracking-[0.45em]">{pin ? "•".repeat(pin.length) : "••••"}</p>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {digits.map((digit) => <button className="rounded-2xl border border-line bg-white p-4 text-xl font-black shadow-sm" type="button" onClick={() => appendPin(digit)} key={digit}>{digit}</button>)}
             <button className="btn-secondary" type="button" onClick={() => setPin((value) => value.slice(0, -1))}>Hapus</button>
-            <button className="btn-secondary" type="button" onClick={() => setPin("")}>Clear</button>
+            <button className="btn-secondary" type="button" onClick={() => setPin("")}>Bersihkan</button>
           </div>
           <SubmitButton className="btn-primary w-full" pendingText="Memproses transaksi...">Proses Pembayaran</SubmitButton>
           <button className="btn-secondary w-full" type="button" onClick={resetTransaction}><RotateCcw size={16} /> Transaksi Baru</button>

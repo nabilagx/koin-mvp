@@ -75,12 +75,12 @@ export default async function CanteenDashboardPage({
     { href: "/dashboard/canteen?view=transactions", label: "Transaksi Hari Ini" },
     { href: "/dashboard/canteen?view=recap", label: "Rekap Pendapatan" },
     { href: "/dashboard/canteen?view=support", label: "Lapor Admin" },
-    { href: "/dashboard/canteen?view=ai", label: "AI Insight Coming Soon" },
+    { href: "/dashboard/canteen?view=ai", label: "AI Insight Segera Hadir" },
     { href: "/dashboard/canteen?view=settings", label: "Pengaturan" }
   ];
 
   return (
-    <AppShell user={user} title="Canteen Dashboard" navLinks={links} navTitle="Menu Kantin">
+    <AppShell user={user} title="Dashboard Kantin" navLinks={links} navTitle="Menu Kantin">
       <PageNotice error={params.error} success={params.success} />
       {!data.canteen ? (
         <StatusPanel message="Profil kantin belum tersedia." reports={data.support_reports} />
@@ -113,7 +113,7 @@ export default async function CanteenDashboardPage({
       ) : (
         <section className="panel rounded-lg p-6">
           <h2 className="text-2xl font-black">Pengaturan</h2>
-          <p className="mt-3 text-sm text-ink/65">{data.canteen.canteen_name} - {data.canteen.owner_name} - {data.canteen.school_name ?? "Sekolah belum diisi"}</p>
+        <p className="mt-3 text-sm text-ink/65">{data.canteen.canteen_name} - {data.canteen.owner_name} - {data.canteen.school_name ?? "Sekolah belum diisi"}</p>
         </section>
       )}
     </AppShell>
@@ -134,7 +134,7 @@ function CanteenSummary({ canteen, revenue }: { canteen: ActiveCanteen; revenue:
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">{canteen.canteen_name}</h2>
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-ink/60">
-        <span>{canteen.owner_name} - {canteen.school_name ?? "school_name belum diisi"}</span>
+        <span>{canteen.owner_name} - {canteen.school_name ?? "Sekolah belum diisi"}</span>
         <StatusBadge status={canteen.status} />
       </div>
       <div className="mt-5 rounded-3xl border border-line bg-gold/25 p-4">

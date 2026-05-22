@@ -132,7 +132,7 @@ export async function createSavingRequestAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
   revalidatePath(childPath);
-  actionMessage(childPath, "success", "Saving request berhasil diajukan.");
+  actionMessage(childPath, "success", "Pengajuan pencairan berhasil dikirim.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(childPath, "error", friendlyError(error));
@@ -158,7 +158,7 @@ export async function submitMissionAction(formData: FormData) {
 
     if (error) throw new Error(error.message);
     revalidatePath(childPath);
-    actionMessage(childPath, "success", "Misi berhasil disubmit.");
+    actionMessage(childPath, "success", "Misi berhasil dikirim.");
   } catch (error) {
     rethrowRedirect(error);
     actionMessage(childPath, "error", friendlyError(error));
