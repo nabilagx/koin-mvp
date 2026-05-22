@@ -13,6 +13,18 @@ async function getCounts() {
   }));
 }
 
+const summaryLabels: Record<string, string> = {
+  users: "Pengguna",
+  parents: "Orang Tua",
+  children: "Anak",
+  canteens: "Kantin",
+  cards: "Kartu",
+  transactions: "Transaksi",
+  topup_transactions: "Top Up",
+  support_reports: "Laporan Kendala",
+  audit_logs: "Log Aktivitas"
+};
+
 export default async function AdminDashboardPage({
   searchParams
 }: {
@@ -39,7 +51,7 @@ export default async function AdminDashboardPage({
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {counts.map(([table, count]) => (
             <div className="panel rounded-lg p-5" key={table}>
-              <p className="text-sm font-semibold uppercase tracking-wide text-ink/55">{table}</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-ink/55">{summaryLabels[table] ?? table}</p>
               <p className="mt-3 text-3xl font-black">{count}</p>
             </div>
           ))}
