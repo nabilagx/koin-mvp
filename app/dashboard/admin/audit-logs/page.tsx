@@ -1,10 +1,8 @@
 import { AppShell } from "@/components/AppShell";
-import { DashboardNav } from "@/components/DashboardNav";
 import { CsvExportButton } from "@/components/CsvExportButton";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { adminLinks } from "../nav";
 
 type AuditLogRow = {
   id: string;
@@ -49,7 +47,6 @@ export default async function AdminAuditLogsPage({
 
   return (
     <AppShell user={user} title="Admin Audit Logs">
-      <DashboardNav links={adminLinks} />
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto_auto]">
         <input className="field" name="search" placeholder="Cari actor/action/deskripsi" defaultValue={params.search ?? ""} />
         <input className="field" name="action" placeholder="Action" defaultValue={params.action ?? ""} />

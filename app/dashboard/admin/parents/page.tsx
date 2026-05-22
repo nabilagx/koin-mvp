@@ -1,8 +1,6 @@
 import { AppShell } from "@/components/AppShell";
-import { DashboardNav } from "@/components/DashboardNav";
 import { requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { adminLinks } from "../nav";
 
 export default async function AdminParentsPage() {
   const user = await requireUser(["ADMIN"]);
@@ -13,7 +11,6 @@ export default async function AdminParentsPage() {
 
   return (
     <AppShell user={user} title="Admin Parents">
-      <DashboardNav links={adminLinks} />
       <div className="grid gap-3">{(data ?? []).map((item) => {
         const profile = Array.isArray(item.users) ? item.users[0] : item.users;
         return <div className="panel rounded-lg p-4 text-sm" key={item.id}><p className="font-black">{profile?.name ?? item.user_id}</p><p>{profile?.email} · {item.phone ?? "-"} · {item.address_optional ?? "-"}</p></div>;

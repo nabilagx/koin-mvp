@@ -1,7 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { AiComingSoon } from "@/components/AiComingSoon";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
-import { DashboardNav } from "@/components/DashboardNav";
 import { EmptyState } from "@/components/EmptyState";
 import { PageNotice } from "@/components/PageNotice";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -156,7 +155,6 @@ export default async function ParentDashboardPage({
 
   return (
     <AppShell user={user} title="Parent Dashboard" navLinks={links} navTitle="Menu Parent">
-      <DashboardNav links={links} title="Menu Parent" />
       <PageNotice error={params.error} success={params.success} />
 
       <section className="panel rounded-lg p-5">

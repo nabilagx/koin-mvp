@@ -1,12 +1,10 @@
 import { updateAdminCardStatusAction } from "@/app/actions/admin";
 import { AdminNfcCardManager } from "@/components/AdminNfcCardManager";
 import { AppShell } from "@/components/AppShell";
-import { DashboardNav } from "@/components/DashboardNav";
 import { PageNotice } from "@/components/PageNotice";
 import { StatusBadge } from "@/components/StatusBadge";
 import { requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { adminLinks } from "../nav";
 
 export default async function AdminCardsPage({
   searchParams
@@ -26,7 +24,6 @@ export default async function AdminCardsPage({
 
   return (
     <AppShell user={user} title="Admin Cards">
-      <DashboardNav links={adminLinks} />
       <PageNotice error={params.error} success={params.success} />
       <AdminNfcCardManager childOptions={children ?? []} />
       <div className="grid gap-3">

@@ -1,13 +1,11 @@
 import { AppShell } from "@/components/AppShell";
 import { CsvExportButton } from "@/components/CsvExportButton";
-import { DashboardNav } from "@/components/DashboardNav";
 import { PageNotice } from "@/components/PageNotice";
 import { StatusBadge } from "@/components/StatusBadge";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { adminLinks } from "../nav";
 
 type AdminTransaction = {
   id: string;
@@ -87,7 +85,6 @@ export default async function AdminTransactionsPage({
 
   return (
     <AppShell user={user} title="Admin Transactions">
-      <DashboardNav links={adminLinks} />
       <PageNotice error={params.error} success={params.success} />
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_auto_auto]">
         <input className="field" name="search" placeholder="Cari anak, parent, kantin, card_uid" defaultValue={params.search ?? ""} />

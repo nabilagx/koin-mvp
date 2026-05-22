@@ -1,7 +1,6 @@
 import { createChildSavingsPocketAction, createSavingRequestAction, moveWalletToSavingsAction, submitMissionAction } from "@/app/actions/child";
 import { AiComingSoon } from "@/components/AiComingSoon";
 import { AppShell } from "@/components/AppShell";
-import { DashboardNav } from "@/components/DashboardNav";
 import { EmptyState } from "@/components/EmptyState";
 import { PageNotice } from "@/components/PageNotice";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -82,7 +81,6 @@ export default async function ChildDashboardPage({
 
   return (
     <AppShell user={user} title="Child Dashboard" navLinks={links} navTitle="Menu Anak">
-      <DashboardNav links={links} title="Menu Anak" />
       <PageNotice error={params.error} success={params.success} />
       {!data ? (
         <div className="panel rounded-lg p-6 text-sm text-ink/65">Profil child belum tersedia.</div>

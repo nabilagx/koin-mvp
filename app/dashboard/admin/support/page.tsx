@@ -2,7 +2,6 @@ import { reviewSupportReportAction } from "@/app/actions/support";
 import { AppShell } from "@/components/AppShell";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 import { CsvExportButton } from "@/components/CsvExportButton";
-import { DashboardNav } from "@/components/DashboardNav";
 import { PageNotice } from "@/components/PageNotice";
 import { StatusBadge } from "@/components/StatusBadge";
 import { SubmitButton } from "@/components/SubmitButton";
@@ -10,7 +9,6 @@ import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { adminLinks } from "../nav";
 
 type SupportReportRow = {
   id: string;
@@ -92,7 +90,6 @@ export default async function AdminSupportPage({
 
   return (
     <AppShell user={user} title="Support Reports">
-      <DashboardNav links={adminLinks} />
       <PageNotice error={params.error} success={params.success} />
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_auto_auto]">
         <input className="field" name="search" placeholder="Cari subjek, pesan, reporter" defaultValue={params.search ?? ""} />

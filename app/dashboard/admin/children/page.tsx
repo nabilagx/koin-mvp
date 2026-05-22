@@ -1,6 +1,5 @@
 import { resetChildPinAction, updateAdminChildProfileAction } from "@/app/actions/admin";
 import { AppShell } from "@/components/AppShell";
-import { DashboardNav } from "@/components/DashboardNav";
 import { PageNotice } from "@/components/PageNotice";
 import { requireUser } from "@/lib/auth";
 import { formatRupiah } from "@/lib/format";
@@ -21,7 +20,6 @@ export default async function AdminChildrenPage({
 
   return (
     <AppShell user={user} title="Admin Children" navLinks={adminLinks} navTitle="Menu Admin">
-      <DashboardNav links={adminLinks} />
       <PageNotice error={params.error} success={params.success} />
       <div className="grid gap-3">
         {(data ?? []).map((item) => (

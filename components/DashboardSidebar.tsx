@@ -39,14 +39,14 @@ function NavList({ links, onNavigate }: { links: DashboardNavLink[]; onNavigate?
         const active = isActive(link.href);
         return (
           <Link
-            className={`min-h-12 rounded-2xl px-4 py-3 text-sm font-black transition ${
+            className={`flex min-h-12 items-center rounded-2xl px-4 py-3 text-sm font-black transition ${
               active ? "bg-gold/35 text-ink shadow-sm" : "text-ink/65 hover:bg-lilac hover:text-mint"
             }`}
             href={link.href}
             key={link.href}
             onClick={onNavigate}
           >
-            {link.label}
+            <span className="block truncate">{link.label}</span>
           </Link>
         );
       })}
@@ -78,7 +78,7 @@ function SidebarContent({
         </div>
       </div>
       <p className="mt-6 px-2 text-xs font-bold uppercase text-mint">{navTitle}</p>
-      <div className="mt-2 min-h-0 flex-1 overflow-y-auto pr-1">
+      <div className="mt-2 min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">
         <NavList links={links} onNavigate={onNavigate} />
       </div>
       <div className="mt-5 rounded-3xl bg-ink p-4 text-white">
@@ -110,7 +110,7 @@ export function DesktopSidebar({
   logoutAction: () => void;
 }) {
   return (
-    <aside className="sticky top-4 hidden h-[calc(100vh-2rem)] w-72 shrink-0 rounded-[2rem] border border-white/80 bg-white/90 p-5 shadow-soft backdrop-blur lg:flex lg:flex-col">
+    <aside className="sticky top-4 hidden h-[calc(100vh-2rem)] w-80 shrink-0 rounded-[2rem] border border-white/80 bg-white/90 p-5 shadow-soft backdrop-blur xl:flex xl:flex-col">
       <SidebarContent user={user} links={links} navTitle={navTitle} logoutAction={logoutAction} />
     </aside>
   );
@@ -131,7 +131,7 @@ export function MobileDrawer({
   return (
     <>
       <button
-        className="grid h-12 w-12 place-items-center rounded-2xl bg-mint text-white shadow-soft lg:hidden"
+        className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-mint text-white shadow-soft xl:hidden"
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Buka menu dashboard"
@@ -139,10 +139,10 @@ export function MobileDrawer({
         <Menu size={22} />
       </button>
       {open ? (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <button className="absolute inset-0 bg-ink/45" type="button" onClick={() => setOpen(false)} aria-label="Tutup menu" />
-          <aside className="absolute left-0 top-0 flex h-full w-[280px] max-w-[88vw] flex-col overflow-hidden rounded-r-[2rem] bg-white p-5 shadow-glow">
-            <div className="mb-2 flex justify-end">
+        <div className="fixed inset-0 z-[100] xl:hidden">
+          <button className="absolute inset-0 z-0 bg-ink/55 backdrop-blur-[1px]" type="button" onClick={() => setOpen(false)} aria-label="Tutup menu" />
+          <aside className="fixed inset-y-0 left-0 z-10 flex h-[100dvh] max-h-[100dvh] w-[280px] max-w-[88vw] flex-col overflow-hidden rounded-r-[2rem] bg-white p-5 shadow-glow">
+            <div className="mb-2 flex shrink-0 justify-end">
               <button className="grid h-11 w-11 place-items-center rounded-2xl bg-lilac text-mint" type="button" onClick={() => setOpen(false)} aria-label="Tutup menu">
                 <X size={20} />
               </button>

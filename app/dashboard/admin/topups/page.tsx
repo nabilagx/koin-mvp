@@ -1,12 +1,10 @@
 import { AppShell } from "@/components/AppShell";
 import { CsvExportButton } from "@/components/CsvExportButton";
-import { DashboardNav } from "@/components/DashboardNav";
 import { StatusBadge } from "@/components/StatusBadge";
 import { requireUser } from "@/lib/auth";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { adminLinks } from "../nav";
 
 type TopupRow = {
   id: string;
@@ -52,7 +50,6 @@ export default async function AdminTopupsPage({
 
   return (
     <AppShell user={user} title="Admin Top-ups">
-      <DashboardNav links={adminLinks} />
       <form className="mb-4 grid gap-2 md:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_auto_auto]">
         <input className="field" name="search" placeholder="Cari parent, anak, order_id" defaultValue={params.search ?? ""} />
         <select className="field" name="status" defaultValue={params.status ?? ""}>

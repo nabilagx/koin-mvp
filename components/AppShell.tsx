@@ -31,8 +31,8 @@ export function AppShell({
             <div className="flex min-w-0 items-center gap-3">
               <MobileDrawer user={user} links={links} navTitle={menuTitle} logoutAction={logoutAction} />
               <div className="min-w-0">
-                <div className="lg:hidden"><KoinBrand href="/dashboard" /></div>
-                <p className="hidden text-xs font-bold uppercase text-mint lg:block">Dashboard KOIN</p>
+                <div className="xl:hidden"><KoinBrand href="/dashboard" /></div>
+                <p className="hidden text-xs font-bold uppercase text-mint xl:block">Dashboard KOIN</p>
                 <h1 className="mt-1 truncate text-2xl font-black sm:text-3xl">{title}</h1>
               </div>
             </div>

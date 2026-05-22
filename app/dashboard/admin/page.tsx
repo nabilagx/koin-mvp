@@ -1,6 +1,5 @@
 import { AppShell } from "@/components/AppShell";
 import { AiComingSoon } from "@/components/AiComingSoon";
-import { DashboardNav } from "@/components/DashboardNav";
 import { requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { adminLinks } from "./nav";
@@ -25,7 +24,6 @@ export default async function AdminDashboardPage({
 
   return (
     <AppShell user={user} title="Admin Dashboard" navLinks={adminLinks} navTitle="Menu Admin">
-      <DashboardNav links={adminLinks} title="Menu Admin" />
       {params.view === "ai" ? (
         <AiComingSoon
           title="AI Insight Sekolah"

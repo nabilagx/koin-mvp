@@ -2,7 +2,6 @@ import { createProductAction, deactivateProductAction, updateProductAction } fro
 import { AiComingSoon } from "@/components/AiComingSoon";
 import { AppShell } from "@/components/AppShell";
 import { CanteenPos } from "@/components/CanteenPos";
-import { DashboardNav } from "@/components/DashboardNav";
 import { EmptyState } from "@/components/EmptyState";
 import { PageNotice } from "@/components/PageNotice";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -82,7 +81,6 @@ export default async function CanteenDashboardPage({
 
   return (
     <AppShell user={user} title="Canteen Dashboard" navLinks={links} navTitle="Menu Kantin">
-      <DashboardNav links={links} title="Menu Kantin" />
       <PageNotice error={params.error} success={params.success} />
       {!data.canteen ? (
         <StatusPanel message="Profil kantin belum tersedia." reports={data.support_reports} />
