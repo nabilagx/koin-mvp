@@ -26,7 +26,7 @@ async function getCanteenData(user_id: string) {
       .select("id,subject,message,status,admin_reply,related_transaction_id,created_at")
       .eq("reporter_user_id", user_id)
       .order("created_at", { ascending: false });
-    return { canteen: null, products: [], transactions: [], revenue_today: 0, support_reports: support_reports ?? [] };
+    return { canteen: null, products: [], transactions: [], revenue_today: 0, support_reports: support_reports ?? [], demo_cards: [] };
   }
 
   const today = new Date();
@@ -54,7 +54,13 @@ async function getCanteenData(user_id: string) {
     .eq("reporter_user_id", user_id)
     .order("created_at", { ascending: false });
 
-  return { canteen, products: products ?? [], transactions: transactions ?? [], revenue_today, support_reports: support_reports ?? [] };
+  const { data: demo_cards } = await admin
+    .from("cards")
+    .select("id,child_id,card_uid,card_label,status,children(name,grade,school_name)")
+    .order("created_at", { ascending: false })
+    .limit(80);
+
+  return { canteen, products: products ?? [], transactions: transactions ?? [], revenue_today, support_reports: support_reports ?? [], demo_cards: demo_cards ?? [] };
 }
 
 type CanteenData = Awaited<ReturnType<typeof getCanteenData>>;
@@ -93,7 +99,7 @@ export default async function CanteenDashboardPage({
           <CanteenSummary canteen={data.canteen} revenue={data.revenue_today} />
           <div className="panel rounded-lg p-5">
             <h2 className="text-lg font-black">POS transaksi</h2>
-            <div className="mt-4"><CanteenPos products={data.products} /></div>
+            <div className="mt-4"><CanteenPos products={data.products} demoCards={data.demo_cards} /></div>
           </div>
         </section>
       ) : view === "products" ? (

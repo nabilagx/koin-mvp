@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { CheckCircle2, EyeOff, Minus, Plus, Radio, RotateCcw, ShoppingCart, Trash2 } from "lucide-react";
+import { CheckCircle2, CreditCard, Minus, Plus, Radio, RotateCcw, ShoppingCart, Trash2 } from "lucide-react";
 import { createCanteenTransactionAction, previewCanteenCardAction, type CanteenCardPreview } from "@/app/actions/canteen";
 import { formatRupiah } from "@/lib/format";
+import { formatStatus } from "@/lib/labels";
 import { SubmitButton } from "@/components/SubmitButton";
 import { EmptyState } from "./EmptyState";
 import { StatusBadge } from "./StatusBadge";
@@ -23,7 +24,20 @@ type CartItem = {
   subtotal: number;
 };
 
+type DemoCard = {
+  id: string;
+  card_uid: string | null;
+  card_label: string | null;
+  status: string | null;
+  children?: { name?: string | null; grade?: string | null; school_name?: string | null } | Array<{ name?: string | null; grade?: string | null; school_name?: string | null }> | null;
+};
+
 type PosStep = "products" | "tap" | "pin";
+
+function first<T>(value: T | T[] | null | undefined): T | null {
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value ?? null;
+}
 
 function decodeRecord(record: NDEFRecord) {
   if (!record.data) return "";
@@ -52,7 +66,14 @@ function shuffleDigits() {
   return [..."0123456789"].sort(() => Math.random() - 0.5);
 }
 
-export function CanteenPos({ products }: { products: Product[] }) {
+function demoCardLabel(card: DemoCard) {
+  const child = first(card.children);
+  const name = child?.name ?? card.card_label ?? "Kartu Demo";
+  const grade = child?.grade ?? "Kelas belum diisi";
+  return `${name} NFC - ${grade} - Kartu ${formatStatus(card.status)}`;
+}
+
+export function CanteenPos({ products, demoCards = [] }: { products: Product[]; demoCards?: DemoCard[] }) {
   const activeProducts = products.filter((product) => product.is_active);
   const [productId, setProductId] = useState("");
   const [qty, setQty] = useState(1);
@@ -62,8 +83,8 @@ export function CanteenPos({ products }: { products: Product[] }) {
   const [preview, setPreview] = useState<CanteenCardPreview | null>(null);
   const [pin, setPin] = useState("");
   const [digits, setDigits] = useState(() => shuffleDigits());
-  const [manualMode, setManualMode] = useState(false);
-  const [manualUid, setManualUid] = useState("");
+  const [demoMode, setDemoMode] = useState(false);
+  const [selectedDemoCardId, setSelectedDemoCardId] = useState("");
   const [notice, setNotice] = useState("");
   const [isPending, startTransition] = useTransition();
   const total = useMemo(() => cart.reduce((sum, item) => sum + item.subtotal, 0), [cart]);
@@ -91,7 +112,7 @@ export function CanteenPos({ products }: { products: Product[] }) {
     setCart([]);
     setStep("products");
     setCardUid("");
-    setManualUid("");
+    setSelectedDemoCardId("");
     setPreview(null);
     setPin("");
     setDigits(shuffleDigits());
@@ -156,6 +177,16 @@ export function CanteenPos({ products }: { products: Product[] }) {
     setPin((current) => `${current}${value}`);
   }
 
+  function useDemoCard() {
+    const card = demoCards.find((item) => item.id === selectedDemoCardId);
+    if (!card?.card_uid) {
+      setNotice("Pilih kartu demo yang sudah terdaftar.");
+      return;
+    }
+    setNotice("Kartu demo dipilih. Mengambil preview data anak...");
+    setPreviewFromUid(card.card_uid);
+  }
+
   return (
     <div className="grid gap-5">
       <div className="grid gap-2 sm:grid-cols-4">
@@ -213,12 +244,27 @@ export function CanteenPos({ products }: { products: Product[] }) {
           <p className="mt-2 text-sm text-white/65">Kantin tidak perlu melihat UID kartu. UID hanya dipakai internal untuk validasi server.</p>
           <div className="mt-4 flex flex-wrap gap-3">
             <button className="btn-primary" type="button" onClick={scanNfc} disabled={isPending}>{isPending ? "Membaca kartu..." : "Scan Kartu NFC"}</button>
-            <button className="btn-secondary" type="button" onClick={() => setManualMode((value) => !value)}><EyeOff size={16} /> Mode uji / UID manual</button>
+            <button className="btn-secondary" type="button" onClick={() => setDemoMode((value) => !value)}><CreditCard size={16} /> Mode Demo Tanpa Kartu NFC</button>
           </div>
-          {manualMode ? (
-            <div className="mt-4 grid gap-2 rounded-3xl bg-white/10 p-4 sm:grid-cols-[1fr_auto]">
-              <input className="field text-ink" value={manualUid} onChange={(event) => setManualUid(event.target.value)} placeholder="UID manual untuk demo/dev" />
-              <button className="btn-secondary" type="button" onClick={() => setPreviewFromUid(manualUid)}>Gunakan UID Uji</button>
+          {demoMode ? (
+            <div className="mt-4 grid gap-3 rounded-3xl bg-white/10 p-4">
+              <div>
+                <p className="text-sm font-black text-white">Simulasi Kartu untuk Juri</p>
+                <p className="mt-1 text-xs leading-5 text-white/65">Mode demo digunakan untuk penilaian tanpa kartu fisik. Validasi PIN, saldo, status kartu, dan limit tetap berjalan.</p>
+              </div>
+              {demoCards.length ? (
+                <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                  <select className="field text-ink" value={selectedDemoCardId} onChange={(event) => setSelectedDemoCardId(event.target.value)}>
+                    <option value="">Pilih kartu demo terdaftar</option>
+                    {demoCards.map((card) => (
+                      <option key={card.id} value={card.id}>{demoCardLabel(card)}</option>
+                    ))}
+                  </select>
+                  <button className="btn-secondary" type="button" onClick={useDemoCard}>Gunakan Kartu Demo</button>
+                </div>
+              ) : (
+                <div className="rounded-2xl bg-white/10 p-3 text-sm text-white/70">Belum ada kartu demo terdaftar. Admin dapat membuat kartu dari halaman Data Kartu.</div>
+              )}
             </div>
           ) : null}
           {cardUid ? <p className="mt-3 text-xs font-semibold text-white/60">UID internal: {maskUid(cardUid)}</p> : null}

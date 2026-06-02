@@ -133,6 +133,9 @@ export default function LandingPage() {
           <h2 className="mt-4 text-2xl font-black">Akses multi-device / PWA</h2>
           <p className="mt-3 text-sm leading-6 text-ink/60">KOIN bisa dipakai dari browser sekolah, laptop admin, tablet kantin, dan ponsel orang tua tanpa instalasi rumit.</p>
           <div className="mt-6 rounded-3xl border border-line bg-white p-4 text-sm font-semibold text-ink/70">Tambahkan ke layar utama untuk pengalaman seperti aplikasi.</div>
+          <div className="mt-3 rounded-3xl border border-gold/40 bg-gold/20 p-4 text-sm font-semibold text-ink/75">
+            MVP mendukung NFC pada Chrome Android/HTTPS. Untuk penilaian jarak jauh tanpa kartu fisik, tersedia Mode Demo Tanpa Kartu NFC di POS kantin.
+          </div>
         </div>
       </section>
 
