@@ -5,6 +5,7 @@ import type { AppUser } from "@/lib/types";
 import { formatRole } from "@/lib/labels";
 import { KoinBrand } from "./KoinBrand";
 import { DesktopSidebar, MobileDrawer, type DashboardNavLink } from "./DashboardSidebar";
+import { SubmitButton } from "./SubmitButton";
 
 export function AppShell({
   user,
@@ -46,10 +47,10 @@ export function AppShell({
                 <p className="text-ink/55">{formatRole(user.role)}</p>
               </div>
               <form action={logoutAction}>
-                <button className="btn-secondary" type="submit">
+                <SubmitButton className="btn-secondary" pendingText="Keluar...">
                   <LogOut size={16} />
                   Keluar
-                </button>
+                </SubmitButton>
               </form>
             </div>
           </header>
@@ -67,7 +68,7 @@ function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
   if (role === "ADMIN") {
     return [
       { href: "/dashboard/admin", label: "Ringkasan" },
-      { href: "/dashboard/admin/users", label: "Users" },
+      { href: "/dashboard/admin/users", label: "Pengguna" },
       { href: "/dashboard/admin/parents", label: "Orang Tua" },
       { href: "/dashboard/admin/children", label: "Anak" },
       { href: "/dashboard/admin/canteens", label: "Kantin" },
@@ -97,7 +98,7 @@ function getDefaultLinks(role: AppUser["role"]): DashboardNavLink[] {
       { href: "/dashboard/canteen", label: "POS Kantin" },
       { href: "/dashboard/canteen?view=products", label: "Produk/Menu" },
       { href: "/dashboard/canteen?view=transactions", label: "Transaksi Hari Ini" },
-      { href: "/dashboard/canteen?view=recap", label: "Rekap Pendapatan" },
+      { href: "/dashboard/canteen?view=recap", label: "Rekap Penjualan" },
       { href: "/dashboard/canteen?view=support", label: "Lapor Admin" },
       { href: "/dashboard/canteen?view=ai", label: "AI Insight Segera Hadir" },
       { href: "/dashboard/canteen?view=settings", label: "Pengaturan" }

@@ -2,7 +2,9 @@ import { updateAdminCardStatusAction } from "@/app/actions/admin";
 import { AdminNfcCardManager } from "@/components/AdminNfcCardManager";
 import { AppShell } from "@/components/AppShell";
 import { PageNotice } from "@/components/PageNotice";
+import { ReturnToInput } from "@/components/ReturnToInput";
 import { StatusBadge } from "@/components/StatusBadge";
+import { SubmitButton } from "@/components/SubmitButton";
 import { requireUser } from "@/lib/auth";
 import { formatStatus } from "@/lib/labels";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -35,6 +37,7 @@ export default async function AdminCardsPage({
               <p className="font-black">UID Kartu: {item.card_uid} - Label Kartu: {item.card_label ?? "-"}</p>
               <div className="mt-1 flex flex-wrap items-center gap-2"><span>{child?.name ?? item.child_id}</span><StatusBadge status={item.status} /></div>
               <form action={updateAdminCardStatusAction} className="mt-3 flex gap-2">
+                <ReturnToInput />
                 <input type="hidden" name="card_id" value={item.id} />
                 <select className="field max-w-44" name="status" defaultValue={item.status}>
                   <option value="active">{formatStatus("active")}</option>
@@ -42,7 +45,7 @@ export default async function AdminCardsPage({
                   <option value="frozen">{formatStatus("frozen")}</option>
                   <option value="replaced">{formatStatus("replaced")}</option>
                 </select>
-                <button className="btn-secondary">Update Status</button>
+                <SubmitButton className="btn-secondary" pendingText="Memperbarui...">Perbarui Status</SubmitButton>
               </form>
             </div>
           );

@@ -3,6 +3,7 @@ import { AppShell } from "@/components/AppShell";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 import { CsvExportButton } from "@/components/CsvExportButton";
 import { PageNotice } from "@/components/PageNotice";
+import { ReturnToInput } from "@/components/ReturnToInput";
 import { StatusBadge } from "@/components/StatusBadge";
 import { SubmitButton } from "@/components/SubmitButton";
 import { requireUser } from "@/lib/auth";
@@ -164,6 +165,7 @@ export default async function AdminSupportPage({
 
               <div className="mt-4 grid gap-2 md:grid-cols-[1fr_auto]">
               <form action={reviewSupportReportAction} className="grid gap-2 md:grid-cols-[0.7fr_1fr_auto]">
+                <ReturnToInput />
                 <input type="hidden" name="report_id" value={report.id} />
                 <select className="field" name="status" defaultValue={report.status}>
                   <option value="open">{formatStatus("open")}</option>
@@ -175,6 +177,7 @@ export default async function AdminSupportPage({
                 <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Simpan</SubmitButton>
               </form>
               <form action={reviewSupportReportAction}>
+                <ReturnToInput />
                 <input type="hidden" name="report_id" value={report.id} />
                 <input type="hidden" name="status" value="rejected" />
                 <input type="hidden" name="admin_reply" value={report.admin_reply ?? "Laporan ditolak admin."} />

@@ -142,8 +142,16 @@ export function WebNfcCardTools({
       {!compact ? <p className="mb-3 text-sm font-black text-mint">Scan/Tulis Kartu NFC</p> : null}
       <div className="flex flex-wrap gap-2">
         {allowGenerate ? <button className="btn-secondary" type="button" onClick={generateUid}><Wand2 size={16} /> Generate UID KOIN</button> : null}
-        <button className="btn-secondary" type="button" disabled={busy} onClick={scan}><Radio size={16} /> {busy ? "Menunggu kartu..." : "Scan NFC"}</button>
-        {allowWrite ? <button className="btn-primary" type="button" disabled={busy} onClick={write}><PenLine size={16} /> Write to NFC Card</button> : null}
+        <button className="btn-secondary" type="button" disabled={busy} onClick={scan}>
+          {busy ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <Radio size={16} />}
+          {busy ? "Menunggu kartu..." : "Scan NFC"}
+        </button>
+        {allowWrite ? (
+          <button className="btn-primary" type="button" disabled={busy} onClick={write}>
+            {busy ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <PenLine size={16} />}
+            {busy ? "Menulis kartu..." : "Tulis ke Kartu NFC"}
+          </button>
+        ) : null}
       </div>
       <p className="mt-3 text-xs font-semibold text-ink/60">{status || "Tempelkan kartu NTAG213 ke belakang HP. Input manual UID tetap tersedia untuk demo laptop."}</p>
     </div>

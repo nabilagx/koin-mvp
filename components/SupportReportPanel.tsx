@@ -2,6 +2,7 @@ import { createSupportReportAction } from "@/app/actions/support";
 import { formatDateTime } from "@/lib/date";
 import { formatRupiah } from "@/lib/format";
 import { formatStatus } from "@/lib/labels";
+import { ReturnToInput } from "./ReturnToInput";
 import { SubmitButton } from "./SubmitButton";
 
 type SupportTransaction = {
@@ -35,6 +36,7 @@ export function SupportReportPanel({
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">Pusat Bantuan</h2>
       <form action={createSupportReportAction} className="mt-4 grid gap-3">
+        <ReturnToInput />
         <input className="field" name="subject" placeholder="Subjek laporan" required />
         <textarea className="field min-h-24" name="message" placeholder="Ceritakan kendalanya" required />
         <select className="field" name="related_transaction_id" defaultValue="">

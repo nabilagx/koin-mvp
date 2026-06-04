@@ -6,7 +6,7 @@ import { randomUUID } from "crypto";
 import { getCurrentUserProfile } from "@/lib/auth";
 import { formNumber, formString } from "@/lib/format";
 import { hashPin } from "@/lib/pin";
-import { actionMessage, friendlyError, rethrowRedirect } from "@/lib/action-result";
+import { actionMessage, friendlyError, getReturnTo, rethrowRedirect } from "@/lib/action-result";
 import { settleTopupOnce } from "@/lib/topup-settlement";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -42,6 +42,7 @@ async function assertOwnChild(child_id: string) {
 }
 
 export async function updateChildProfileAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, parentPath);
   try {
     const child_id = formString(formData, "child_id");
     const name = formString(formData, "name");
@@ -64,10 +65,10 @@ export async function updateChildProfileAction(formData: FormData) {
     await admin.from("users").update({ name }).eq("id", child.user_id);
     await writeAudit(admin, profile.id, "UPDATE_CHILD_PROFILE", "children", child_id, `Parent memperbarui profil anak ${name}.`);
     revalidatePath(parentPath);
-    actionMessage(`${parentPath}?child_id=${child_id}&view=children`, "success", "Identitas anak berhasil diperbarui.");
+    actionMessage(returnTo, "success", "Identitas anak berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
@@ -89,6 +90,7 @@ async function writeAudit(
 }
 
 export async function createChildAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=children`);
   try {
   const { profile, parent, admin } = await requireParentContext();
   const name = formString(formData, "name");
@@ -101,7 +103,7 @@ export async function createChildAction(formData: FormData) {
   const initial_balance = formNumber(formData, "initial_balance");
 
   if (!name || !email || password.length < 6 || pin.length < 4) {
-    actionMessage(parentPath, "error", "Nama, email, password child, dan PIN minimal 4 digit wajib diisi.");
+    actionMessage(returnTo, "error", "Nama, email, password anak, dan PIN minimal 4 digit wajib diisi.");
   }
 
   const { data: created, error: createError } = await admin.auth.admin.createUser({
@@ -156,14 +158,15 @@ export async function createChildAction(formData: FormData) {
 
   await writeAudit(admin, profile.id, "create_child", "children", child.id, `Parent membuat akun anak ${name}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Anak berhasil dibuat.");
+  actionMessage(returnTo, "success", "Anak berhasil dibuat.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function topUpChildAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=topup`);
   try {
   const child_id = formString(formData, "child_id");
   const amount = formNumber(formData, "amount");
@@ -196,14 +199,15 @@ export async function topUpChildAction(formData: FormData) {
 
   await writeAudit(admin, profile.id, "top_up_wallet", "wallets", wallet.id, `Top up simulasi sebesar ${amount}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Top-up simulasi berhasil.");
+  actionMessage(returnTo, "success", "Top-up simulasi berhasil.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function createMidtransTopupAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=topup`);
   try {
     const child_id = formString(formData, "child_id");
     const amount = formNumber(formData, "amount");
@@ -246,9 +250,9 @@ export async function createMidtransTopupAction(formData: FormData) {
         customer_details: { first_name: profile.name, email: profile.email },
         item_details: [{ id: child_id, price: amount, quantity: 1, name: "Top-up KOIN Sandbox" }],
         callbacks: {
-          finish: `${appUrl}/dashboard/parent?success=Pembayaran%20Midtrans%20diproses.%20Saldo%20masuk%20setelah%20berhasil.`,
-          error: `${appUrl}/dashboard/parent?error=Pembayaran%20Midtrans%20gagal.`,
-          pending: `${appUrl}/dashboard/parent?success=Pembayaran%20Midtrans%20masih%20menunggu.`
+          finish: `${appUrl}${returnTo}${returnTo.includes("?") ? "&" : "?"}success=Pembayaran%20Midtrans%20diproses.%20Saldo%20masuk%20setelah%20berhasil.`,
+          error: `${appUrl}${returnTo}${returnTo.includes("?") ? "&" : "?"}error=Pembayaran%20Midtrans%20gagal.`,
+          pending: `${appUrl}${returnTo}${returnTo.includes("?") ? "&" : "?"}success=Pembayaran%20Midtrans%20masih%20menunggu.`
         }
       })
     });
@@ -265,14 +269,15 @@ export async function createMidtransTopupAction(formData: FormData) {
     revalidatePath(parentPath);
 
     if (midtrans_redirect_url) redirect(midtrans_redirect_url);
-    actionMessage(parentPath, "success", "Top-up Midtrans Sandbox dibuat. Saldo bertambah setelah pembayaran berhasil atau simulasi sukses.");
+    actionMessage(returnTo, "success", "Top-up Midtrans Sandbox dibuat. Saldo bertambah setelah pembayaran berhasil atau simulasi sukses.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function simulateTopupSettlementAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=topup`);
   try {
     const topup_id = formString(formData, "topup_id");
     if (!topup_id) throw new Error("Top-up tidak valid.");
@@ -294,14 +299,15 @@ export async function simulateTopupSettlementAction(formData: FormData) {
     });
 
     revalidatePath(parentPath);
-    actionMessage(parentPath, "success", "Simulasi pembayaran sukses. Saldo anak bertambah.");
+    actionMessage(returnTo, "success", "Simulasi pembayaran sukses. Saldo anak bertambah.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function setDailyLimitAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=saldo`);
   try {
   const child_id = formString(formData, "child_id");
   const daily_limit = formNumber(formData, "daily_limit");
@@ -315,31 +321,33 @@ export async function setDailyLimitAction(formData: FormData) {
   if (error) throw new Error(error.message);
   await writeAudit(admin, profile.id, "set_daily_limit", "children", child_id, `Limit harian diubah menjadi ${daily_limit}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Limit harian berhasil diperbarui.");
+  actionMessage(returnTo, "success", "Limit harian berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function requestCardAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=cards`);
   try {
   const child_id = formString(formData, "child_id");
   const { profile, admin } = await assertOwnChild(child_id);
   await writeAudit(admin, profile.id, "REQUEST_CARD", "children", child_id, "Parent mengajukan kartu anak.");
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Kartu berhasil diajukan.");
+  actionMessage(returnTo, "success", "Kartu berhasil diajukan.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function updateChildPinAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=saldo`);
   try {
   const child_id = formString(formData, "child_id");
   const pin = formString(formData, "pin");
-  if (pin.length < 4) actionMessage(parentPath, "error", "PIN minimal 4 digit.");
+  if (pin.length < 4) actionMessage(returnTo, "error", "PIN minimal 4 digit.");
 
   const { profile, admin } = await assertOwnChild(child_id);
   const { error } = await admin.from("children").update({ pin_hash: hashPin(pin) }).eq("id", child_id);
@@ -347,14 +355,15 @@ export async function updateChildPinAction(formData: FormData) {
 
   await writeAudit(admin, profile.id, "update_child_pin", "children", child_id, "Parent mengubah PIN transaksi anak.");
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "PIN berhasil diperbarui.");
+  actionMessage(returnTo, "success", "PIN berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function updateCardStatusAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=cards`);
   try {
   const child_id = formString(formData, "child_id");
   const card_id = formString(formData, "card_id");
@@ -367,14 +376,15 @@ export async function updateCardStatusAction(formData: FormData) {
 
   await writeAudit(admin, profile.id, "update_card_status", "cards", card_id, `Status kartu menjadi ${status}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Status kartu berhasil diperbarui.");
+  actionMessage(returnTo, "success", "Status kartu berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function createSavingsPocketAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=savings`);
   try {
   const child_id = formString(formData, "child_id");
   const name = formString(formData, "name");
@@ -391,14 +401,15 @@ export async function createSavingsPocketAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Celengan berhasil dibuat.");
+  actionMessage(returnTo, "success", "Celengan berhasil dibuat.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function updateSavingRequestStatusAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=requests`);
   try {
   const child_id = formString(formData, "child_id");
   const request_id = formString(formData, "request_id");
@@ -438,14 +449,15 @@ export async function updateSavingRequestStatusAction(formData: FormData) {
   if (error) throw new Error(error.message);
   await writeAudit(admin, profile.id, "review_saving_request", "saving_requests", request_id, `Pengajuan pencairan ${status}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", status === "approved" ? "Pengajuan pencairan disetujui orang tua." : "Pengajuan pencairan ditolak.");
+  actionMessage(returnTo, "success", status === "approved" ? "Pengajuan pencairan disetujui orang tua." : "Pengajuan pencairan ditolak.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function createMissionAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=missions`);
   try {
   const child_id = formString(formData, "child_id");
   const title = formString(formData, "title");
@@ -464,14 +476,15 @@ export async function createMissionAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Misi berhasil dibuat.");
+  actionMessage(returnTo, "success", "Misi berhasil dibuat.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function approveMissionAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${parentPath}?view=missions`);
   try {
   const child_id = formString(formData, "child_id");
   const mission_id = formString(formData, "mission_id");
@@ -487,9 +500,9 @@ export async function approveMissionAction(formData: FormData) {
 
   await writeAudit(admin, profile.id, "approve_mission", "missions", mission_id, `Misi disetujui, reward ${reward_amount}.`);
   revalidatePath(parentPath);
-  actionMessage(parentPath, "success", "Misi disetujui dan hadiah masuk saldo anak.");
+  actionMessage(returnTo, "success", "Misi disetujui dan hadiah masuk saldo anak.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(parentPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }

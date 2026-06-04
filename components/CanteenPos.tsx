@@ -6,6 +6,7 @@ import { createCanteenTransactionAction, previewCanteenCardAction, type CanteenC
 import { formatRupiah } from "@/lib/format";
 import { formatStatus } from "@/lib/labels";
 import { SubmitButton } from "@/components/SubmitButton";
+import { ReturnToInput } from "@/components/ReturnToInput";
 import { EmptyState } from "./EmptyState";
 import { StatusBadge } from "./StatusBadge";
 
@@ -243,7 +244,10 @@ export function CanteenPos({ products, demoCards = [] }: { products: Product[]; 
           <p className="flex items-center gap-2 text-sm font-black text-gold"><Radio size={18} /> Langkah 2: Tap Kartu Siswa</p>
           <p className="mt-2 text-sm text-white/65">Kantin tidak perlu melihat UID kartu. UID hanya dipakai internal untuk validasi server.</p>
           <div className="mt-4 flex flex-wrap gap-3">
-            <button className="btn-primary" type="button" onClick={scanNfc} disabled={isPending}>{isPending ? "Membaca kartu..." : "Scan Kartu NFC"}</button>
+            <button className="btn-primary" type="button" onClick={scanNfc} disabled={isPending}>
+              {isPending ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : null}
+              {isPending ? "Membaca kartu..." : "Scan Kartu NFC"}
+            </button>
             <button className="btn-secondary" type="button" onClick={() => setDemoMode((value) => !value)}><CreditCard size={16} /> Mode Demo Tanpa Kartu NFC</button>
           </div>
           {demoMode ? (
@@ -260,7 +264,10 @@ export function CanteenPos({ products, demoCards = [] }: { products: Product[]; 
                       <option key={card.id} value={card.id}>{demoCardLabel(card)}</option>
                     ))}
                   </select>
-                  <button className="btn-secondary" type="button" onClick={useDemoCard}>Gunakan Kartu Demo</button>
+                  <button className="btn-secondary" type="button" onClick={useDemoCard} disabled={isPending}>
+                    {isPending ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : null}
+                    {isPending ? "Memuat kartu..." : "Gunakan Kartu Demo"}
+                  </button>
                 </div>
               ) : (
                 <div className="rounded-2xl bg-white/10 p-3 text-sm text-white/70">Belum ada kartu demo terdaftar. Admin dapat membuat kartu dari halaman Data Kartu.</div>
@@ -291,6 +298,7 @@ export function CanteenPos({ products, demoCards = [] }: { products: Product[]; 
 
       {step === "pin" && preview?.can_continue ? (
         <form action={createCanteenTransactionAction} className="grid gap-4 rounded-3xl border border-line bg-white p-5">
+          <ReturnToInput />
           <input type="hidden" name="cart_items" value={JSON.stringify(cart)} />
           <input type="hidden" name="card_uid" value={cardUid} />
           <input type="hidden" name="pin" value={pin} />

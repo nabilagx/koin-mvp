@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUserProfile } from "@/lib/auth";
 import { formNumber, formString } from "@/lib/format";
 import { hashPin } from "@/lib/pin";
-import { actionMessage, friendlyError, rethrowRedirect } from "@/lib/action-result";
+import { actionMessage, friendlyError, getReturnTo, rethrowRedirect } from "@/lib/action-result";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const adminCardsPath = "/dashboard/admin/cards";
@@ -47,6 +47,7 @@ async function audit(action: string, entity_type: string, entity_id: string | nu
 }
 
 export async function updateAdminCardStatusAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, adminCardsPath);
   try {
   const card_id = formString(formData, "card_id");
   const status = formString(formData, "status");
@@ -58,14 +59,15 @@ export async function updateAdminCardStatusAction(formData: FormData) {
 
   await audit("update_card_status", "cards", card_id, `Admin mengubah status kartu menjadi ${status}.`);
   revalidatePath(adminCardsPath);
-  actionMessage(adminCardsPath, "success", "Status kartu berhasil diperbarui.");
+  actionMessage(returnTo, "success", "Status kartu berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(adminCardsPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function updateCanteenStatusAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, adminCanteensPath);
   try {
   const canteen_id = formString(formData, "canteen_id");
   const status = formString(formData, "status");
@@ -77,14 +79,15 @@ export async function updateCanteenStatusAction(formData: FormData) {
 
   await audit("update_canteen_status", "canteens", canteen_id, `Admin mengubah status kantin menjadi ${status}.`);
   revalidatePath(adminCanteensPath);
-  actionMessage(adminCanteensPath, "success", "Status kantin berhasil diperbarui.");
+  actionMessage(returnTo, "success", "Status kantin berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(adminCanteensPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function assignAdminCardAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, adminCardsPath);
   try {
   const child_id = formString(formData, "child_id");
   const card_uid = formString(formData, "card_uid");
@@ -102,10 +105,10 @@ export async function assignAdminCardAction(formData: FormData) {
 
   await audit("assign_card", "cards", existing?.id ?? null, `Admin assign kartu ${card_uid}.`);
   revalidatePath(adminCardsPath);
-  actionMessage(adminCardsPath, "success", "Kartu berhasil di-assign.");
+  actionMessage(returnTo, "success", "Kartu berhasil di-assign.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(adminCardsPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
@@ -212,6 +215,7 @@ export async function rewriteCardAction(input: RewriteCardInput): Promise<Rewrit
 }
 
 export async function resetChildPinAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, adminChildrenPath);
   try {
     const child_id = formString(formData, "child_id");
     const pin = formString(formData, "pin");
@@ -221,14 +225,15 @@ export async function resetChildPinAction(formData: FormData) {
     if (error) throw new Error(error.message);
     await audit("RESET_CHILD_PIN", "children", child_id, "Admin reset PIN transaksi anak.");
     revalidatePath(adminChildrenPath);
-    actionMessage(adminChildrenPath, "success", "PIN anak berhasil direset.");
+    actionMessage(returnTo, "success", "PIN anak berhasil direset.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(adminChildrenPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function updateAdminChildProfileAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, adminChildrenPath);
   try {
     const child_id = formString(formData, "child_id");
     const name = formString(formData, "name");
@@ -255,9 +260,9 @@ export async function updateAdminChildProfileAction(formData: FormData) {
     await admin.from("users").update({ name }).eq("id", child.user_id);
     await audit("ADMIN_UPDATE_CHILD_PROFILE", "children", child_id, `Admin memperbarui profil anak ${name}.`);
     revalidatePath(adminChildrenPath);
-    actionMessage(adminChildrenPath, "success", "Identitas anak berhasil diperbarui.");
+    actionMessage(returnTo, "success", "Identitas anak berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(adminChildrenPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }

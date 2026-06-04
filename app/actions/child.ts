@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUserProfile } from "@/lib/auth";
 import { formNumber, formString } from "@/lib/format";
-import { actionMessage, friendlyError, rethrowRedirect } from "@/lib/action-result";
+import { actionMessage, friendlyError, getReturnTo, rethrowRedirect } from "@/lib/action-result";
 import { getDailyLimitUsage } from "@/lib/limits";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -27,6 +27,7 @@ async function requireChildContext() {
 }
 
 export async function createChildSavingsPocketAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${childPath}?view=savings`);
   try {
   const { child, admin } = await requireChildContext();
   const name = formString(formData, "name");
@@ -43,14 +44,15 @@ export async function createChildSavingsPocketAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
   revalidatePath(childPath);
-  actionMessage(childPath, "success", "Celengan berhasil dibuat.");
+  actionMessage(returnTo, "success", "Celengan berhasil dibuat.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(childPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function moveWalletToSavingsAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${childPath}?view=savings`);
   try {
   const { child, admin } = await requireChildContext();
   const saving_pocket_id = formString(formData, "saving_pocket_id");
@@ -105,14 +107,15 @@ export async function moveWalletToSavingsAction(formData: FormData) {
     .eq("id", pocket.id);
 
   revalidatePath(childPath);
-  actionMessage(childPath, "success", "Saldo berhasil dipindahkan ke celengan.");
+  actionMessage(returnTo, "success", "Saldo berhasil dipindahkan ke celengan.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(childPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function createSavingRequestAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${childPath}?view=savings`);
   try {
   const { child, admin } = await requireChildContext();
   const saving_pocket_id = formString(formData, "saving_pocket_id");
@@ -132,14 +135,15 @@ export async function createSavingRequestAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
   revalidatePath(childPath);
-  actionMessage(childPath, "success", "Pengajuan pencairan berhasil dikirim.");
+  actionMessage(returnTo, "success", "Pengajuan pencairan berhasil dikirim.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(childPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function submitMissionAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${childPath}?view=missions`);
   try {
     const { child, admin } = await requireChildContext();
     const mission_id = formString(formData, "mission_id");
@@ -158,9 +162,9 @@ export async function submitMissionAction(formData: FormData) {
 
     if (error) throw new Error(error.message);
     revalidatePath(childPath);
-    actionMessage(childPath, "success", "Misi berhasil dikirim.");
+    actionMessage(returnTo, "success", "Misi berhasil dikirim.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(childPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }

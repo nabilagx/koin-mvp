@@ -3,6 +3,7 @@ import { AiComingSoon } from "@/components/AiComingSoon";
 import { AppShell } from "@/components/AppShell";
 import { EmptyState } from "@/components/EmptyState";
 import { PageNotice } from "@/components/PageNotice";
+import { ReturnToInput } from "@/components/ReturnToInput";
 import { StatusBadge } from "@/components/StatusBadge";
 import { SubmitButton } from "@/components/SubmitButton";
 import { SupportReportPanel } from "@/components/SupportReportPanel";
@@ -166,6 +167,7 @@ function SavingsSection({ pockets }: { pockets: ChildData["pockets"] }) {
       <h2 className="text-lg font-black">Celengan</h2>
       <p className="mt-1 text-sm text-ink/60">Maksimal pindah saldo hari ini mengikuti sisa limit harian.</p>
       <form action={createChildSavingsPocketAction} className="mt-4 grid gap-2 sm:grid-cols-[1fr_180px_auto]">
+        <ReturnToInput />
         <input className="field" name="name" placeholder="Nama celengan" required />
         <input className="field" name="target_amount" type="number" min={0} placeholder="Target" />
         <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Buat</SubmitButton>
@@ -176,11 +178,13 @@ function SavingsSection({ pockets }: { pockets: ChildData["pockets"] }) {
             <p className="font-semibold">{pocket.name}</p>
             <p className="text-sm text-ink/60">{formatRupiah(Number(pocket.current_amount))}/{formatRupiah(Number(pocket.target_amount))} - {formatStatus(pocket.status)}</p>
             <form action={moveWalletToSavingsAction} className="mt-3 flex gap-2">
+              <ReturnToInput />
               <input type="hidden" name="saving_pocket_id" value={pocket.id} />
               <input className="field" name="amount" type="number" min={1} placeholder="Pindah saldo" />
               <SubmitButton className="btn-secondary" pendingText="Memindahkan...">Pindah</SubmitButton>
             </form>
             <form action={createSavingRequestAction} className="mt-3 grid gap-2 sm:grid-cols-4">
+              <ReturnToInput />
               <input type="hidden" name="saving_pocket_id" value={pocket.id} />
               <input className="field" name="amount" type="number" min={1} placeholder="Cairkan" />
               <input className="field" name="reason" placeholder="Alasan" />
@@ -221,6 +225,7 @@ function MissionsSection({ missions }: { missions: ChildData["missions"] }) {
             <div className="flex flex-wrap items-center justify-between gap-3"><p>{item.title} - {item.description} - {formatRupiah(Number(item.reward_amount))}</p><StatusBadge status={item.status} /></div>
             {item.status === "pending" ? (
               <form action={submitMissionAction} className="mt-3 grid gap-2 sm:grid-cols-3">
+                <ReturnToInput />
                 <input type="hidden" name="mission_id" value={item.id} />
                 <input className="field" name="evidence_text" placeholder="Keterangan bukti" />
                 <input className="field" name="evidence_url" placeholder="URL bukti opsional" />

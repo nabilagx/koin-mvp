@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { actionMessage, friendlyError, rethrowRedirect } from "@/lib/action-result";
+import { actionMessage, friendlyError, getReturnTo, rethrowRedirect } from "@/lib/action-result";
 import { getCurrentUserProfile } from "@/lib/auth";
 import { formString } from "@/lib/format";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -56,6 +56,7 @@ async function assertRelatedTransaction(admin: ReturnType<typeof createAdminClie
 export async function createSupportReportAction(formData: FormData) {
   const profile = await getProfile();
   const path = rolePaths[profile.role] ?? "/dashboard";
+  const returnTo = getReturnTo(formData, path);
 
   try {
     if (!["PARENT", "CHILD", "CANTEEN"].includes(profile.role)) {
@@ -79,14 +80,15 @@ export async function createSupportReportAction(formData: FormData) {
 
     if (error) throw new Error(error.message);
     revalidatePath(path);
-    actionMessage(path, "success", "Laporan berhasil dikirim ke admin.");
+    actionMessage(returnTo, "success", "Laporan berhasil dikirim ke admin.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(path, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function reviewSupportReportAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, "/dashboard/admin/support");
   try {
     const profile = await getProfile();
     if (profile.role !== "ADMIN") redirect("/dashboard");
@@ -114,9 +116,9 @@ export async function reviewSupportReportAction(formData: FormData) {
     });
 
     revalidatePath("/dashboard/admin/support");
-    actionMessage("/dashboard/admin/support", "success", "Laporan berhasil diperbarui.");
+    actionMessage(returnTo, "success", "Laporan berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage("/dashboard/admin/support", "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }

@@ -2,6 +2,7 @@ import { updateCanteenStatusAction } from "@/app/actions/admin";
 import { AppShell } from "@/components/AppShell";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 import { PageNotice } from "@/components/PageNotice";
+import { ReturnToInput } from "@/components/ReturnToInput";
 import { StatusBadge } from "@/components/StatusBadge";
 import { requireUser } from "@/lib/auth";
 import { formatStatus } from "@/lib/labels";
@@ -28,6 +29,7 @@ export default async function AdminCanteensPage({
           <p>{item.owner_name} - {item.school_name ?? "-"} - NFC {item.has_nfc_device ? "Ada" : "Tidak Ada"}</p>
           <div className="mt-2"><StatusBadge status={item.status} /></div>
           <form action={updateCanteenStatusAction} className="mt-3 flex gap-2">
+            <ReturnToInput />
             <input type="hidden" name="canteen_id" value={item.id} />
             <select className="field max-w-44" name="status" defaultValue={item.status}>
               <option value="pending">{formatStatus("pending")}</option>

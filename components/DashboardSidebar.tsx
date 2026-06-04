@@ -8,6 +8,7 @@ import type { AppUser } from "@/lib/types";
 import { formatStatus } from "@/lib/labels";
 import { KoinBrand } from "./KoinBrand";
 import { StatusBadge } from "./StatusBadge";
+import { SubmitButton } from "./SubmitButton";
 
 export type DashboardNavLink = {
   href: string;
@@ -90,10 +91,10 @@ function SidebarContent({
         <p className="mt-2 text-xs leading-5 text-white/70">Smart school wallet untuk uang saku, kantin, kartu, dan celengan.</p>
       </div>
       <form action={logoutAction} className="mt-3">
-        <button className="btn-secondary w-full justify-center" type="submit">
+        <SubmitButton className="btn-secondary w-full justify-center" pendingText="Keluar...">
           <LogOut size={16} />
           Keluar
-        </button>
+        </SubmitButton>
       </form>
     </>
   );

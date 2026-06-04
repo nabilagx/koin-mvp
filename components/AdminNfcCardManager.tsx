@@ -209,9 +209,18 @@ export function AdminNfcCardManager({ childOptions }: { childOptions: ChildOptio
       </div>
       <div className="flex flex-wrap gap-2">
         <button className="btn-secondary" type="button" onClick={generateUid} disabled={isPending}><Wand2 size={16} /> Generate UID KOIN</button>
-        <button className="btn-secondary" type="button" onClick={scanExistingCard} disabled={isPending}><Radio size={16} /> Scan existing card</button>
-        <button className="btn-primary" type="button" onClick={writeRewriteAndSync} disabled={isPending}><PenLine size={16} /> Write / Rewrite NFC + Sync DB</button>
-        <button className="btn-secondary" type="button" onClick={scanAndSync} disabled={isPending}><RefreshCw size={16} /> Scan & Sync NFC Card</button>
+        <button className="btn-secondary" type="button" onClick={scanExistingCard} disabled={isPending}>
+          {isPending ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <Radio size={16} />}
+          {isPending ? "Memindai..." : "Scan Kartu Lama"}
+        </button>
+        <button className="btn-primary" type="button" onClick={writeRewriteAndSync} disabled={isPending}>
+          {isPending ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <PenLine size={16} />}
+          {isPending ? "Menulis & sinkron..." : "Tulis / Rewrite NFC + Sync DB"}
+        </button>
+        <button className="btn-secondary" type="button" onClick={scanAndSync} disabled={isPending}>
+          {isPending ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <RefreshCw size={16} />}
+          {isPending ? "Sinkronisasi..." : "Scan & Sync Kartu NFC"}
+        </button>
       </div>
       <div className={`rounded-3xl border px-4 py-3 text-sm font-semibold ${message.includes("gagal") || message.includes("dibatalkan") || message.includes("tidak") ? "border-red-200 bg-red-50 text-red-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>
         {message || "Tempelkan kartu NTAG213 ke belakang HP saat diminta. Admin tetap boleh melihat UID Kartu lengkap."}

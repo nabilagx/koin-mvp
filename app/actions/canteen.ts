@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUserProfile } from "@/lib/auth";
 import { formNumber, formString } from "@/lib/format";
 import { hashPin } from "@/lib/pin";
-import { actionMessage, friendlyError, rethrowRedirect } from "@/lib/action-result";
+import { actionMessage, friendlyError, getReturnTo, rethrowRedirect } from "@/lib/action-result";
 import { getDailyLimitUsage } from "@/lib/limits";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -59,6 +59,7 @@ async function createFailedTransaction(
 }
 
 export async function createProductAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${canteenPath}?view=products`);
   try {
   const { canteen, admin } = await requireCanteenContext();
   if (canteen.status !== "active") throw new Error("Kantin belum aktif.");
@@ -75,10 +76,10 @@ export async function createProductAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
   revalidatePath(canteenPath);
-  actionMessage(canteenPath, "success", "Produk berhasil ditambahkan.");
+  actionMessage(returnTo, "success", "Produk berhasil ditambahkan.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(canteenPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
@@ -125,6 +126,7 @@ export async function previewCanteenCardAction(card_uid: string, cart_total: num
 }
 
 export async function createCanteenTransactionAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, canteenPath);
   try {
   const { canteen, admin } = await requireCanteenContext();
   if (canteen.status !== "active") throw new Error("Kantin belum aktif.");
@@ -170,13 +172,13 @@ export async function createCanteenTransactionAction(formData: FormData) {
   if (cardError || !card) {
     await createFailedTransaction(admin, canteen.id, Math.max(amount, 1), "Kartu tidak ditemukan.");
     revalidatePath(canteenPath);
-    actionMessage(canteenPath, "error", "Transaksi gagal: Kartu tidak ditemukan");
+    actionMessage(returnTo, "error", "Transaksi gagal: Kartu tidak ditemukan");
   }
 
   if (card.status !== "active") {
     await createFailedTransaction(admin, canteen.id, Math.max(amount, 1), "Kartu tidak aktif.", card.child_id, card.id);
     revalidatePath(canteenPath);
-    actionMessage(canteenPath, "error", "Transaksi ditolak: kartu tidak aktif.");
+    actionMessage(returnTo, "error", "Transaksi ditolak: kartu tidak aktif.");
   }
 
   const { data: child, error: childError } = await admin
@@ -188,13 +190,13 @@ export async function createCanteenTransactionAction(formData: FormData) {
   if (childError || !child) {
     await createFailedTransaction(admin, canteen.id, Math.max(amount, 1), "Data anak tidak ditemukan.", card.child_id, card.id);
     revalidatePath(canteenPath);
-    actionMessage(canteenPath, "error", "Transaksi gagal: Data anak tidak ditemukan");
+    actionMessage(returnTo, "error", "Transaksi gagal: Data anak tidak ditemukan");
   }
 
   if (child.pin_hash !== hashPin(pin)) {
     await createFailedTransaction(admin, canteen.id, Math.max(amount, 1), "PIN salah", child.id, card.id);
     revalidatePath(canteenPath);
-    actionMessage(canteenPath, "error", "Transaksi gagal: PIN salah");
+    actionMessage(returnTo, "error", "Transaksi gagal: PIN salah");
   }
 
   let selected_product: { id: string; price: number | string } | null = null;
@@ -212,7 +214,7 @@ export async function createCanteenTransactionAction(formData: FormData) {
     }
   }
 
-  if (amount <= 0) actionMessage(canteenPath, "error", "Nominal transaksi wajib valid.");
+  if (amount <= 0) actionMessage(returnTo, "error", "Nominal transaksi wajib valid.");
 
   const { data: wallet, error: walletError } = await admin
     .from("wallets")
@@ -223,7 +225,7 @@ export async function createCanteenTransactionAction(formData: FormData) {
   if (walletError || !wallet) {
     await createFailedTransaction(admin, canteen.id, amount, "Saldo anak belum tersedia.", child.id, card.id);
     revalidatePath(canteenPath);
-    actionMessage(canteenPath, "error", "Transaksi gagal: Wallet anak belum tersedia");
+    actionMessage(returnTo, "error", "Transaksi gagal: Saldo anak belum tersedia");
   }
 
   const usage = await getDailyLimitUsage(admin, child.id, child.daily_limit);
@@ -235,7 +237,7 @@ export async function createCanteenTransactionAction(formData: FormData) {
   if (failure_reason) {
     await createFailedTransaction(admin, canteen.id, amount, failure_reason, child.id, card.id);
     revalidatePath(canteenPath);
-    actionMessage(canteenPath, "error", `Transaksi gagal: ${failure_reason}`);
+    actionMessage(returnTo, "error", `Transaksi gagal: ${failure_reason}`);
   }
 
   const balance = Number(wallet.balance) - amount;
@@ -283,14 +285,15 @@ export async function createCanteenTransactionAction(formData: FormData) {
   }
 
   revalidatePath(canteenPath);
-  actionMessage(canteenPath, "success", "Transaksi berhasil.");
+  actionMessage(returnTo, "success", "Transaksi berhasil.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(canteenPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function updateProductAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${canteenPath}?view=products`);
   try {
   const { canteen, admin } = await requireCanteenContext();
   if (canteen.status !== "active") throw new Error("Kantin belum aktif.");
@@ -301,23 +304,24 @@ export async function updateProductAction(formData: FormData) {
   const { error } = await admin.from("products").update({ name, price, is_active }).eq("id", product_id).eq("canteen_id", canteen.id);
   if (error) throw new Error(error.message);
   revalidatePath(canteenPath);
-  actionMessage(canteenPath, "success", "Produk berhasil diperbarui.");
+  actionMessage(returnTo, "success", "Produk berhasil diperbarui.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(canteenPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }
 
 export async function deactivateProductAction(formData: FormData) {
+  const returnTo = getReturnTo(formData, `${canteenPath}?view=products`);
   try {
   const { canteen, admin } = await requireCanteenContext();
   const product_id = formString(formData, "product_id");
   const { error } = await admin.from("products").update({ is_active: false }).eq("id", product_id).eq("canteen_id", canteen.id);
   if (error) throw new Error(error.message);
   revalidatePath(canteenPath);
-  actionMessage(canteenPath, "success", "Produk berhasil dinonaktifkan.");
+  actionMessage(returnTo, "success", "Produk berhasil dinonaktifkan.");
   } catch (error) {
     rethrowRedirect(error);
-    actionMessage(canteenPath, "error", friendlyError(error));
+    actionMessage(returnTo, "error", friendlyError(error));
   }
 }

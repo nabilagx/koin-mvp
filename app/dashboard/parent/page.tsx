@@ -3,6 +3,7 @@ import { AiComingSoon } from "@/components/AiComingSoon";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 import { EmptyState } from "@/components/EmptyState";
 import { PageNotice } from "@/components/PageNotice";
+import { ReturnToInput } from "@/components/ReturnToInput";
 import { StatusBadge } from "@/components/StatusBadge";
 import { SubmitButton } from "@/components/SubmitButton";
 import { SupportReportPanel } from "@/components/SupportReportPanel";
@@ -223,6 +224,7 @@ export default async function ParentDashboardPage({
               <div className="panel rounded-lg p-5">
                 <h2 className="text-lg font-black">Anak Saya</h2>
                 <form action={updateChildProfileAction} className="mt-4 grid gap-3 rounded-3xl border border-line bg-white p-4">
+                  <ReturnToInput />
                   <input type="hidden" name="child_id" value={child.id} />
                   <p className="text-sm font-black text-mint">Edit identitas anak terpilih</p>
                   <label className="block text-sm font-semibold">Nama anak<input className="field mt-1" name="name" defaultValue={child.name} required /></label>
@@ -279,6 +281,7 @@ function AddChildSection() {
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">Tambah Anak</h2>
       <form action={createChildAction} className="mt-4 space-y-4">
+        <ReturnToInput />
         <label className="block text-sm font-semibold">Nama anak<input className="field mt-1" name="name" required /></label>
         <label className="block text-sm font-semibold">Email login anak<input className="field mt-1" name="email" type="email" required /></label>
         <label className="block text-sm font-semibold">Password anak<input className="field mt-1" name="password" type="password" minLength={6} required /></label>
@@ -305,11 +308,13 @@ function SaldoLimitSection({ child, usage }: { child: ChildSummary; usage: { dai
       </div>
       <div className="mt-5 grid gap-3 md:grid-cols-2">
         <form action={setDailyLimitAction} className="flex gap-2">
+          <ReturnToInput />
           <input type="hidden" name="child_id" value={child.id} />
           <input className="field" name="daily_limit" type="number" min={0} placeholder="Limit Harian" required />
           <SubmitButton className="btn-secondary" pendingText="Menyimpan...">Atur Limit</SubmitButton>
         </form>
         <form action={updateChildPinAction} className="flex gap-2">
+          <ReturnToInput />
           <input type="hidden" name="child_id" value={child.id} />
           <input className="field" name="pin" type="password" minLength={4} placeholder="PIN baru" required />
           <SubmitButton className="btn-secondary" pendingText="Menyimpan PIN...">Perbarui PIN</SubmitButton>
@@ -325,11 +330,13 @@ function TopupSection({ child, topups }: { child: ChildSummary; topups: ParentDa
       <h2 className="text-lg font-black">Top Up</h2>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <form action={topUpChildAction} className="flex gap-2">
+          <ReturnToInput />
           <input type="hidden" name="child_id" value={child.id} />
           <input className="field" name="amount" type="number" min={1} placeholder="Top Up manual" required />
           <SubmitButton className="btn-primary" pendingText="Memproses top up...">Simulasi Manual</SubmitButton>
         </form>
         <form action={createMidtransTopupAction} className="flex gap-2">
+          <ReturnToInput />
           <input type="hidden" name="child_id" value={child.id} />
           <input className="field" name="amount" type="number" min={1} placeholder="Midtrans Sandbox" required />
           <SubmitButton className="btn-secondary" pendingText="Membuat pembayaran...">Bayar via Midtrans Sandbox</SubmitButton>
@@ -345,6 +352,7 @@ function TopupSection({ child, topups }: { child: ChildSummary; topups: ParentDa
             </div>
             {item.status === "pending" ? (
               <form action={simulateTopupSettlementAction}>
+                <ReturnToInput />
                 <input type="hidden" name="topup_id" value={item.id} />
                 <SubmitButton className="btn-secondary" pendingText="Memproses...">Simulasikan Pembayaran Berhasil</SubmitButton>
               </form>
@@ -364,11 +372,13 @@ function CardSection({ child }: { child: ChildSummary }) {
       <p className="mt-2 text-sm text-ink/65">Label Kartu: {child.card_label ?? "Belum ada kartu"} - UID Kartu: {child.card_uid ? `•••${child.card_uid.slice(-3)}` : "-"} - Status: {formatStatus(child.card_status)}</p>
       <div className="mt-4 flex flex-wrap gap-3">
         <form action={requestCardAction}>
+          <ReturnToInput />
           <input type="hidden" name="child_id" value={child.id} />
           <SubmitButton className="btn-secondary" pendingText="Mengajukan...">Ajukan Kartu</SubmitButton>
         </form>
         {child.card_id ? (
           <form action={updateCardStatusAction} className="flex gap-2">
+            <ReturnToInput />
             <input type="hidden" name="child_id" value={child.id} />
             <input type="hidden" name="card_id" value={child.card_id} />
             <select className="field" name="status" defaultValue="frozen"><option value="frozen">{formatStatus("frozen")}</option><option value="blocked">{formatStatus("blocked")}</option></select>
@@ -397,6 +407,7 @@ function SavingsSection({ childId, pockets }: { childId: string; pockets: Parent
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">Celengan</h2>
       <form action={createSavingsPocketAction} className="mt-3 grid gap-2 sm:grid-cols-[1fr_180px_auto]">
+        <ReturnToInput />
         <input type="hidden" name="child_id" value={childId} />
         <input className="field" name="name" placeholder="Nama celengan" required />
         <input className="field" name="target_amount" type="number" min={0} placeholder="Target" />
@@ -421,12 +432,14 @@ function RequestsSection({ requests }: { requests: ParentData["requests"] }) {
             {item.status === "pending" ? (
               <div className="flex gap-2">
                 <form action={updateSavingRequestStatusAction}>
+                  <ReturnToInput />
                   <input type="hidden" name="request_id" value={item.id} />
                   <input type="hidden" name="child_id" value={item.child_id} />
                 <input type="hidden" name="status" value="approved" />
                   <SubmitButton className="btn-secondary" pendingText="Menyetujui...">Setujui</SubmitButton>
                 </form>
                 <form action={updateSavingRequestStatusAction}>
+                  <ReturnToInput />
                   <input type="hidden" name="request_id" value={item.id} />
                   <input type="hidden" name="child_id" value={item.child_id} />
                 <input type="hidden" name="status" value="rejected" />
@@ -447,6 +460,7 @@ function MissionsSection({ childId, missions }: { childId: string; missions: Par
     <section className="panel rounded-lg p-5">
       <h2 className="text-lg font-black">Misi</h2>
       <form action={createMissionAction} className="mt-3 grid gap-2 sm:grid-cols-4">
+        <ReturnToInput />
         <input type="hidden" name="child_id" value={childId} />
         <input className="field" name="title" placeholder="Judul misi" required />
         <input className="field" name="description" placeholder="Deskripsi" />
@@ -459,6 +473,7 @@ function MissionsSection({ childId, missions }: { childId: string; missions: Par
             <span>{item.title} - {item.description} - {formatRupiah(Number(item.reward_amount))}</span><StatusBadge status={item.status} />
             {item.status === "completed" ? (
               <form action={approveMissionAction}>
+                <ReturnToInput />
                 <input type="hidden" name="mission_id" value={item.id} />
                 <input type="hidden" name="child_id" value={item.child_id} />
                 <input type="hidden" name="reward_amount" value={item.reward_amount} />

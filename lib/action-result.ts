@@ -1,7 +1,19 @@
 import { redirect } from "next/navigation";
 
+export function appendActionMessage(path: string, type: "success" | "error", message: string) {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}${type}=${encodeURIComponent(message)}`;
+}
+
 export function actionMessage(path: string, type: "success" | "error", message: string): never {
-  redirect(`${path}?${type}=${encodeURIComponent(message)}`);
+  redirect(appendActionMessage(path, type, message));
+}
+
+export function getReturnTo(formData: FormData, fallback: string) {
+  const value = formData.get("return_to");
+  if (typeof value !== "string" || !value.startsWith("/")) return fallback;
+  if (value.startsWith("//") || value.includes("://")) return fallback;
+  return value;
 }
 
 export function friendlyError(error: unknown) {
