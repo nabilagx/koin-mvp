@@ -723,7 +723,7 @@ export default function LandingPage() {
                 © 2026 KOIN. Hak Cipta Dilindungi Undang-Undang.
               </p>
               <p className="mt-1 text-[10px] text-[#58708e]/70">
-                Dibuat dengan ❤️ menggunakan Next.js, Tailwind CSS & Supabase
+                Dibuat dengan ❤️ untuk Masa Depan Pendidikan Indonesia
               </p>
             </div>
 
