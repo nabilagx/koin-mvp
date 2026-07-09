@@ -75,55 +75,55 @@ const stats = [
 const cardsData = [
   {
     id: 0,
-    title: "KARTU SISWA",
+    title: "KARTU SISWA NFC",
     label: "TAP & JAJAN",
     owner: "Rian Aditya",
     school: "SMPN 2 Ambulu",
     color: "bg-[#7c3aed]", // Lilac/Purple
     textColor: "text-white",
     accentColor: "text-[#ffd84d]",
-    desc: "Kartu utama siswa untuk jajan cashless di kantin sehat sekolah cukup dengan satu ketukan instan.",
+    desc: "Kartu utama Rian untuk jajan sehat bebas tunai di lingkungan kantin sekolah dengan satu ketukan instan.",
     infoIcon: BookOpenCheck,
-    balance: "Rp125.000"
+    balance: "Saldo Saku: Rp125.000"
   },
   {
     id: 1,
-    title: "KARTU WALI MURID",
+    title: "KARTU SISWA NFC",
     label: "KONTROL SAKU",
-    owner: "Bunda Risa",
-    school: "Akses Wali Murid",
+    owner: "Amanda Putri",
+    school: "SMPN 2 Ambulu",
     color: "bg-[#10233f]", // Navy Blue
     textColor: "text-white",
     accentColor: "text-[#ffd84d]",
-    desc: "Digunakan orang tua untuk mengontrol limit saku harian anak, isi saldo, serta memonitor riwayat jajan.",
+    desc: "Kartu saku harian Amanda yang diatur otomatis dengan batas belanja maksimal dari pengawasan wali murid.",
     infoIcon: Clock,
-    balance: "Limit: Rp20.000/Hari"
+    balance: "Limit Saku: Rp20.000/Hari"
   },
   {
     id: 2,
-    title: "KARTU MITRA KANTIN",
-    label: "TERIMA BAYAR",
-    owner: "Kantin Bu Nining",
-    school: "Kantin Sehat",
+    title: "KARTU SISWA NFC",
+    label: "POIN SEHAT",
+    owner: "Gibran Pratama",
+    school: "SMPN 2 Ambulu",
     color: "bg-[#ffd84d]", // Gold
     textColor: "text-[#10233f]",
     accentColor: "text-[#7c3aed]",
-    desc: "Kartu akses merchant kantin untuk menerima pembayaran nirkabel super cepat tanpa ribet uang kembalian.",
-    infoIcon: Store,
-    balance: "Total Omzet: Aktif"
+    desc: "Kartu jajan Gibran yang otomatis mengumpulkan poin rewards prestasi setiap kali membeli buah segar di kantin.",
+    infoIcon: Sparkles,
+    balance: "Poin Loyalitas: 450 Poin"
   },
   {
     id: 3,
-    title: "KARTU TABUNGAN",
-    label: "CELENGAN PINTAR",
-    owner: "Tabungan Mandiri",
-    school: "Masa Depan Cerah",
+    title: "KARTU SISWA NFC",
+    label: "CELENGAN SISWA",
+    owner: "Keisha Kayla",
+    school: "SMPN 2 Ambulu",
     color: "bg-[#1f9d68]", // Mint/Green
     textColor: "text-white",
     accentColor: "text-[#ffd84d]",
-    desc: "Media edukasi siswa untuk menyisihkan sebagian uang saku ke dalam saldo tabungan masa depan mereka.",
+    desc: "Kartu pintar Keisha yang terintegrasi dengan rekening celengan sekolah untuk melatih kebiasaan gemar menabung.",
     infoIcon: PiggyBank,
-    balance: "Simpanan: Aktif"
+    balance: "Tabungan Aktif: Rp75.000"
   }
 ];
 
@@ -815,7 +815,7 @@ export default function LandingPage() {
                 © 2026 KOIN. Hak Cipta Dilindungi Undang-Undang.
               </p>
               <p className="mt-1 text-[10px] text-[#58708e]/70">
-                Dibuat dengan ❤️ untuk Masa Depan Pendidikan Indonesia
+                Dibuat dengan ❤️ menggunakan Next.js, Tailwind CSS & Supabase
               </p>
             </div>
 
