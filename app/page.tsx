@@ -25,22 +25,22 @@ const schools = [
   {
     name: "SMPN 2 Ambulu",
     status: "Pilot Aktif",
-    desc: "Sekolah pertama peneru rintisan ekosistem uang saku digital berbasis NFC.",
+    desc: "Sekolah pertama peneru rintisan ekosistem uang saku digital berbasis kartu pintar NFC.",
   },
   {
     name: "SMPN 1 Jember",
     status: "Segera Hadir",
-    desc: "Tahap koordinasi & pemetaan sarana kantin sehat bebas tunai.",
+    desc: "Tahap koordinasi awal & pemetaan sarana kantin sehat bebas uang tunai fisik.",
   },
   {
     name: "SD Al-Amin",
     status: "Segera Hadir",
-    desc: "Sosialisasi awal sistem tabungan siswa terintegrasi wali murid.",
+    desc: "Sosialisasi awal sistem tabungan siswa yang terintegrasi penuh dengan dasbor wali murid.",
   },
   {
     name: "Kantin Sehat Mandiri",
     status: "Segera Hadir",
-    desc: "Digitalisasi pembayaran stand makanan sehat dalam satu kartu.",
+    desc: "Digitalisasi pembayaran stand jajanan sehat dalam satu genggaman kartu siswa.",
   },
 ];
 
@@ -49,7 +49,7 @@ const stats = [
     title: "Sekolah Pilot",
     value: "1",
     icon: School,
-    badge: "Active",
+    badge: "Aktif",
   },
   {
     title: "Role Pengguna",
@@ -73,10 +73,10 @@ const stats = [
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-[#f7fbff] text-[#10233f] overflow-hidden selection:bg-[#ffd84d]/30">
+    <main className="min-h-screen bg-[#f8f7ff] text-[#10233f] overflow-hidden selection:bg-[#8b5cf6]/20">
       
-      {      /* ================= NAVIGATION ================= */}
-      <nav className="sticky top-0 z-50 border-b border-[#dbeafe] bg-white/80 backdrop-blur-xl transition-all duration-300">
+      {/* ================= BAR NAVIGASI (LILAC GLASSMORPHISM) ================= */}
+      <nav className="sticky top-0 z-50 border-b border-[#ede9fe] bg-white/80 backdrop-blur-xl transition-all duration-300">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
           <KoinBrand />
@@ -84,37 +84,37 @@ export default function LandingPage() {
           <div className="hidden items-center gap-8 font-semibold text-[#58708e] lg:flex">
             <a
               href="#fitur"
-              className="relative py-1 transition hover:text-[#1c77d2] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#1c77d2] after:transition-all"
+              className="relative py-1 transition hover:text-[#7c3aed] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#7c3aed] after:transition-all"
             >
-              Fitur
+              Fitur Utama
             </a>
 
             <a
               href="#ekosistem"
-              className="relative py-1 transition hover:text-[#1c77d2] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#1c77d2] after:transition-all"
+              className="relative py-1 transition hover:text-[#7c3aed] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#7c3aed] after:transition-all"
             >
-              Ekosistem
+              Ekosistem KOIN
             </a>
 
             <a
               href="#pilot"
-              className="relative py-1 transition hover:text-[#1c77d2] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#1c77d2] after:transition-all"
+              className="relative py-1 transition hover:text-[#7c3aed] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#7c3aed] after:transition-all"
             >
-              Pilot
+              Mitra Sekolah
             </a>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="rounded-xl border border-[#dbeafe] bg-white px-5 py-2.5 font-bold text-[#304866] transition hover:bg-[#f7fbff] hover:shadow-sm"
+              className="rounded-xl border border-[#ede9fe] bg-white px-5 py-2.5 font-bold text-[#304866] transition hover:bg-[#f5f3ff] hover:shadow-sm"
             >
               Masuk
             </Link>
 
             <Link
               href="/register/parent"
-              className="group relative overflow-hidden rounded-xl bg-[#1c77d2] px-6 py-2.5 font-bold text-white shadow-md shadow-[#1c77d2]/20 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#1c77d2]/30"
+              className="group relative overflow-hidden rounded-xl bg-[#7c3aed] px-6 py-2.5 font-bold text-white shadow-md shadow-[#7c3aed]/20 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#7c3aed]/30"
             >
               <span className="relative z-10 flex items-center gap-2">
                 Daftar Sekarang
@@ -126,69 +126,69 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {      /* ================= HERO SECTION ================= */}
+      {/* ================= HERO SECTION (TEMA LILAC & DASHBOARD MOCKUP) ================= */}
       <section className="relative overflow-hidden py-16 lg:py-24">
 
-        {/* Floating Decorative Blur Blobs */}
-        <div className="absolute left-[-10%] top-[10%] h-[400px] w-[400px] rounded-full bg-[#dbeafe]/40 blur-[120px]" />
-        <div className="absolute right-[-5%] top-[5%] h-[350px] w-[350px] rounded-full bg-[#ffd84d]/15 blur-[100px]" />
-        <div className="absolute right-[40%] bottom-[-5%] h-[250px] w-[250px] rounded-full bg-[#e9e3ff]/60 blur-[90px]" /> {/* Lilac Accent Spot */}
+        {/* Dekorasi Blob Gradasi Lilac & Gold Lembut */}
+        <div className="absolute left-[-10%] top-[10%] h-[500px] w-[500px] rounded-full bg-[#ede9fe]/60 blur-[130px]" />
+        <div className="absolute right-[-5%] top-[5%] h-[400px] w-[400px] rounded-full bg-[#fef3c7]/50 blur-[120px]" />
+        <div className="absolute right-[35%] bottom-[-5%] h-[300px] w-[300px] rounded-full bg-[#e9e3ff]/70 blur-[100px]" />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-12">
 
-          {/* LEFT: CTA, BADGES, AND HEADLINES */}
-          <div className="lg:col-span-7">
+          {/* SISI KIRI: PENJELASAN UTAMA & CTA */}
+          <div className="lg:col-span-5">
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#dbeafe] bg-white px-4 py-2 text-xs font-bold text-[#10233f] shadow-sm">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#ede9fe] bg-white px-4 py-2 text-xs font-bold text-[#10233f] shadow-sm">
               <span className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-[#1f9d68] animate-pulse" />
               <Sparkles size={14} className="text-[#ffd84d]" />
               Pilot Project • SMPN 2 Ambulu
             </div>
 
-            <h1 className="mt-6 text-4xl font-black leading-[1.15] text-[#10233f] sm:text-5xl lg:text-6xl xl:text-7xl">
-              Digital Pocket
+            <h1 className="mt-6 text-4xl font-black leading-[1.15] text-[#10233f] sm:text-5xl lg:text-5xl xl:text-6xl">
+              Uang Saku Digital
               <br />
-              <span className="relative inline-block text-white">
-                <span className="absolute inset-0 -skew-y-1 bg-[#1c77d2] rounded-lg shadow-md shadow-[#1c77d2]/10" />
-                <span className="relative px-3 py-1">Money</span>
+              <span className="relative inline-block text-white my-1">
+                <span className="absolute inset-0 -skew-y-1 bg-[#7c3aed] rounded-lg shadow-md shadow-[#7c3aed]/10" />
+                <span className="relative px-3 py-1">Kartu NFC</span>
               </span>
-              <span className="text-[#1c77d2]"> for Smart</span>
+              <span className="text-[#7c3aed]"> Lebih Sehat</span>
               <br />
-              Schools.
+              & Terkontrol.
             </h1>
 
             <p className="mt-8 max-w-xl text-base leading-relaxed text-[#58708e] sm:text-lg">
-              KOIN membantu sekolah membangun ekosistem uang saku digital berbasis kartu NFC yang aman, transparan, serta mengajarkan literasi finansial bijak sejak dini kepada anak Anda.
+              KOIN mendesain ekosistem keuangan sekolah modern berbasis kartu tap tanpa repot kembalian, sekaligus menanamkan kebiasaan mengolah uang cerdas sejak anak usia dini.
             </p>
 
-            {/* Main Action Buttons */}
+            {/* Tombol Aksi Utama */}
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/register/parent"
-                className="flex items-center gap-2 rounded-2xl bg-[#1c77d2] px-8 py-4 font-extrabold text-white shadow-lg shadow-[#1c77d2]/25 transition hover:scale-105 hover:bg-[#1a6cb3] hover:shadow-xl"
+                className="flex items-center gap-2 rounded-2xl bg-[#7c3aed] px-8 py-4 font-extrabold text-white shadow-lg shadow-[#7c3aed]/25 transition hover:scale-105 hover:bg-[#6d28d9] hover:shadow-xl"
               >
-                Mulai Sekarang
+                Mulai Sebagai Wali
                 <ArrowRight size={18} />
               </Link>
 
               <Link
                 href="/register/canteen"
-                className="rounded-2xl border border-[#dbeafe] bg-white px-8 py-4 font-bold text-[#304866] transition hover:bg-[#f7fbff] hover:shadow-md"
+                className="rounded-2xl border border-[#ede9fe] bg-white px-8 py-4 font-bold text-[#304866] transition hover:bg-[#f5f3ff] hover:shadow-md"
               >
                 Daftar Sebagai Kantin
               </Link>
             </div>
 
-            {/* Financial Support Badge */}
-            <div className="mt-14 border-t border-[#dbeafe]/80 pt-8">
+            {/* Aliansi Pendukung Finansial */}
+            <div className="mt-14 border-t border-[#ede9fe] pt-8">
               <p className="text-xs font-bold uppercase tracking-wider text-[#58708e]">
-                Didukung & Selaras Dengan
+                Didukung & Selaras Dengan Regulasi
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 {["Bank Indonesia", "OJK", "PIDI Digdaya"].map((item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-1.5 rounded-xl border border-[#dbeafe] bg-white px-4 py-2 text-xs font-bold text-[#304866] shadow-sm transition hover:border-[#1c77d2]/30"
+                    className="flex items-center gap-1.5 rounded-xl border border-[#ede9fe] bg-white px-4 py-2 text-xs font-bold text-[#304866] shadow-sm transition hover:border-[#7c3aed]/30"
                   >
                     <CheckCircle2 size={13} className="text-[#1f9d68]" />
                     {item}
@@ -199,115 +199,122 @@ export default function LandingPage() {
 
           </div>
 
-          {/* RIGHT: BEAUTIFUL APP PREVIEW & INTERACTIVE DECORATION */}
-          <div className="relative flex justify-center lg:col-span-5">
-            <div className="relative">
+          {/* SISI KANAN: PREVIEW DASHBOARD ADMIN ASLI (DARI BERKAS image_c431d8.png) */}
+          <div className="lg:col-span-7 relative flex justify-center">
+            
+            {/* Ornamen Grafis Lingkaran Belakang */}
+            <div className="absolute -left-12 -top-12 h-24 w-24 rounded-full border-4 border-dashed border-[#ede9fe]" />
+            <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-[#ede9fe] opacity-50 blur-2xl" />
 
-              {/* Decorative Circle Elements */}
-              <div className="absolute -left-12 -top-12 h-24 w-24 rounded-full border-4 border-dashed border-[#dbeafe]" />
-              <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-[#e9e3ff] opacity-50 blur-2xl" />
+            {/* CONTAINER UTAMA DASHBOARD MOCKUP */}
+            <div className="w-full max-w-[640px] rounded-3xl border border-[#ede9fe] bg-[#f5f3ff] p-4 shadow-[0_20px_50px_rgba(233,227,255,0.8)] overflow-hidden hover:rotate-1 transition-transform duration-500">
+              
+              {/* Header Bar Mockup */}
+              <div className="flex items-center justify-between border-b border-[#ede9fe] pb-3 mb-3 px-1">
+                <div className="flex gap-2">
+                  <span className="w-3 h-3 rounded-full bg-[#ef4444]" />
+                  <span className="w-3 h-3 rounded-full bg-[#f59e0b]" />
+                  <span className="w-3 h-3 rounded-full bg-[#10b981]" />
+                </div>
+                <span className="text-[10px] font-bold text-[#58708e]/70 tracking-widest uppercase">Admin KOIN Console v1.0</span>
+              </div>
 
-              {/* Smartphone Frame UI */}
-              <div className="w-[310px] sm:w-[330px] rounded-[48px] border-[12px] border-[#10233f] bg-white p-6 shadow-2xl transition hover:rotate-1">
+              {/* Grid Layout Dalam Mockup (Meniru image_c431d8.png) */}
+              <div className="grid grid-cols-12 gap-3">
                 
-                {/* Status Bar */}
-                <div className="mb-4 flex items-center justify-between px-2 text-[11px] font-bold text-[#58708e]">
-                  <span>08:00 AM</span>
-                  <div className="flex gap-1.5">
-                    <span className="h-2 w-3 rounded-sm bg-[#10233f]" />
-                    <span className="h-2 w-2 rounded-full bg-[#1f9d68]" />
-                  </div>
-                </div>
-
-                {/* Header Profile */}
-                <div className="flex items-center justify-between">
+                {/* 1. Mini Sidebar (Sisi Kiri Mockup) */}
+                <div className="col-span-3 bg-white rounded-2xl p-3 border border-[#ede9fe] flex flex-col justify-between min-h-[360px]">
                   <div>
-                    <p className="text-xs text-[#58708e]">Wali Siswa</p>
-                    <h3 className="text-lg font-black text-[#10233f]">Bunda Risa</h3>
+                    {/* Logo K KOIN */}
+                    <div className="flex items-center gap-1.5 mb-5">
+                      <div className="w-6 h-6 rounded-full bg-[#ffd84d] flex items-center justify-center font-black text-[#10233f] text-xs">K</div>
+                      <span className="text-[11px] font-black tracking-wide text-[#10233f]">KOIN</span>
+                    </div>
+
+                    {/* Menu List */}
+                    <div className="space-y-1">
+                      {/* Menu Ringkasan Terpilih (Gold background #fef3c7 sesuai image_c431d8.png) */}
+                      <div className="bg-[#fef3c7] text-[#10233f] text-[9px] font-extrabold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 cursor-pointer">
+                        <span className="w-1 h-2 bg-[#ffd84d] rounded-full" />
+                        Ringkasan
+                      </div>
+                      <div className="text-[#58708e] text-[9px] font-bold px-2.5 py-1.5 hover:bg-[#ede9fe]/30 rounded-lg cursor-pointer">Pengguna</div>
+                      <div className="text-[#58708e] text-[9px] font-bold px-2.5 py-1.5 hover:bg-[#ede9fe]/30 rounded-lg cursor-pointer">Orang Tua</div>
+                      <div className="text-[#58708e] text-[9px] font-bold px-2.5 py-1.5 hover:bg-[#ede9fe]/30 rounded-lg cursor-pointer">Anak</div>
+                      <div className="text-[#58708e] text-[9px] font-bold px-2.5 py-1.5 hover:bg-[#ede9fe]/30 rounded-lg cursor-pointer">Kantin</div>
+                      <div className="text-[#58708e] text-[9px] font-bold px-2.5 py-1.5 hover:bg-[#ede9fe]/30 rounded-lg cursor-pointer">Kartu</div>
+                    </div>
                   </div>
-                  <div className="rounded-2xl bg-[#dbeafe] p-2.5 text-[#1c77d2]">
-                    <WalletCards size={20} />
+
+                  {/* Demo Card di Bawah Sidebar */}
+                  <div className="bg-[#10233f] p-2 rounded-xl text-[8px] text-white">
+                    <p className="font-bold text-[#ffd84d] flex items-center gap-1"><Star size={8} /> Demo KOIN</p>
+                    <p className="text-[7px] text-white/75 mt-1">Smart school wallet.</p>
                   </div>
                 </div>
 
-                {/* Main Balanced Card */}
-                <div className="mt-6 rounded-3xl bg-[#10233f] p-5 text-white relative overflow-hidden">
-                  <div className="absolute right-[-20px] bottom-[-20px] h-20 w-20 rounded-full bg-white/5" />
-                  <p className="text-xs text-white/70">Total Saldo Anak</p>
-                  <h2 className="mt-1 text-3xl font-black text-[#ffd84d]">
-                    Rp125.000
-                  </h2>
-                  <div className="mt-4 flex items-center gap-1.5 text-[10px] text-[#1f9d68] bg-[#1f9d68]/15 px-2.5 py-1 rounded-full w-max">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#1f9d68]" />
-                    Terhubung 1 Kartu Aktif
-                  </div>
-                </div>
-
-                {/* Info Grid (Limit & Transaksi) */}
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl bg-[#f7fbff] border border-[#dbeafe] p-3">
-                    <Clock className="text-[#1c77d2]" size={18} />
-                    <p className="mt-2 text-[11px] text-[#58708e]">Limit Harian</p>
-                    <h3 className="font-extrabold text-xs text-[#10233f]">Rp20.000</h3>
-                  </div>
+                {/* 2. Main Content Dashboard (Sisi Kanan Mockup) */}
+                <div className="col-span-9 space-y-3">
                   
-                  <div className="rounded-2xl bg-[#f7fbff] border border-[#dbeafe] p-3">
-                    <History className="text-[#1f9d68]" size={18} />
-                    <p className="mt-2 text-[11px] text-[#58708e]">Transaksi</p>
-                    <h3 className="font-extrabold text-xs text-[#10233f]">18x Bulan Ini</h3>
+                  {/* Dashboard Header Bar */}
+                  <div className="bg-white rounded-2xl p-3 border border-[#ede9fe] flex justify-between items-center">
+                    <div>
+                      <p className="text-[8px] font-black uppercase text-[#7c3aed]">DASHBOARD KOIN</p>
+                      <h4 className="text-sm font-black text-[#10233f]">Dashboard Admin</h4>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-[#f5f3ff] border border-[#ede9fe] flex items-center justify-center text-[#7c3aed]">
+                        <Clock size={10} />
+                      </div>
+                      <span className="text-[9px] font-bold text-[#10233f]">Admin KOIN</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Mini Quick Actions */}
-                <div className="mt-4 border-t border-[#dbeafe]/60 pt-4">
-                  <p className="text-[11px] font-bold text-[#58708e] mb-2">Aktivitas Terakhir</p>
-                  <div className="flex items-center justify-between rounded-xl bg-[#f7fbff] p-2 text-xs">
-                    <span className="font-bold text-[#10233f]">Kantin Bu Nining</span>
-                    <span className="font-black text-[#1f9d68]">-Rp8.000</span>
+                  {/* Grid Stat Cards (Mengambil data dari image_c431d8.png) */}
+                  <div className="grid grid-cols-2 gap-2">
+                    
+                    {[
+                      { label: "PENGGUNA", count: "26" },
+                      { label: "ORANG TUA", count: "8" },
+                      { label: "ANAK", count: "12" },
+                      { label: "KANTIN", count: "3" },
+                      { label: "KARTU", count: "10" },
+                      { label: "TRANSAKSI", count: "49" },
+                    ].map((card) => (
+                      <div key={card.label} className="bg-white rounded-2xl p-3 border border-[#ede9fe] shadow-[0_4px_12px_rgba(233,227,255,0.4)] hover:shadow-md transition-shadow">
+                        <p className="text-[8px] font-bold text-[#58708e]/80 tracking-wider">{card.label}</p>
+                        <p className="text-xl font-black text-[#10233f] mt-1">{card.count}</p>
+                      </div>
+                    ))}
+
                   </div>
+
                 </div>
 
-              </div>
-
-              {/* FLOATING DECORATION: NFC CARD */}
-              <div className="absolute -left-20 top-[30%] w-52 rotate-[-12deg] rounded-3xl bg-[#1c77d2] p-5 text-white shadow-xl border border-white/20 hover:scale-105 hover:rotate-[-6deg] transition-all duration-300">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-widest text-white/80">KOIN STUDENT</span>
-                  <CreditCard size={18} className="text-[#ffd84d]" />
-                </div>
-                <h2 className="mt-8 text-2xl font-black text-white">KOIN CARD</h2>
-                <div className="mt-6 flex items-center justify-between text-xs">
-                  <span className="rounded bg-white/25 px-2 py-0.5 text-[9px] font-bold">NFC TAP</span>
-                  <Radio size={14} className="animate-ping" />
-                </div>
-              </div>
-
-              {/* FLOATING DECORATION: TOP-UP STATUS */}
-              <div className="absolute -right-12 top-[10%] rounded-2xl bg-white p-3.5 shadow-xl border border-[#dbeafe] flex items-center gap-3">
-                <div className="rounded-full bg-[#1f9d68]/15 p-2 text-[#1f9d68]">
-                  <TrendingUp size={16} />
-                </div>
-                <div>
-                  <p className="text-[10px] text-[#58708e]">Auto Top Up</p>
-                  <h4 className="text-xs font-black text-[#10233f]">Berhasil Aktif</h4>
-                </div>
-              </div>
-
-              {/* FLOATING DECORATION: GOLDEN BANNER */}
-              <div className="absolute -bottom-6 -right-6 rounded-2xl bg-[#ffd84d] p-3 shadow-lg border border-[#ffd84d] flex items-center gap-2">
-                <Star size={16} className="text-[#10233f] fill-current" />
-                <span className="text-xs font-bold text-[#10233f]">Premium Cashless</span>
               </div>
 
             </div>
+
+            {/* FLOATING DECORASI KARTU NFC KOIN */}
+            <div className="absolute -left-10 bottom-4 w-48 rotate-[-12deg] rounded-2xl bg-[#7c3aed] p-4 text-white shadow-xl border border-white/20 hover:scale-105 hover:rotate-[-6deg] transition-all duration-300 hidden sm:block">
+              <div className="flex items-center justify-between">
+                <span className="text-[8px] font-bold tracking-widest text-white/80">KARTU SISWA NFC</span>
+                <CreditCard size={14} className="text-[#ffd84d]" />
+              </div>
+              <h4 className="mt-6 text-lg font-black text-white">KOIN CARD</h4>
+              <div className="mt-4 flex items-center justify-between text-[9px]">
+                <span className="rounded bg-white/20 px-1.5 py-0.5 text-[8px] font-bold">NFC TAP</span>
+                <Radio size={12} className="animate-ping" />
+              </div>
+            </div>
+
           </div>
 
         </div>
 
       </section>
 
-      {}
-      {/* ================= STATS SECTION ================= */}
+      {/* ================= STATISTIK UTAMA (DENGAN TEMA WARNA LILAC & MINT) ================= */}
       <section className="relative z-20 pb-20">
         <div className="mx-auto max-w-7xl px-6">
           
@@ -315,21 +322,21 @@ export default function LandingPage() {
             {stats.map(({ title, value, icon: Icon, badge }) => (
               <div
                 key={title}
-                className="group relative overflow-hidden rounded-3xl border border-[#dbeafe] bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                className="group relative overflow-hidden rounded-3xl border border-[#ede9fe] bg-white p-7 shadow-[0_8px_30px_rgb(233,227,255,0.3)] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#ede9fe]/80"
               >
-                {/* Decorative Lilac Blob */}
-                <div className="absolute right-0 top-0 h-16 w-16 bg-[#e9e3ff] opacity-0 transition-opacity duration-300 group-hover:opacity-40 rounded-bl-full" />
+                {/* Visual Aksen Gradient Lilac Cantik */}
+                <div className="absolute right-0 top-0 h-16 w-16 bg-[#ede9fe] opacity-0 transition-opacity duration-300 group-hover:opacity-40 rounded-bl-full" />
                 
                 <div className="flex items-center justify-between">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#1c77d2]/15 text-[#1c77d2]">
+                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#7c3aed]/10 text-[#7c3aed]">
                     <Icon size={24} />
                   </div>
-                  <span className="rounded-full bg-[#dbeafe]/50 px-2.5 py-0.5 text-[10px] font-bold text-[#1c77d2]">
+                  <span className="rounded-full bg-[#f3e8ff] px-2.5 py-0.5 text-[10px] font-extrabold text-[#7c3aed]">
                     {badge}
                   </span>
                 </div>
 
-                <h2 className="mt-6 text-3xl font-black text-[#10233f] group-hover:text-[#1c77d2] transition-colors">
+                <h2 className="mt-6 text-3xl font-black text-[#10233f] group-hover:text-[#7c3aed] transition-colors">
                   {value}
                 </h2>
 
@@ -343,22 +350,21 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {}
-      {/* ================= HOW IT WORKS SECTION ================= */}
-      <section id="ekosistem" className="bg-white py-24 border-y border-[#dbeafe]/80">
+      {/* ================= CARA KERJA (EKOSISTEM PERAN SINERGIS) ================= */}
+      <section id="ekosistem" className="bg-white py-24 border-y border-[#ede9fe]">
         <div className="mx-auto max-w-7xl px-6">
 
           <div className="text-center">
-            <div className="inline-flex rounded-full bg-[#ffd84d]/20 px-4 py-1.5 text-xs font-bold text-[#10233f] uppercase tracking-wider">
+            <div className="inline-flex rounded-full bg-[#fef3c7] px-4 py-1.5 text-xs font-bold text-[#10233f] uppercase tracking-wider">
               Cara Kerja KOIN
             </div>
             <h2 className="mt-4 text-3xl font-black text-[#10233f] sm:text-5xl">
               Satu Ekosistem,
               <br />
-              <span className="text-[#1c77d2]">Empat Peran Sinergis</span>
+              <span className="text-[#7c3aed]">Empat Peran Sinergis</span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-[#58708e]">
-              Semua elemen di sekolah saling terhubung demi menciptakan transaksi saku digital yang aman, menyenangkan, dan termonitor dengan baik.
+              Semua elemen sekolah saling terhubung agar menciptakan proses transaksi saku digital yang aman, menyenangkan, serta termonitor dengan baik.
             </p>
           </div>
 
@@ -366,36 +372,36 @@ export default function LandingPage() {
             {[
               {
                 title: "Orang Tua",
-                desc: "Kontrol penuh saldo, limitasi saku harian, serta monitor jenis jajanan anak secara real-time.",
+                desc: "Kontrol penuh atas limitasi saku harian anak, top-up saldo instan, serta memantau jajanan anak secara realtime.",
                 icon: Users,
-                color: "bg-[#1c77d2]/10 text-[#1c77d2]",
+                color: "bg-[#7c3aed]/10 text-[#7c3aed]",
               },
               {
                 title: "Siswa (Anak)",
-                desc: "Membayar jajanan di kantin sehat cukup dengan melakukan tap kartu NFC KOIN yang praktis.",
+                desc: "Membeli jajanan di stand kantin sekolah dengan praktis dan cepat, cukup menempelkan kartu NFC KOIN.",
                 icon: BookOpenCheck,
-                color: "bg-[#e9e3ff]/80 text-[#8b5cf6]", // Lilac Highlight
+                color: "bg-[#f3e8ff] text-[#7c3aed]", // Lilac Highlight
               },
               {
                 title: "Kantin Mitra",
-                desc: "Menerima pembayaran instan nirkabel tanpa repot mengurus uang kembalian atau resiko kehilangan.",
+                desc: "Menerima pembayaran nontunai tanpa perlu menyiapkan kembalian receh dan meminimalisir risiko selisih.",
                 icon: Store,
-                color: "bg-[#ffd84d]/25 text-[#10233f]", // Gold Highlight
+                color: "bg-[#fef3c7] text-[#10233f]", // Gold Highlight
               },
               {
-                title: "Sekolah Admin",
-                desc: "Memperoleh data dashboard kesehatan finansial kantin dan menaikkan gengsi sekolah modern.",
+                title: "Admin Sekolah",
+                desc: "Memperoleh data dashboard kesehatan finansial kantin secara transparan guna menaikkan prestise sekolah.",
                 icon: ShieldCheck,
                 color: "bg-[#1f9d68]/15 text-[#1f9d68]", // Mint Highlight
               },
             ].map(({ title, desc, icon: Icon, color }, index) => (
               <div
                 key={title}
-                className="relative group rounded-3xl border border-[#dbeafe] bg-[#f7fbff] p-8 shadow-sm transition-all hover:-translate-y-2 hover:shadow-xl hover:bg-white"
+                className="relative group rounded-3xl border border-[#ede9fe] bg-[#f8f7ff] p-8 shadow-sm transition-all hover:-translate-y-2 hover:shadow-xl hover:bg-white hover:border-[#ede9fe]/50"
               >
                 
-                {/* Visual Step Badge */}
-                <div className="absolute top-4 right-4 text-4xl font-extrabold text-[#dbeafe]/60 group-hover:text-[#1c77d2]/20">
+                {/* Visual Langkah Step Angka */}
+                <div className="absolute top-4 right-4 text-4xl font-extrabold text-[#ede9fe] group-hover:text-[#7c3aed]/20">
                   0{index + 1}
                 </div>
 
@@ -418,15 +424,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {}
-      {/* ================= TRANSACTION FLOW SECTION ================= */}
-      <section className="py-24 bg-[#f7fbff]">
+      {/* ================= ALUR TRANSAKSI KOIN ================= */}
+      <section className="py-24 bg-[#f8f7ff]">
         <div className="mx-auto max-w-7xl px-6">
           
           <div className="rounded-[40px] bg-[#10233f] p-8 sm:p-14 text-white relative overflow-hidden">
             
-            {/* Background glowing design */}
-            <div className="absolute right-[-100px] top-[-100px] h-64 w-64 rounded-full bg-[#1c77d2]/40 blur-3xl" />
+            {/* Background Ornamen Gradasi Menyala */}
+            <div className="absolute right-[-100px] top-[-100px] h-64 w-64 rounded-full bg-[#7c3aed]/40 blur-3xl" />
             <div className="absolute left-[-50px] bottom-[-50px] h-64 w-64 rounded-full bg-[#ffd84d]/10 blur-2xl" />
 
             <div className="relative">
@@ -434,16 +439,16 @@ export default function LandingPage() {
                 Alur Transaksi KOIN
               </h2>
               <p className="mt-2 max-w-2xl text-white/70 text-sm sm:text-base">
-                Didesain sesederhana mungkin agar dapat dipahami anak sekolah dasar hingga lanjut tanpa mengurangi keamanan data keuangan.
+                Didesain sesederhana mungkin agar dapat digunakan oleh anak-anak sekolah dasar tanpa mengurangi aspek keamanan finansial.
               </p>
 
               <div className="mt-14 grid gap-8 sm:grid-cols-3 lg:grid-cols-5">
                 {[
-                  { title: "Top Up Saldo", sub: "Via Mobile Banking / Dompet Digital" },
-                  { title: "Set Limit Harian", sub: "Agar anak belajar berhemat" },
-                  { title: "Siswa Tap Kartu", sub: "Pembayaran super cepat" },
-                  { title: "Saldo Terpotong", sub: "Langsung diperbarui ke wali" },
-                  { title: "Laporan Masuk", sub: "Rekap transaksi harian otomatis" },
+                  { title: "Top Up Saldo", sub: "Via Mobile Banking atau Dompet Digital" },
+                  { title: "Set Limit Harian", sub: "Membantu anak belajar hemat" },
+                  { title: "Siswa Tap Kartu", sub: "Pembayaran dalam hitungan detik" },
+                  { title: "Saldo Terpotong", sub: "Realtime update ke ponsel wali murid" },
+                  { title: "Laporan Otomatis", sub: "Semua pengeluaran tercatat di sistem" },
                 ].map((step, index) => (
                   <div key={step.title} className="relative text-center group">
                     <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ffd84d] text-xl font-black text-[#10233f] shadow-md shadow-[#ffd84d]/10 transition-transform group-hover:scale-110">
@@ -469,52 +474,51 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {}
-      {/* ================= WHY KOIN SECTION ================= */}
+      {/* ================= KENAPA MEMILIH KOIN (VISUAL ELEGAN LILAC/MINT) ================= */}
       <section id="fitur" className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-16 lg:grid-cols-12">
 
-            {/* LEFT: Core Benfits */}
+            {/* SISI KIRI: MANFAAT INTI */}
             <div className="lg:col-span-6">
-              <div className="inline-flex rounded-full bg-[#1c77d2]/10 px-4 py-1.5 text-xs font-bold text-[#1c77d2] uppercase tracking-wider">
+              <div className="inline-flex rounded-full bg-[#7c3aed]/10 px-4 py-1.5 text-xs font-bold text-[#7c3aed] uppercase tracking-wider">
                 Mengapa Harus KOIN?
               </div>
               <h2 className="mt-4 text-3xl font-black leading-tight text-[#10233f] sm:text-5xl">
                 Menjaga Jajanan Anak
                 <br />
-                <span className="text-[#1c77d2]">Tetap Terkontrol & Sehat</span>
+                <span className="text-[#7c3aed]">Tetap Sehat & Terkendali</span>
               </h2>
               <p className="mt-6 text-[#58708e] leading-relaxed">
-                Kami peduli dengan pertumbuhan finansial serta gizi anak di sekolah. Platform KOIN dibuat untuk memutus rantai jajan sembarangan sekaligus memonitor saku digital anak Anda.
+                Platform KOIN hadir untuk memutus kekhawatiran orang tua terkait uang hilang ataupun jajan sembarangan. Kita ciptakan ekosistem sekolah sehat yang cerdas finansial!
               </p>
 
               <div className="mt-10 space-y-4">
                 {[
                   {
-                    title: "Tanpa Uang Tunai (Cashless)",
-                    desc: "Anak tidak takut kehilangan uang saku kertas lagi.",
+                    title: "Bebas Khawatir Uang Hilang",
+                    desc: "Anak tidak perlu membawa uang fisik lembaran yang rawan tercecer.",
                     icon: BadgeCheck,
-                    badgeColor: "text-[#1c77d2]",
+                    badgeColor: "text-[#7c3aed]",
                   },
                   {
-                    title: "Batas Belanja Anak",
-                    desc: "Atur maksimum belanja harian agar tidak boros.",
+                    title: "Batas Belanja Terstruktur",
+                    desc: "Batasi pengeluaran per hari agar melatih jiwa mandiri berhemat anak.",
                     icon: PiggyBank,
-                    badgeColor: "text-[#8b5cf6]", // Lilac representation
+                    badgeColor: "text-[#7c3aed]",
                   },
                   {
-                    title: "Laporan Riwayat Realtime",
-                    desc: "Notifikasi masuk langsung saat kartu KOIN ditap.",
+                    title: "Riwayat Pembelian Realtime",
+                    desc: "Mengetahui secara detail kantin dan menu apa saja yang dibeli anak.",
                     icon: TrendingUp,
-                    badgeColor: "text-[#1f9d68]", // Mint
+                    badgeColor: "text-[#1f9d68]",
                   },
                 ].map(({ title, desc, icon: Icon, badgeColor }) => (
                   <div
                     key={title}
-                    className="flex gap-4 rounded-2xl border border-[#dbeafe] bg-[#f7fbff] p-5 transition-all hover:bg-white hover:shadow-md"
+                    className="flex gap-4 rounded-2xl border border-[#ede9fe] bg-[#f8f7ff] p-5 transition-all hover:bg-white hover:shadow-md"
                   >
-                    <div className={`mt-0.5 rounded-xl bg-[#dbeafe]/40 p-2.5 ${badgeColor}`}>
+                    <div className={`mt-0.5 rounded-xl bg-[#ede9fe] p-2.5 ${badgeColor}`}>
                       <Icon size={20} />
                     </div>
                     <div>
@@ -526,16 +530,16 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* RIGHT: Live Visual Cards Preview */}
+            {/* SISI KANAN: PREVIEW MONITORING SAKU WALI MURID */}
             <div className="lg:col-span-6 relative">
               <div className="rounded-[40px] bg-gradient-to-tr from-[#10233f] to-[#304866] p-8 text-white shadow-2xl relative overflow-hidden">
                 
-                {/* Ornaments */}
-                <div className="absolute right-0 bottom-0 h-48 w-48 bg-[#1c77d2]/20 rounded-full blur-3xl" />
+                {/* Ornamen Kilau */}
+                <div className="absolute right-0 bottom-0 h-48 w-48 bg-[#7c3aed]/20 rounded-full blur-3xl" />
                 
                 <div className="flex items-center justify-between border-b border-white/10 pb-6">
                   <div>
-                    <span className="text-xs text-white/50 uppercase tracking-widest">Wali Monitor</span>
+                    <span className="text-xs text-white/50 uppercase tracking-widest">WALI MURID MONITOR</span>
                     <h3 className="text-xl font-bold">Ringkasan Hari Ini</h3>
                   </div>
                   <div className="rounded-2xl bg-white/10 p-3">
@@ -550,7 +554,7 @@ export default function LandingPage() {
                       <span className="font-black text-[#ffd84d]">Rp105.000 / Rp125.000</span>
                     </div>
                     <div className="mt-2.5 h-2 w-full rounded-full bg-white/10">
-                      <div className="h-2 rounded-full bg-[#1c77d2]" style={{ width: "84%" }} />
+                      <div className="h-2 rounded-full bg-[#7c3aed]" style={{ width: "84%" }} />
                     </div>
                   </div>
 
@@ -570,7 +574,7 @@ export default function LandingPage() {
                       <span className="font-black text-[#ffd84d]">Rp75.000</span>
                     </div>
                     <div className="mt-2.5 h-2 w-full rounded-full bg-white/10">
-                      <div className="h-2 rounded-full bg-purple-400" style={{ width: "60%" }} /> {/* Lilac representation */}
+                      <div className="h-2 rounded-full bg-purple-400" style={{ width: "60%" }} /> {/* Lilac */}
                     </div>
                   </div>
                 </div>
@@ -584,13 +588,13 @@ export default function LandingPage() {
 
               </div>
 
-              {/* Absolut Float Info */}
-              <div className="absolute -left-8 -bottom-8 rounded-3xl bg-white p-5 shadow-xl border border-[#dbeafe] flex items-center gap-3">
+              {/* Floating Badge Keamanan */}
+              <div className="absolute -left-8 -bottom-8 rounded-3xl bg-white p-5 shadow-xl border border-[#ede9fe] flex items-center gap-3">
                 <div className="rounded-full bg-[#1f9d68]/15 p-3 text-[#1f9d68]">
                   <BadgeCheck size={22} />
                 </div>
                 <div>
-                  <p className="text-[10px] text-[#58708e]">Verifikasi Enkripsi</p>
+                  <p className="text-[10px] text-[#58708e]">Verifikasi Keamanan</p>
                   <h4 className="font-black text-[#10233f] text-sm">100% Secure NFC</h4>
                 </div>
               </div>
@@ -601,20 +605,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {}
-      {/* ================= ROADMAP & PILOT SCHOOLS ================= */}
-      <section id="pilot" className="py-24 bg-[#f7fbff]">
+      {/* ================= MITRA SEKOLAH & ROADMAP ================= */}
+      <section id="pilot" className="py-24 bg-[#f8f7ff]">
         <div className="mx-auto max-w-7xl px-6">
 
           <div className="text-center">
-            <div className="inline-flex rounded-full bg-[#ffd84d]/20 px-4 py-1.5 text-xs font-bold text-[#10233f] uppercase tracking-wider">
+            <div className="inline-flex rounded-full bg-[#fef3c7] px-4 py-1.5 text-xs font-bold text-[#10233f] uppercase tracking-wider">
               Roadmap Implementasi
             </div>
             <h2 className="mt-4 text-3xl font-black text-[#10233f] sm:text-5xl">
               Langkah Digitalisasi Sekolah
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-[#58708e]">
-              Berikut adalah jaringan sekolah pilot perdana dan rencana ekspansi jangkauan saku pintar digital KOIN di Indonesia.
+              Berikut adalah jaringan sekolah rintisan awal dan rencana perluasan ekosistem KOIN demi masa depan anak cerdas finansial.
             </p>
           </div>
 
@@ -624,7 +627,7 @@ export default function LandingPage() {
               return (
                 <div
                   key={school.name}
-                  className="relative flex flex-col justify-between rounded-3xl border border-[#dbeafe] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                  className="relative flex flex-col justify-between rounded-3xl border border-[#ede9fe] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div>
                     <div className="flex items-center justify-between">
@@ -632,7 +635,7 @@ export default function LandingPage() {
                         className={`inline-flex rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider ${
                           isPilot
                             ? "bg-[#1f9d68]/15 text-[#1f9d68]"
-                            : "bg-[#1c77d2]/10 text-[#1c77d2]"
+                            : "bg-[#7c3aed]/10 text-[#7c3aed]"
                         }`}
                       >
                         {school.status}
@@ -649,8 +652,8 @@ export default function LandingPage() {
                     </p>
                   </div>
 
-                  <div className="mt-6 border-t border-[#dbeafe]/80 pt-4 flex items-center gap-2 text-xs text-[#304866] font-bold">
-                    <School size={14} className="text-[#1c77d2]" />
+                  <div className="mt-6 border-t border-[#ede9fe] pt-4 flex items-center gap-2 text-xs text-[#304866] font-bold">
+                    <School size={14} className="text-[#7c3aed]" />
                     <span>Mitra Pendidikan</span>
                   </div>
                 </div>
@@ -661,30 +664,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {}
-      {/* ================= CALL TO ACTION ================= */}
+      {/* ================= SEKSI AJAKAN AKHIR (CTA) ================= */}
       <section className="pb-24 bg-white">
         <div className="mx-auto max-w-7xl px-6">
           
           <div className="relative overflow-hidden rounded-[40px] bg-[#10233f] px-6 py-20 text-center text-white sm:px-12">
             
-            {/* Background blur rings */}
-            <div className="absolute -left-20 top-0 h-80 w-80 rounded-full bg-[#1c77d2]/30 blur-[100px]" />
+            {/* Background Blur Ring */}
+            <div className="absolute -left-20 top-0 h-80 w-80 rounded-full bg-[#7c3aed]/30 blur-[100px]" />
             <div className="absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-[#ffd84d]/15 blur-[100px]" />
 
             <div className="relative mx-auto max-w-3xl">
               <span className="inline-flex rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-[#ffd84d] uppercase tracking-wider">
-                Gabung KOIN Sekarang
+                Ayo Gabung KOIN Sekarang
               </span>
 
               <h2 className="mt-6 text-3xl font-black leading-tight text-white sm:text-5xl">
-                Saatnya Mewujudkan
+                Wujudkan Sekolah Modern
                 <br />
-                <span className="text-[#ffd84d]">Sekolah Cashless Masa Kini</span>
+                <span className="text-[#ffd84d]">Bebas Transaksi Fisik</span>
               </h2>
 
               <p className="mt-6 text-sm text-white/70 sm:text-base leading-relaxed">
-                Daftarkan wali murid maupun kantin sekolah Anda ke dalam sistem saku digital KOIN. Lebih bersih, terkontrol, dan memfasilitasi anak belajar menabung demi masa depan cerah.
+                Mulai hubungkan kantin dan anak-anak Anda ke dalam program uji coba digitalisasi saku cerdas KOIN. Lebih bersih, terkontrol, dan menyenangkan untuk belajar menabung sejak dini.
               </p>
 
               <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -709,16 +711,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {}
       {/* ================= FOOTER ================= */}
-      <footer className="border-t border-[#dbeafe] bg-[#f7fbff] py-12">
+      <footer className="border-t border-[#ede9fe] bg-[#f8f7ff] py-12">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
             
             <div>
               <KoinBrand />
               <p className="mt-3 max-w-sm text-xs leading-relaxed text-[#58708e]">
-                KOIN adalah ekosistem uang saku digital berbasis kartu pintar NFC untuk mendidik kebiasaan finansial anak sejak bangku sekolah secara aman, transparan, dan realtime.
+                KOIN adalah sistem saku digital berbasis NFC inovatif untuk mendidik kebiasaan finansial anak sejak bangku sekolah secara aman, transparan, dan dapat dipantau realtime.
               </p>
             </div>
 
@@ -727,10 +728,10 @@ export default function LandingPage() {
                 Kenali • Olah • Ingat • Nabung
               </p>
               <p className="mt-2 text-xs text-[#58708e]">
-                © 2026 KOIN. Hak Cipta Dilindungi Undang-Undang.
+                © 2026 KOIN. Seluruh Hak Cipta Dilindungi.
               </p>
               <p className="mt-1 text-[10px] text-[#58708e]/70">
-                Built with ❤️ using Next.js, Tailwind CSS & Supabase
+                Dibuat dengan ❤️ untuk Masa Depan Pendidikan Indonesia
               </p>
             </div>
 
