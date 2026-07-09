@@ -5,7 +5,6 @@ import {
   BookOpenCheck,
   Clock,
   CreditCard,
-  History,
   Radio,
   School,
   ShieldCheck,
