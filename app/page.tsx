@@ -902,7 +902,8 @@ export default function LandingPage() {
             <div className="absolute left-0 right-0 top-8 hidden h-1 bg-[#ede9fe] lg:block" />
 
             <div className="grid gap-8 lg:grid-cols-4">
-              {schools.map((school, index) => (
+              {}
+              {schools.map((school) => (
                 <div
                   key={school.name}
                   className="relative text-center group"
