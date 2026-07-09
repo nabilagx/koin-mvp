@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -6,7 +8,6 @@ import {
   BookOpenCheck,
   Clock,
   CreditCard,
-  History,
   Radio,
   School,
   ShieldCheck,
@@ -15,7 +16,6 @@ import {
   WalletCards,
   Sparkles,
   TrendingUp,
-  Star,
   PiggyBank,
   CheckCircle2,
 } from "lucide-react";
@@ -155,7 +155,6 @@ export default function LandingPage() {
     <main className="min-h-screen bg-[#f7fbff] text-[#10233f] overflow-hidden selection:bg-[#7c3aed]/20">
       
       {/* ================= NAVIGASI RESPONSIF ================= */}
-      {}
       <nav className="sticky top-0 z-50 border-b border-[#ede9fe] bg-white/85 backdrop-blur-xl transition-all duration-300">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
@@ -210,7 +209,6 @@ export default function LandingPage() {
       </nav>
 
       {/* ================= HERO SECTION DENGAN 3D CARD STACK INTERAKTIF ================= */}
-      {}
       <section className="relative overflow-hidden py-12 lg:py-20">
 
         {/* Ornamen Gradasi Lilac Lembut di Latar Belakang */}
@@ -284,10 +282,9 @@ export default function LandingPage() {
           </div>
 
           {/* SISI KANAN: PREVIEW DEK KARTU 3D STACK INTERAKTIF (AMBUL & BEBAS POTONG) */}
-          {}
+          {/* Area Wadah Utama Dek Kartu */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center py-6">
             
-            {/* Area Wadah Utama Dek Kartu */}
             <div className="relative w-full max-w-[340px] h-[250px] sm:h-[280px] flex items-center justify-center">
               
               {/* Petunjuk Mengambang */}
@@ -383,7 +380,6 @@ export default function LandingPage() {
             </div>
 
             {/* Keterangan Kartu yang Sedang Aktif di Depan */}
-            {}
             <div className="mt-8 text-center px-4 max-w-[340px] transition-all duration-300">
               <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ede9fe] text-[#7c3aed] px-3 py-1 text-xs font-black">
                 {activeCard.infoIcon && <activeCard.infoIcon size={14} />}
@@ -404,7 +400,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= SEKSI STATISTIK UTAMA ================= */}
-      {}
       <section className="relative z-20 pb-20">
         <div className="mx-auto max-w-7xl px-6">
           
@@ -441,7 +436,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= SEKSI CARA KERJA SISTEM ================= */}
-      {}
       <section id="ekosistem" className="bg-white py-24 border-y border-[#ede9fe]/80">
         <div className="mx-auto max-w-7xl px-6">
 
@@ -516,7 +510,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= ALUR TRANSAKSI DETIL ================= */}
-      {}
       <section className="py-24 bg-[#f7fbff]">
         <div className="mx-auto max-w-7xl px-6">
           
@@ -567,7 +560,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= KEUNGGULAN KOIN ================= */}
-      {}
       <section id="fitur" className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-16 lg:grid-cols-12">
@@ -699,7 +691,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= PETA JALAN & SEKOLAH PILOT ================= */}
-      {}
       <section id="pilot" className="py-24 bg-[#f7fbff]">
         <div className="mx-auto max-w-7xl px-6">
 
@@ -716,11 +707,11 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {schools.map((school, index) => {
+            {schools.map((school) => {
               const isPilot = school.status === "Pilot Aktif";
               return (
                 <div
-                  key={`${school.name}-${index}`}
+                  key={school.name}
                   className="relative flex flex-col justify-between rounded-3xl border border-[#ede9fe] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div>
@@ -734,7 +725,6 @@ export default function LandingPage() {
                       >
                         {school.status}
                       </span>
-                      <span className="text-xs font-bold text-[#58708e]">0{index + 1}</span>
                     </div>
 
                     <h3 className="mt-4 text-lg font-black text-[#10233f]">
@@ -759,7 +749,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= AJAKAN GABUNG (CTA) ================= */}
-      {}
       <section className="pb-24 bg-white">
         <div className="mx-auto max-w-7xl px-6">
           
@@ -807,7 +796,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= KAKI HALAMAN (FOOTER) ================= */}
-      {}
       <footer className="border-t border-[#ede9fe] bg-[#f7fbff] py-12">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
