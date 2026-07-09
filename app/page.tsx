@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
-  Ban,
   BookOpenCheck,
   Clock,
   CreditCard,
@@ -10,7 +9,6 @@ import {
   Radio,
   School,
   ShieldCheck,
-  Smartphone,
   Store,
   Users,
   WalletCards,
@@ -66,7 +64,8 @@ const stats = [
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-[#f7fbff] text-[#10233f] overflow-hidden">
-            <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl">
+      {/* ================= NAVIGATION ================= */}
+      <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
 
           <KoinBrand />
@@ -95,7 +94,6 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-3">
-
             <Link
               href="/login"
               className="rounded-xl border border-[#dbeafe] bg-white px-5 py-3 font-semibold transition hover:shadow-md"
@@ -109,12 +107,12 @@ export default function LandingPage() {
             >
               Daftar
             </Link>
-
           </div>
 
         </div>
       </nav>
-            {/* ================= HERO ================= */}
+
+      {/* ================= HERO SECTION ================= */}
       <section className="relative overflow-hidden">
 
         {/* Background Blur */}
@@ -188,161 +186,164 @@ export default function LandingPage() {
           </div>
 
           {/* RIGHT */}
-          <div className="relative flex justify-center">
+          <div>
+            <div className="relative flex justify-center">
 
-            <div className="relative">
+              <div className="relative">
 
-              {/* Phone */}
+                {/* Phone */}
 
-              <div className="w-[340px] rounded-[40px] border-[10px] border-[#10233f] bg-white p-6 shadow-2xl">
+                <div className="w-[340px] rounded-[40px] border-[10px] border-[#10233f] bg-white p-6 shadow-2xl">
 
-                <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between">
 
-                  <div>
+                    <div>
 
-                    <p className="text-sm text-[#6b7d93]">
-                      Selamat Datang
-                    </p>
+                      <p className="text-sm text-[#6b7d93]">
+                        Selamat Datang
+                      </p>
 
-                    <h3 className="text-xl font-black">
-                      Orang Tua
-                    </h3>
+                      <h3 className="text-xl font-black">
+                        Orang Tua
+                      </h3>
+
+                    </div>
+
+                    <div className="rounded-full bg-[#1c77d2]/10 p-3">
+                      <WalletCards
+                        className="text-[#1c77d2]"
+                        size={24}
+                      />
+                    </div>
 
                   </div>
 
-                  <div className="rounded-full bg-[#1c77d2]/10 p-3">
-                    <WalletCards
-                      className="text-[#1c77d2]"
-                      size={24}
-                    />
+                  <div className="mt-8 rounded-3xl bg-[#10233f] p-6 text-white">
+
+                    <p className="text-sm text-white/70">
+                      Saldo Anak
+                    </p>
+
+                    <h2 className="mt-2 text-4xl font-black">
+                      Rp125.000
+                    </h2>
+
+                  </div>
+
+                  <div className="mt-5 grid grid-cols-2 gap-4">
+
+                    <div className="rounded-2xl bg-[#f7fbff] p-4">
+
+                      <Clock
+                        className="text-[#1c77d2]"
+                        size={24}
+                      />
+
+                      <p className="mt-4 text-sm text-[#5d728d]">
+                        Limit Hari Ini
+                      </p>
+
+                      <h3 className="font-black">
+                        Rp20.000
+                      </h3>
+
+                    </div>
+
+                    <div className="rounded-2xl bg-[#f7fbff] p-4">
+
+                      <History
+                        className="text-[#1f9d68]"
+                        size={24}
+                      />
+
+                      <p className="mt-4 text-sm text-[#5d728d]">
+                        Transaksi
+                      </p>
+
+                      <h3 className="font-black">
+                        18x
+                      </h3>
+
+                    </div>
+
                   </div>
 
                 </div>
 
-                <div className="mt-8 rounded-3xl bg-[#10233f] p-6 text-white">
+                {/* NFC CARD */}
 
-                  <p className="text-sm text-white/70">
-                    Saldo Anak
-                  </p>
+                <div className="absolute -left-20 top-24 w-56 rotate-[-12deg] rounded-3xl bg-[#10233f] p-6 text-white shadow-2xl">
 
-                  <h2 className="mt-2 text-4xl font-black">
-                    Rp125.000
+                  <div className="flex items-center justify-between">
+
+                    <span className="text-sm font-bold">
+                      KOIN CARD
+                    </span>
+
+                    <CreditCard size={22} />
+
+                  </div>
+
+                  <h2 className="mt-12 text-3xl font-black">
+                    KOIN
                   </h2>
 
-                </div>
+                  <div className="mt-8 flex items-center justify-between">
 
-                <div className="mt-5 grid grid-cols-2 gap-4">
+                    <span className="text-sm text-white/70">
+                      NFC
+                    </span>
 
-                  <div className="rounded-2xl bg-[#f7fbff] p-4">
-
-                    <Clock
-                      className="text-[#1c77d2]"
-                      size={24}
-                    />
-
-                    <p className="mt-4 text-sm text-[#5d728d]">
-                      Limit Hari Ini
-                    </p>
-
-                    <h3 className="font-black">
-                      Rp20.000
-                    </h3>
+                    <Radio size={18} />
 
                   </div>
 
-                  <div className="rounded-2xl bg-[#f7fbff] p-4">
+                </div>
 
-                    <History
+                {/* FLOATING */}
+
+                <div className="absolute -right-10 top-8 rounded-2xl bg-white p-4 shadow-xl">
+
+                  <div className="flex items-center gap-3">
+
+                    <TrendingUp
                       className="text-[#1f9d68]"
-                      size={24}
+                      size={20}
                     />
 
-                    <p className="mt-4 text-sm text-[#5d728d]">
-                      Transaksi
-                    </p>
+                    <div>
 
-                    <h3 className="font-black">
-                      18x
-                    </h3>
+                      <p className="text-xs text-[#64758b]">
+                        Top Up
+                      </p>
 
-                  </div>
+                      <h4 className="font-black">
+                        Berhasil
+                      </h4>
 
-                </div>
-
-              </div>
-
-              {/* NFC CARD */}
-
-              <div className="absolute -left-20 top-24 w-56 rotate-[-12deg] rounded-3xl bg-[#10233f] p-6 text-white shadow-2xl">
-
-                <div className="flex items-center justify-between">
-
-                  <span className="text-sm font-bold">
-                    KOIN CARD
-                  </span>
-
-                  <CreditCard size={22} />
-
-                </div>
-
-                <h2 className="mt-12 text-3xl font-black">
-                  KOIN
-                </h2>
-
-                <div className="mt-8 flex items-center justify-between">
-
-                  <span className="text-sm text-white/70">
-                    NFC
-                  </span>
-
-                  <Radio size={18} />
-
-                </div>
-
-              </div>
-
-              {/* FLOATING */}
-
-              <div className="absolute -right-10 top-8 rounded-2xl bg-white p-4 shadow-xl">
-
-                <div className="flex items-center gap-3">
-
-                  <TrendingUp
-                    className="text-[#1f9d68]"
-                    size={20}
-                  />
-
-                  <div>
-
-                    <p className="text-xs text-[#64758b]">
-                      Top Up
-                    </p>
-
-                    <h4 className="font-black">
-                      Berhasil
-                    </h4>
+                    </div>
 
                   </div>
 
                 </div>
 
-              </div>
+                <div className="absolute -bottom-5 right-0 rounded-2xl bg-[#ffd84d] p-4 shadow-xl">
 
-              <div className="absolute -bottom-5 right-0 rounded-2xl bg-[#ffd84d] p-4 shadow-xl">
+                  <div className="flex items-center gap-3">
 
-                <div className="flex items-center gap-3">
+                    <Star size={20} />
 
-                  <Star size={20} />
+                    <div>
 
-                  <div>
+                      <p className="text-xs">
+                        Cashless
+                      </p>
 
-                    <p className="text-xs">
-                      Cashless
-                    </p>
+                      <h4 className="font-black">
+                        School Ready
+                      </h4>
 
-                    <h4 className="font-black">
-                      School Ready
-                    </h4>
+                    </div>
 
                   </div>
 
@@ -351,14 +352,13 @@ export default function LandingPage() {
               </div>
 
             </div>
-
           </div>
 
         </div>
 
       </section>
-            {/* ================= STATS ================= */}
 
+      {/* ================= STATS SECTION ================= */}
       <section className="-mt-8 relative z-20 pb-20">
 
         <div className="mx-auto max-w-7xl px-6">
@@ -407,8 +407,8 @@ export default function LandingPage() {
         </div>
 
       </section>
-            {/* ================= HOW IT WORKS ================= */}
 
+      {/* ================= HOW IT WORKS SECTION ================= */}
       <section
         id="ekosistem"
         className="bg-white py-24"
@@ -504,8 +504,8 @@ export default function LandingPage() {
 
         </div>
       </section>
-            {/* ================= FLOW ================= */}
 
+      {/* ================= TRANSACTION FLOW SECTION ================= */}
       <section className="pb-24">
 
         <div className="mx-auto max-w-7xl px-6">
@@ -513,16 +513,12 @@ export default function LandingPage() {
           <div className="rounded-[36px] bg-[#10233f] p-10 text-white">
 
             <h2 className="text-4xl font-black">
-
               Alur Transaksi KOIN
-
             </h2>
 
             <p className="mt-4 max-w-2xl text-white/70">
-
               Dari orang tua hingga laporan sekolah,
               semua transaksi tercatat secara otomatis.
-
             </p>
 
             <div className="mt-14 grid gap-6 lg:grid-cols-5">
@@ -541,21 +537,15 @@ export default function LandingPage() {
                 >
 
                   <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#ffd84d] text-2xl font-black text-[#10233f]">
-
                     {index + 1}
-
                   </div>
 
                   <h3 className="mt-6 font-bold">
-
                     {step}
-
                   </h3>
 
                   {index < 4 && (
-
                     <div className="absolute left-full top-8 hidden h-[2px] w-full bg-white/20 lg:block" />
-
                   )}
 
                 </div>
@@ -569,8 +559,8 @@ export default function LandingPage() {
         </div>
 
       </section>
-            {/* ================= WHY KOIN ================= */}
 
+      {/* ================= WHY KOIN SECTION ================= */}
       <section className="py-24 bg-[#f7fbff]">
 
         <div className="mx-auto max-w-7xl px-6">
@@ -578,7 +568,6 @@ export default function LandingPage() {
           <div className="grid items-center gap-20 lg:grid-cols-2">
 
             {/* LEFT */}
-
             <div>
 
               <div className="inline-flex rounded-full bg-[#1c77d2]/10 px-5 py-2 text-sm font-bold text-[#1c77d2]">
@@ -605,22 +594,18 @@ export default function LandingPage() {
                     "Aman & Transparan",
                     "Semua transaksi tercatat secara real-time."
                   ],
-
                   [
                     "Cashless NFC",
                     "Tidak perlu membawa uang tunai."
                   ],
-
                   [
                     "Kontrol Orang Tua",
                     "Atur limit dan pantau pengeluaran anak."
                   ],
-
                   [
                     "Belajar Menabung",
                     "Membentuk kebiasaan finansial sejak dini."
                   ],
-
                 ].map(([title, desc]) => (
 
                   <div
@@ -658,7 +643,6 @@ export default function LandingPage() {
             </div>
 
             {/* RIGHT */}
-
             <div className="relative">
 
               <div className="rounded-[40px] bg-white p-8 shadow-2xl">
@@ -703,9 +687,7 @@ export default function LandingPage() {
                     </div>
 
                     <div className="mt-3 h-3 rounded-full bg-[#dbeafe]">
-
                       <div className="h-3 w-[82%] rounded-full bg-[#1c77d2]" />
-
                     </div>
 
                   </div>
@@ -723,9 +705,7 @@ export default function LandingPage() {
                     </div>
 
                     <div className="mt-3 h-3 rounded-full bg-[#dbeafe]">
-
                       <div className="h-3 w-[35%] rounded-full bg-[#ffd84d]" />
-
                     </div>
 
                   </div>
@@ -743,9 +723,7 @@ export default function LandingPage() {
                     </div>
 
                     <div className="mt-3 h-3 rounded-full bg-[#dbeafe]">
-
                       <div className="h-3 w-[65%] rounded-full bg-[#1f9d68]" />
-
                     </div>
 
                   </div>
@@ -754,7 +732,7 @@ export default function LandingPage() {
 
               </div>
 
-              {/* Floating */}
+              {/* Floating elements */}
 
               <div className="absolute -left-8 top-12 rounded-3xl bg-[#10233f] p-5 text-white shadow-xl">
 
@@ -787,8 +765,8 @@ export default function LandingPage() {
         </div>
 
       </section>
-            {/* ================= PILOT SCHOOL ================= */}
 
+      {/* ================= PILOT SCHOOL / ROADMAP ================= */}
       <section
         id="pilot"
         className="py-24"
@@ -803,24 +781,20 @@ export default function LandingPage() {
             </div>
 
             <h2 className="mt-6 text-5xl font-black">
-
               Perjalanan KOIN
-
             </h2>
 
             <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-[#60758f]">
-
               Dimulai dari satu sekolah pilot,
               kemudian berkembang menjadi ekosistem
               pembayaran digital sekolah yang lebih luas.
-
             </p>
 
           </div>
 
           <div className="mt-20 relative">
 
-            {/* Garis Timeline */}
+            {/* Timeline Line */}
             <div className="absolute left-0 right-0 top-8 hidden h-1 bg-[#dbeafe] lg:block" />
 
             <div className="grid gap-8 lg:grid-cols-4">
@@ -832,7 +806,7 @@ export default function LandingPage() {
                   className="relative text-center"
                 >
 
-                  {/* Titik Timeline */}
+                  {/* Timeline Dot */}
                   <div
                     className={`mx-auto grid h-16 w-16 place-items-center rounded-full shadow-lg ${
                       school.status === "Pilot Aktif"
@@ -879,8 +853,7 @@ export default function LandingPage() {
 
       </section>
 
-      {/* ================= CTA ================= */}
-
+      {/* ================= CALL TO ACTION (CTA) ================= */}
       <section className="pb-24">
 
         <div className="mx-auto max-w-7xl px-6">
@@ -898,22 +871,18 @@ export default function LandingPage() {
               </div>
 
               <h2 className="mx-auto mt-8 max-w-4xl text-5xl font-black leading-tight">
-
                 Bangun Ekosistem
                 <br />
                 Uang Saku Digital
                 <br />
                 untuk Sekolah Indonesia.
-
               </h2>
 
               <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-white/70">
-
                 Mulai perjalanan digitalisasi sekolah
                 bersama KOIN. Aman, transparan,
                 dan membantu membangun literasi keuangan
                 sejak usia dini.
-
               </p>
 
               <div className="mt-12 flex flex-wrap justify-center gap-5">
@@ -943,7 +912,6 @@ export default function LandingPage() {
       </section>
 
       {/* ================= FOOTER ================= */}
-
       <footer className="border-t border-[#dbeafe] bg-white">
 
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-10 md:flex-row">
@@ -953,12 +921,10 @@ export default function LandingPage() {
             <KoinBrand />
 
             <p className="mt-3 max-w-md text-sm leading-7 text-[#60758f]">
-
               KOIN adalah ekosistem uang saku digital
               berbasis kartu NFC yang membantu sekolah,
               orang tua, siswa, dan kantin bertransaksi
               dengan lebih aman dan transparan.
-
             </p>
 
           </div>
